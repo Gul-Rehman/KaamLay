@@ -1,0 +1,4 @@
+{
+    "mongoURI":"mongodb+srv://kaamlay:gul123@kaamlay.afon9it.mongodb.net/?retryWrites=true&w=majority",
+    "jwtSecret":"kaamlay"
+}
