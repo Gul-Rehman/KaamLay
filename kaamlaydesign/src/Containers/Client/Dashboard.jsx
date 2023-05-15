@@ -2,14 +2,13 @@ import React, { useState, useEffect, createContext } from "react";
 import { Typography, Box } from "@mui/material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useContext } from "react";
 
 import Switch from "@mui/material/Switch";
 import { Stack } from "@mui/material";
 import ColorConfigs from "../../Configs/ColorConfigs";
+import { Button } from "@mui/material";
 
 const Dashboard = () => {
-  const UserContext = createContext();
   // const [auth,setauth]=useState('');
   // useEffect(()=>{
   //   setauth(localStorage.getItem("user"));
@@ -135,10 +134,9 @@ const Dashboard = () => {
         >
           Welcome {name} as {localStorage.getItem("userrole")}
         </Typography>
+        <Button variant="contained">Hello World</Button>
+        <Button variant="contained">Hello World</Button>
       </Box>
-      <UserContext.Provider>
-        <></>
-      </UserContext.Provider>
     </>
   );
 };

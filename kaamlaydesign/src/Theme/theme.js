@@ -1,63 +1,28 @@
-// import { red } from "@mui/material/colors";
 import { createTheme } from "@mui/material/styles";
 
-// const font = 'Nunito, sans-serif';
-
 const theme = createTheme({
+  // Theme ki properties yahan define karein
   palette: {
-    // background: {
-    //     default: '#eee',
-    //     custom: '#0A4DAA'
-    // },
-    // mode: 'light',
     primary: {
-      main: "#fa541c",
+      main: "#fa541c", // Primary color ka hex code yahan specify karein
     },
     secondary: {
-      main: "#FFFFFF",
-    },
-    tirtionary: {
-      main: "#0A4DAA",
-    },
-    black: {
-      main: "#000000",
+      main: "#00ff00", // Secondary color ka hex code yahan specify karein
     },
   },
-  // typography: {
-  //     fontFamily: font,
-  //     button: {
-  //         background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
-  //         border: 0,
-  //         color: '#000000',
-  //         height: 30,
-  //         fontSize: '20px',
-  //         padding: '10px',
-  //         boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
-  //         textTransform: 'none',
-  //         '&': {
-  //             color: red
-  //         }
-  //     }
-  // },
-  root: {
-    "& .MuiDataGrid-columnHeaders": {
-      fontSize: 17.8,
-    },
-    "& .MuiDataGrid-row Mui-selected": {
-      backgroundColor: "red",
+  breakpoints: {
+    values: {
+      xs: 0,
+      mobiles: 320,
+      mobilem: 375,
+      mobilel: 425,
+      tablet: 768,
+      laptops: 1024,
+      dnavbar: 1200,
+      laptopl: 1440,
     },
   },
-  "@global": {
-    "*::-webkit-scrollbar": {
-      width: "0px",
-      height: "10px",
-    },
-    "*::-webkit-scrollbar-thumb": {
-      width: "0rem",
-      backgroundColor: "#f75473",
-      borderRadius: "2rem",
-    },
-  },
+  // Aur baki theme ki properties bhi add kar sakte hain
 });
 
 export default theme;

@@ -43,64 +43,133 @@ const DrawerComponent = () => {
   return (
     <>
       {auth ? (
-        <>
-          <Drawer
-            open={openDrawer}
-            onClose={() => setopenDrawer(false)}
-            anchor="right"
-          >
-            <List disablePadding>
-              <CustomizedListItem component={NavLink} to="/clientdashboard">
-                <ListItemButton>
-                  <ListItemText> Dashboard </ListItemText>
-                </ListItemButton>
-              </CustomizedListItem>
+        localStorage.getItem("userrole") === "client" ? (
+          <>
+            <Drawer
+              open={openDrawer}
+              onClose={() => setopenDrawer(false)}
+              anchor="right"
+            >
+              <List disablePadding>
+                <CustomizedListItem component={NavLink} to="/clientdashboard">
+                  <ListItemButton>
+                    <ListItemText> Dashboard </ListItemText>
+                  </ListItemButton>
+                </CustomizedListItem>
 
-              <CustomizedListItem
-                component={NavLink}
-                to="/clientcompletedservices"
-              >
-                <ListItemButton>
-                  <ListItemText>Completed Services</ListItemText>
-                </ListItemButton>
-              </CustomizedListItem>
-              <CustomizedListItem
-                component={NavLink}
-                to="/clientbookedservices"
-              >
-                <ListItemButton>
-                  <ListItemText>Booked Services</ListItemText>
-                </ListItemButton>
-              </CustomizedListItem>
-              <ListItem>
-                <ListItemButton
-                  sx={{
-                    color: "black",
-                    textAlign: "center",
-                    backgroundColor: "#fa541c",
-                    borderRadius: "10px",
-                    "&:hover": {
-                      backgroundColor: "black",
-                      color: "white",
-                    },
-                  }}
-                  onClick={logout}
+                <CustomizedListItem component={NavLink} to="/browsecategories">
+                  <ListItemButton>
+                    <ListItemText>Browse Services</ListItemText>
+                  </ListItemButton>
+                </CustomizedListItem>
+
+                <CustomizedListItem
+                  component={NavLink}
+                  to="/clientcompletedservices"
                 >
-                  Logout
-                </ListItemButton>
-              </ListItem>
-            </List>
-          </Drawer>
+                  <ListItemButton>
+                    <ListItemText>Completed Services</ListItemText>
+                  </ListItemButton>
+                </CustomizedListItem>
+                <CustomizedListItem
+                  component={NavLink}
+                  to="/clientbookedservices"
+                >
+                  <ListItemButton>
+                    <ListItemText>Booked Services</ListItemText>
+                  </ListItemButton>
+                </CustomizedListItem>
+                <ListItem>
+                  <ListItemButton
+                    sx={{
+                      color: "black",
+                      textAlign: "center",
+                      backgroundColor: "#fa541c",
+                      borderRadius: "10px",
+                      "&:hover": {
+                        backgroundColor: "black",
+                        color: "white",
+                      },
+                    }}
+                    onClick={logout}
+                  >
+                    Logout
+                  </ListItemButton>
+                </ListItem>
+              </List>
+            </Drawer>
 
-          <IconButton
-            onClick={() => {
-              setopenDrawer(!openDrawer);
-            }}
-            sx={{ color: "#fa541c" }}
-          >
-            <MenuIcon fontSize="large" color="#fa541c" />
-          </IconButton>
-        </>
+            <IconButton
+              onClick={() => {
+                setopenDrawer(!openDrawer);
+              }}
+              sx={{ color: "#fa541c" }}
+            >
+              <MenuIcon fontSize="large" color="#fa541c" />
+            </IconButton>
+          </>
+        ) : (
+          <>
+            <Drawer
+              open={openDrawer}
+              onClose={() => setopenDrawer(false)}
+              anchor="right"
+            >
+              <List disablePadding>
+                <CustomizedListItem component={NavLink} to="/clientdashboard">
+                  <ListItemButton>
+                    <ListItemText> Dashboard </ListItemText>
+                  </ListItemButton>
+                </CustomizedListItem>
+
+                <CustomizedListItem
+                  component={NavLink}
+                  to="/serviceproviderpostedservices"
+                >
+                  <ListItemButton>
+                    <ListItemText>Posted Services</ListItemText>
+                  </ListItemButton>
+                </CustomizedListItem>
+
+                <CustomizedListItem
+                  component={NavLink}
+                  to="/serviceprovidercompletedservices"
+                >
+                  <ListItemButton>
+                    <ListItemText>Completed Services</ListItemText>
+                  </ListItemButton>
+                </CustomizedListItem>
+
+                <ListItem>
+                  <ListItemButton
+                    sx={{
+                      color: "black",
+                      textAlign: "center",
+                      backgroundColor: "#fa541c",
+                      borderRadius: "10px",
+                      "&:hover": {
+                        backgroundColor: "black",
+                        color: "white",
+                      },
+                    }}
+                    onClick={logout}
+                  >
+                    Logout
+                  </ListItemButton>
+                </ListItem>
+              </List>
+            </Drawer>
+
+            <IconButton
+              onClick={() => {
+                setopenDrawer(!openDrawer);
+              }}
+              sx={{ color: "#fa541c" }}
+            >
+              <MenuIcon fontSize="large" color="#fa541c" />
+            </IconButton>
+          </>
+        )
       ) : (
         <>
           <Drawer

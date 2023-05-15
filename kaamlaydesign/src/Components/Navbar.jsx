@@ -21,15 +21,6 @@ import axios from "axios";
 
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-const theme = createTheme({
-  breakpoints: {
-    values: {
-      xs: 0,
-      md: 1040,
-    },
-  },
-});
-
 const CustomizedLink = styled(Link)({
   color: "black",
   borderRadius: "20px",
@@ -94,310 +85,8 @@ const Navbar = () => {
 
   return (
     <>
-      <ThemeProvider theme={theme}>
-        {auth ? (
-          localStorage.getItem("userrole") == "client" ? (
-            <AppBar
-              position="sticky"
-              sx={{
-                backgroundColor: "whitesmoke",
-              }}
-            >
-              <Toolbar
-                sx={{
-                  padding: "5px",
-                }}
-              >
-                <Fade in={true} timeout={{ enter: 2000 }}>
-                  <Link
-                    component={NavLink}
-                    to="/"
-                    sx={{
-                      display: {
-                        xs: "none",
-                        md: "block",
-                      },
-                    }}
-                  >
-                    <img
-                      src={desktoplogo}
-                      alt="KaamLay Logo"
-                      style={{
-                        width: "200px",
-                        boxShadow: "inherit",
-                      }}
-                    />
-                  </Link>
-                </Fade>
-                <Fade in={true} timeout={{ enter: 2000 }}>
-                  <Link
-                    component={NavLink}
-                    to="/"
-                    sx={{
-                      display: {
-                        xs: "block",
-                        md: "none",
-                      },
-                    }}
-                  >
-                    <img
-                      src={mobilelogo}
-                      alt="KaamLay Logo"
-                      className="scale-up-center"
-                      style={{ width: "50px" }}
-                    />
-                  </Link>
-                </Fade>
-                <Fade in={true} timeout={{ enter: 2000 }}>
-                  <Stack
-                    className="stack"
-                    direction="row"
-                    spacing={1}
-                    position="absolute"
-                    right={1}
-                    sx={{
-                      mr: "15px",
-                      display: { xs: "none", md: "flex" },
-                      alignItems: "center",
-                    }}
-                  >
-                    <CustomizedLink
-                      className="scale-up-center"
-                      component={NavLink}
-                      to="/clientdashboard"
-                    >
-                      Dashboard
-                    </CustomizedLink>
-                    <CustomizedLink
-                      component={NavLink}
-                      to="/browsecategories"
-                      className="scale-up-center"
-                      sx={{ width: 150 }}
-                    >
-                      Browse Services
-                    </CustomizedLink>
-                    <CustomizedLink
-                      component={NavLink}
-                      to="/clientbookedservices"
-                      className="scale-up-center"
-                    >
-                      {" "}
-                      Booked Services{" "}
-                    </CustomizedLink>
-
-                    <CustomizedLink
-                      component={NavLink}
-                      to="/clientcompletedservices"
-                      className="scale-up-center"
-                      sx={{ width: 170 }}
-                    >
-                      Completed Services
-                    </CustomizedLink>
-
-                    <CustomizedLink
-                      component={NavLink}
-                      to="/contactus"
-                      className="scale-up-center"
-                    >
-                      Contact Us
-                    </CustomizedLink>
-                    <Box>
-                      <Button
-                        variant="contained"
-                        style={{ margin: "0px auto", display: "block" }}
-                        onClick={logout}
-                        sx={{
-                          fontSize: "15px",
-                          fontWeight: "1px",
-                          color: "black",
-
-                          textAlign: "center",
-                          textDecoration: "none",
-                          width: "150px",
-                          postition: "absolute",
-                          right: "1px",
-                          backgroundColor: "#fa541c",
-
-                          "&:hover": {
-                            backgroundColor: "black",
-                            color: "white",
-                          },
-                        }}
-                      >
-                        Logout
-                      </Button>
-                    </Box>
-                  </Stack>
-                </Fade>
-
-                {/* <MenuIcon sx={{ 
-          display: { xs: "inline-flex", md: "none" },
-           position: 'absolute',
-            right: "10px",
-             fontSize: "50px",
-              color: "#fa541c" }} /> */}
-                {/* <Drawer/> */}
-                <Box
-                  sx={{
-                    display: { xs: "inline-flex", md: "none" },
-                    position: "absolute",
-                    right: "10px",
-                    color: "#fa541c",
-                  }}
-                >
-                  <DrawerComponent />
-                </Box>
-              </Toolbar>
-            </AppBar>
-          ) : (
-            <AppBar
-              position="sticky"
-              sx={{
-                backgroundColor: "whitesmoke",
-              }}
-            >
-              <Toolbar
-                sx={{
-                  padding: "5px",
-                }}
-              >
-                <Fade in={true} timeout={{ enter: 2000 }}>
-                  <Link
-                    component={NavLink}
-                    to="/"
-                    sx={{
-                      display: {
-                        xs: "none",
-                        md: "block",
-                      },
-                    }}
-                  >
-                    <img
-                      src={desktoplogo}
-                      alt="KaamLay Logo"
-                      style={{
-                        width: "200px",
-                        boxShadow: "inherit",
-                      }}
-                    />
-                  </Link>
-                </Fade>
-                <Fade in={true} timeout={{ enter: 2000 }}>
-                  <Link
-                    component={NavLink}
-                    to="/"
-                    sx={{
-                      display: {
-                        xs: "block",
-                        md: "none",
-                      },
-                    }}
-                  >
-                    <img
-                      src={mobilelogo}
-                      alt="KaamLay Logo"
-                      className="scale-up-center"
-                      style={{ width: "50px" }}
-                    />
-                  </Link>
-                </Fade>
-                <Fade in={true} timeout={{ enter: 2000 }}>
-                  <Stack
-                    className="stack"
-                    direction="row"
-                    spacing={1}
-                    position="absolute"
-                    right={1}
-                    sx={{
-                      mr: "15px",
-                      display: { xs: "none", md: "flex" },
-                      alignItems: "center",
-                    }}
-                  >
-                    <CustomizedLink
-                      className="scale-up-center"
-                      component={NavLink}
-                      to="/serviceproviderdashboard"
-                    >
-                      Dashboard
-                    </CustomizedLink>
-                    <CustomizedLink
-                      component={NavLink}
-                      to="/serviceproviderpostedservices"
-                      className="scale-up-center"
-                    >
-                      {" "}
-                      Posted Services{" "}
-                    </CustomizedLink>
-
-                    <CustomizedLink
-                      sx={{
-                        width: "170px",
-                      }}
-                      component={NavLink}
-                      to="/completedservices"
-                      className="scale-up-center"
-                    >
-                      Completed Services
-                    </CustomizedLink>
-
-                    <CustomizedLink
-                      component={NavLink}
-                      to="/contactus"
-                      className="scale-up-center"
-                    >
-                      Contact Us
-                    </CustomizedLink>
-                    <Box>
-                      <Button
-                        variant="contained"
-                        style={{ margin: "0px auto", display: "block" }}
-                        onClick={logout}
-                        sx={{
-                          fontSize: "15px",
-                          fontWeight: "1px",
-                          color: "black",
-
-                          textAlign: "center",
-                          textDecoration: "none",
-                          width: "150px",
-                          postition: "absolute",
-                          right: "1px",
-                          backgroundColor: "#fa541c",
-
-                          "&:hover": {
-                            backgroundColor: "black",
-                            color: "white",
-                          },
-                        }}
-                      >
-                        Logout
-                      </Button>
-                    </Box>
-                  </Stack>
-                </Fade>
-
-                {/* <MenuIcon sx={{ 
-          display: { xs: "inline-flex", md: "none" },
-           position: 'absolute',
-            right: "10px",
-             fontSize: "50px",
-              color: "#fa541c" }} /> */}
-                {/* <Drawer/> */}
-                <Box
-                  sx={{
-                    display: { xs: "inline-flex", md: "none" },
-                    position: "absolute",
-                    right: "10px",
-                    color: "#fa541c",
-                  }}
-                >
-                  <DrawerComponent />
-                </Box>
-              </Toolbar>
-            </AppBar>
-          )
-        ) : (
+      {auth ? (
+        localStorage.getItem("userrole") == "client" ? (
           <AppBar
             position="sticky"
             sx={{
@@ -416,7 +105,7 @@ const Navbar = () => {
                   sx={{
                     display: {
                       xs: "none",
-                      md: "block",
+                      dnavbar: "block",
                     },
                   }}
                 >
@@ -437,7 +126,7 @@ const Navbar = () => {
                   sx={{
                     display: {
                       xs: "block",
-                      md: "none",
+                      dnavbar: "none",
                     },
                   }}
                 >
@@ -458,32 +147,43 @@ const Navbar = () => {
                   right={1}
                   sx={{
                     mr: "15px",
-                    display: { xs: "none", md: "flex" },
+                    display: { xs: "none", dnavbar: "flex" },
                     alignItems: "center",
                   }}
                 >
                   <CustomizedLink
                     className="scale-up-center"
                     component={NavLink}
-                    to="/"
+                    to="/clientdashboard"
                   >
-                    Home
+                    Dashboard
                   </CustomizedLink>
                   <CustomizedLink
                     component={NavLink}
-                    to="/services"
+                    to="/browsecategories"
+                    className="scale-up-center"
+                    sx={{ width: 150 }}
+                  >
+                    Browse Services
+                  </CustomizedLink>
+                  <CustomizedLink
+                    component={NavLink}
+                    to="/clientbookedservices"
                     className="scale-up-center"
                   >
                     {" "}
-                    Service
+                    Booked Services{" "}
                   </CustomizedLink>
+
                   <CustomizedLink
                     component={NavLink}
-                    to="/about"
+                    to="/clientcompletedservices"
                     className="scale-up-center"
+                    sx={{ width: 170 }}
                   >
-                    About
+                    Completed Services
                   </CustomizedLink>
+
                   <CustomizedLink
                     component={NavLink}
                     to="/contactus"
@@ -495,11 +195,12 @@ const Navbar = () => {
                     <Button
                       variant="contained"
                       style={{ margin: "0px auto", display: "block" }}
-                      onClick={openlogin}
+                      onClick={logout}
                       sx={{
                         fontSize: "15px",
                         fontWeight: "1px",
                         color: "black",
+
                         textAlign: "center",
                         textDecoration: "none",
                         width: "150px",
@@ -513,12 +214,301 @@ const Navbar = () => {
                         },
                       }}
                     >
-                      Login
+                      Logout
                     </Button>
                   </Box>
                 </Stack>
               </Fade>
-              {/*           
+
+              {/* <MenuIcon sx={{ 
+          display: { xs: "inline-flex", md: "none" },
+           position: 'absolute',
+            right: "10px",
+             fontSize: "50px",
+              color: "#fa541c" }} /> */}
+              {/* <Drawer/> */}
+              <Box
+                sx={{
+                  display: { xs: "inline-flex", dnavbar: "none" },
+                  position: "absolute",
+                  right: "10px",
+                  color: "#fa541c",
+                }}
+              >
+                <DrawerComponent />
+              </Box>
+            </Toolbar>
+          </AppBar>
+        ) : (
+          <AppBar
+            position="sticky"
+            sx={{
+              backgroundColor: "whitesmoke",
+            }}
+          >
+            <Toolbar
+              sx={{
+                padding: "5px",
+              }}
+            >
+              <Fade in={true} timeout={{ enter: 2000 }}>
+                <Link
+                  component={NavLink}
+                  to="/"
+                  sx={{
+                    display: {
+                      xs: "none",
+                      dnavbar: "block",
+                    },
+                  }}
+                >
+                  <img
+                    src={desktoplogo}
+                    alt="KaamLay Logo"
+                    style={{
+                      width: "200px",
+                      boxShadow: "inherit",
+                    }}
+                  />
+                </Link>
+              </Fade>
+              <Fade in={true} timeout={{ enter: 2000 }}>
+                <Link
+                  component={NavLink}
+                  to="/"
+                  sx={{
+                    display: {
+                      xs: "block",
+                      dnavbar: "none",
+                    },
+                  }}
+                >
+                  <img
+                    src={mobilelogo}
+                    alt="KaamLay Logo"
+                    className="scale-up-center"
+                    style={{ width: "50px" }}
+                  />
+                </Link>
+              </Fade>
+              <Fade in={true} timeout={{ enter: 2000 }}>
+                <Stack
+                  className="stack"
+                  direction="row"
+                  spacing={1}
+                  position="absolute"
+                  right={1}
+                  sx={{
+                    mr: "15px",
+                    display: { xs: "none", dnavbar: "flex" },
+                    alignItems: "center",
+                  }}
+                >
+                  <CustomizedLink
+                    className="scale-up-center"
+                    component={NavLink}
+                    to="/serviceproviderdashboard"
+                  >
+                    Dashboard
+                  </CustomizedLink>
+                  <CustomizedLink
+                    component={NavLink}
+                    to="/serviceproviderpostedservices"
+                    className="scale-up-center"
+                  >
+                    {" "}
+                    Posted Services{" "}
+                  </CustomizedLink>
+
+                  <CustomizedLink
+                    sx={{
+                      width: "170px",
+                    }}
+                    component={NavLink}
+                    to="/completedservices"
+                    className="scale-up-center"
+                  >
+                    Completed Services
+                  </CustomizedLink>
+
+                  <CustomizedLink
+                    component={NavLink}
+                    to="/contactus"
+                    className="scale-up-center"
+                  >
+                    Contact Us
+                  </CustomizedLink>
+                  <Box>
+                    <Button
+                      variant="contained"
+                      style={{ margin: "0px auto", display: "block" }}
+                      onClick={logout}
+                      sx={{
+                        fontSize: "15px",
+                        fontWeight: "1px",
+                        color: "black",
+
+                        textAlign: "center",
+                        textDecoration: "none",
+                        width: "150px",
+                        postition: "absolute",
+                        right: "1px",
+                        backgroundColor: "#fa541c",
+
+                        "&:hover": {
+                          backgroundColor: "black",
+                          color: "white",
+                        },
+                      }}
+                    >
+                      Logout
+                    </Button>
+                  </Box>
+                </Stack>
+              </Fade>
+
+              {/* <MenuIcon sx={{ 
+          display: { xs: "inline-flex", md: "none" },
+           position: 'absolute',
+            right: "10px",
+             fontSize: "50px",
+              color: "#fa541c" }} /> */}
+              {/* <Drawer/> */}
+              <Box
+                sx={{
+                  display: { xs: "inline-flex", dnavbar: "none" },
+                  position: "absolute",
+                  right: "10px",
+                  color: "#fa541c",
+                }}
+              >
+                <DrawerComponent />
+              </Box>
+            </Toolbar>
+          </AppBar>
+        )
+      ) : (
+        <AppBar
+          position="sticky"
+          sx={{
+            backgroundColor: "whitesmoke",
+          }}
+        >
+          <Toolbar
+            sx={{
+              padding: "5px",
+            }}
+          >
+            <Fade in={true} timeout={{ enter: 2000 }}>
+              <Link
+                component={NavLink}
+                to="/"
+                sx={{
+                  display: {
+                    xs: "none",
+                    dnavbar: "block",
+                  },
+                }}
+              >
+                <img
+                  src={desktoplogo}
+                  alt="KaamLay Logo"
+                  style={{
+                    width: "200px",
+                    boxShadow: "inherit",
+                  }}
+                />
+              </Link>
+            </Fade>
+            <Fade in={true} timeout={{ enter: 2000 }}>
+              <Link
+                component={NavLink}
+                to="/"
+                sx={{
+                  display: {
+                    xs: "block",
+                    dnavbar: "none",
+                  },
+                }}
+              >
+                <img
+                  src={mobilelogo}
+                  alt="KaamLay Logo"
+                  className="scale-up-center"
+                  style={{ width: "50px" }}
+                />
+              </Link>
+            </Fade>
+            <Fade in={true} timeout={{ enter: 2000 }}>
+              <Stack
+                className="stack"
+                direction="row"
+                spacing={1}
+                position="absolute"
+                right={1}
+                sx={{
+                  mr: "15px",
+                  display: { xs: "none", dnavbar: "flex" },
+                  alignItems: "center",
+                }}
+              >
+                <CustomizedLink
+                  className="scale-up-center"
+                  component={NavLink}
+                  to="/"
+                >
+                  Home
+                </CustomizedLink>
+                <CustomizedLink
+                  component={NavLink}
+                  to="/services"
+                  className="scale-up-center"
+                >
+                  {" "}
+                  Service
+                </CustomizedLink>
+                <CustomizedLink
+                  component={NavLink}
+                  to="/about"
+                  className="scale-up-center"
+                >
+                  About
+                </CustomizedLink>
+                <CustomizedLink
+                  component={NavLink}
+                  to="/contactus"
+                  className="scale-up-center"
+                >
+                  Contact Us
+                </CustomizedLink>
+                <Box>
+                  <Button
+                    variant="contained"
+                    style={{ margin: "0px auto", display: "block" }}
+                    onClick={openlogin}
+                    sx={{
+                      fontSize: "15px",
+                      fontWeight: "1px",
+                      color: "black",
+                      textAlign: "center",
+                      textDecoration: "none",
+                      width: "150px",
+                      postition: "absolute",
+                      right: "1px",
+                      backgroundColor: "#fa541c",
+
+                      "&:hover": {
+                        backgroundColor: "black",
+                        color: "white",
+                      },
+                    }}
+                  >
+                    Login
+                  </Button>
+                </Box>
+              </Stack>
+            </Fade>
+            {/*           
           <Button sx={{ display: { xs: "inline-flex", md: "none"} ,
          position: 'absolute',
           right: "10px", 
@@ -530,22 +520,21 @@ const Navbar = () => {
          >
                   <MenuIcon fontSize='large' />
           </Button> */}
-              <Box
-                sx={{
-                  display: { xs: "inline-flex", md: "none" },
-                  position: "absolute",
-                  right: "10px",
-                  color: "#fa541c",
-                }}
-              >
-                <DrawerComponent />
-              </Box>
+            <Box
+              sx={{
+                display: { xs: "inline-flex", dnavbar: "none" },
+                position: "absolute",
+                right: "10px",
+                color: "#fa541c",
+              }}
+            >
+              <DrawerComponent />
+            </Box>
 
-              {/* <MenuIcon sx={{ display: { xs: "inline-flex", md: "none" }, position: 'absolute', right: "10px", fontSize: "50px", color: "#fa541c" }}  component={<Drawer/>}/> */}
-            </Toolbar>
-          </AppBar>
-        )}
-      </ThemeProvider>
+            {/* <MenuIcon sx={{ display: { xs: "inline-flex", md: "none" }, position: 'absolute', right: "10px", fontSize: "50px", color: "#fa541c" }}  component={<Drawer/>}/> */}
+          </Toolbar>
+        </AppBar>
+      )}
     </>
   );
 };
