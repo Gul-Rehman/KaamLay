@@ -32,6 +32,8 @@ import {
   ServiceProviderPostedServices,
   BrowseServices,
   BookedServices,
+  ClientProfile,
+  ServiceProviderProfile,
 } from "./Containers";
 
 import LoginContext from "./Contexts/LoginContext";
@@ -79,6 +81,12 @@ function App() {
               exact
               path="/clientdashboard"
               element={<ClientDashBoard />}
+            />
+            <Route exact path="/clientprofile" element={<ClientProfile />} />
+            <Route
+              exact
+              path="/serviceproviderprofile"
+              element={<ServiceProviderProfile />}
             />
             <Route
               exact

@@ -10,3 +10,5 @@ export { default as ServiceProviderPostedServices } from "./ServiceProvider/Post
 export { default as BrowseServices } from "./Client/BrowseServices";
 export { default as BookedServices } from "./Client/BookedServices";
 export { default as CompletedServices } from "./Client/CompletedService";
+export { default as ClientProfile } from "./Client/Profile";
+export { default as ServiceProviderProfile } from "./ServiceProvider/Profile";

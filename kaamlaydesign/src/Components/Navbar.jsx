@@ -25,6 +25,7 @@ import { IconButton } from "@mui/material";
 
 import { createTheme, ThemeProvider } from "@mui/material/";
 import axios from "axios";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -268,11 +269,21 @@ const Navbar = () => {
                       open={Boolean(anchorElUser)}
                       onClose={handleCloseUserMenu}
                     >
-                      {settings.map((setting) => (
-                        <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                          <Typography textAlign="center">{setting}</Typography>
-                        </MenuItem>
-                      ))}
+                      <MenuItem
+                        onClick={() => {
+                          navigate("/clientprofile");
+                        }}
+                      >
+                        <Typography textAlign="center">Profile</Typography>
+                      </MenuItem>
+                      <MenuItem onClick={logout}>
+                        <Typography textAlign="center">Logout</Typography>
+                        <LogoutIcon
+                          sx={{
+                            ml: 2,
+                          }}
+                        />
+                      </MenuItem>
                     </Menu>
                   </Box>
                 </Stack>
