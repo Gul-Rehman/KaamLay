@@ -4,10 +4,12 @@ const User = require("../../../Models/User");
 const UserStatus = require("../../../Models/UserStatus");
 const auth = require("../../../Middlewares/auth");
 const Service = require("../../../Models/Service");
+const multer = require("multer");
+const upload = multer({ dest: "uploads/" });
 
 const router = express.Router();
 
-router.post("/", auth, async (req, res) => {
+router.post("/", auth, upload.single("image"), async (req, res) => {
   const {
     servicetitle,
     servicedescription,
@@ -15,14 +17,19 @@ router.post("/", auth, async (req, res) => {
     contactnumber,
     price,
   } = req.body;
+  const imageUrl = req.file.path;
   const serviceDetails = {
     servicetitle,
     servicecategory,
     servicedescription,
     contactnumber,
     price,
+    imageUrl,
   };
+
   serviceDetails.user = req.user.id;
+
+  console.log(req.body, req.file);
   try {
     const service = new Service(serviceDetails);
     await service.save();

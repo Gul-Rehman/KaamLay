@@ -23,6 +23,7 @@ import Snackbar from "@mui/material/Snackbar";
 import { styled } from "@mui/material/styles";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { Input } from "@mui/material";
 // function Copyright(props) {
 //   return (
 //     <Typography
@@ -75,6 +76,8 @@ export default function PostService() {
   const navigate = useNavigate();
   const theme = createTheme();
   const [open, setOpen] = useState(false);
+  const [image, setImage] = useState("");
+  // console.log(image, 12);
 
   const showSuccess = () => {
     setOpen(true);
@@ -114,16 +117,23 @@ export default function PostService() {
   const [servicePrice, setServicePrice] = useState("");
   const [contactnumber, setContactNumber] = useState("");
 
-  const data = {
-    servicetitle: serviceTitle,
-    servicecategory: serviceType,
-    servicedescription: serviceDescription,
-    contactnumber: contactnumber,
-    price: servicePrice,
-  };
+  // const data = {
+  //   servicetitle: serviceTitle,
+  //   servicecategory: serviceType,
+  //   servicedescription: serviceDescription,
+  //   contactnumber: contactnumber,
+  //   price: servicePrice,
+  // };
   const onsubmit = () => {
+    const formData = new FormData();
+    formData.append("servicetitle", serviceTitle);
+    formData.append("servicecategory", serviceType);
+    formData.append("servicedescription", serviceDescription);
+    formData.append("contactnumber", contactnumber);
+    formData.append("price", servicePrice);
+    formData.append("image", image);
     axios
-      .post("http://localhost:5000/api/service", data, {
+      .post("http://localhost:5000/api/service", formData, {
         headers: {
           authtoken: localStorage.getItem("token"),
         },
@@ -143,6 +153,7 @@ export default function PostService() {
     //   navigate("/");
     // }, 2000);
   };
+
   return (
     <ThemeProvider theme={theme}>
       <Container
@@ -209,7 +220,6 @@ export default function PostService() {
                 setContactNumber(event.target.value);
               }}
             />
-
             <CustomizedBox sx={{}}>
               <FormControl fullWidth>
                 <InputLabel id="demo-simple-select-label">
@@ -233,7 +243,6 @@ export default function PostService() {
                 </Select>
               </FormControl>
             </CustomizedBox>
-
             <TextField
               margin="normal"
               fullWidth
@@ -246,13 +255,17 @@ export default function PostService() {
                 setServicePrice(event.target.value);
               }}
             />
-
+            <Input
+              type="file"
+              onChange={(e) => {
+                setImage(e.target.files[0]);
+              }}
+            />
             {/* 
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
             /> */}
-
             <Button
               //   type="submit"
               fullWidth

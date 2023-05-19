@@ -125,6 +125,8 @@ const PostedServices = () => {
                 </Typography>
               </Stack>
             </Stack>
+            <img src={`http://localhost:5000/${item.imageUrl}`} />
+            {console.log(`http://localhost:5000/${item.imageUrl}`)}
           </Box>
         );
       })}
