@@ -26,6 +26,7 @@ import { IconButton } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/";
 import axios from "axios";
 import LogoutIcon from "@mui/icons-material/Logout";
+import ColorConfigs from "../Configs/ColorConfigs";
 
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -118,6 +119,7 @@ const Navbar = () => {
             position="sticky"
             sx={{
               backgroundColor: "whitesmoke",
+              width: "100%",
             }}
           >
             <Toolbar
@@ -248,8 +250,15 @@ const Navbar = () => {
                     <Tooltip title="Open settings">
                       <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                         <Avatar
-                          alt="Remy Sharp"
-                          src="/static/images/avatar/2.jpg"
+                          sx={{
+                            width: 50,
+                            height: 50,
+                            border: `2px solid ${ColorConfigs.primary}`,
+                          }}
+                          alt="Profile Picture"
+                          src={`http://localhost:5000/${localStorage.getItem(
+                            "imageUrl"
+                          )}`}
                         />
                       </IconButton>
                     </Tooltip>
@@ -407,7 +416,7 @@ const Navbar = () => {
                   >
                     Contact Us
                   </CustomizedLink>
-                  <Box>
+                  {/* <Box>
                     <Button
                       variant="contained"
                       style={{ margin: "0px auto", display: "block" }}
@@ -432,6 +441,55 @@ const Navbar = () => {
                     >
                       Logout
                     </Button>
+                  </Box> */}
+                  <Box sx={{ flexGrow: 0 }}>
+                    <Tooltip title="Open settings">
+                      <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                        <Avatar
+                          sx={{
+                            width: 50,
+                            height: 50,
+                            border: `2px solid ${ColorConfigs.primary}`,
+                          }}
+                          alt="Profile Picture"
+                          src={`http://localhost:5000/${localStorage.getItem(
+                            "imageUrl"
+                          )}`}
+                        />
+                      </IconButton>
+                    </Tooltip>
+                    <Menu
+                      sx={{ mt: "45px" }}
+                      id="menu-appbar"
+                      anchorEl={anchorElUser}
+                      anchorOrigin={{
+                        vertical: "top",
+                        horizontal: "right",
+                      }}
+                      keepMounted
+                      transformOrigin={{
+                        vertical: "top",
+                        horizontal: "right",
+                      }}
+                      open={Boolean(anchorElUser)}
+                      onClose={handleCloseUserMenu}
+                    >
+                      <MenuItem
+                        onClick={() => {
+                          navigate("/clientprofile");
+                        }}
+                      >
+                        <Typography textAlign="center">Profile</Typography>
+                      </MenuItem>
+                      <MenuItem onClick={logout}>
+                        <Typography textAlign="center">Logout</Typography>
+                        <LogoutIcon
+                          sx={{
+                            ml: 2,
+                          }}
+                        />
+                      </MenuItem>
+                    </Menu>
                   </Box>
                 </Stack>
               </Fade>
