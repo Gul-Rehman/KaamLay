@@ -1,10 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Box, Button, Paper, Stack, Typography } from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
+import { Box, Button, Fab, Paper, Stack, Typography } from "@mui/material";
+
 import ColorConfigs from "../../Configs/ColorConfigs";
 import axios from "axios";
-
+import { TextField } from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
+import SaveIcon from "@mui/icons-material/Save";
 import Grid from "@mui/material/Grid";
+import UserRole from "../../Components/UserRole";
 const Profile = () => {
   const [imageUrl, setImageUrl] = useState("");
   useEffect(() => {
@@ -55,144 +58,234 @@ const Profile = () => {
   const [image, setImage] = useState("");
   const formData = new FormData();
   // formData.append("image", image);
+  const [notEditable, setNotEditable] = useState(true);
 
   return (
     <>
-      <Stack
-        // justifyContent="center"
-        // alignItems="center"
-        // alignContent="center"
+      <Box
         sx={{
-          // position: "absolute",
-          // top: "50%",
-          // left: "50%",
-          // translate: "-50px -50px",
-          alignItems: "center",
+          width: "100%",
+          pb: 7,
+          pt: 4,
+          // backgroundColor: `${ColorConfigs.lightorange}`,
         }}
       >
-        <Box sx={{ width: "100%", pb: 7, pt: 4 }}>
-          {/* <Button
-          onClick={async () => {
-            await axios
-              .post("http://localhost:5000/api/profile", formData, {
-                headers: {
-                  authtoken: localStorage.getItem("token"),
-                },
-              })
-              .then((response) => {
-                console.log(response);
-              })
-              .catch((err) => {
-                console.error(err.message);
-              });
-          }}
-        >
-          {" "}
-          Upload
-        </Button>
-        Profile */}
-
-          <Grid container spacing={2}>
-            <Grid item xs={4} tablet={5} laptops={4}>
-              {/* <Item>xs=8</Item> */}
-              <Box
-                sx={{
-                  backgroundColor: "gray",
-                  width: "15rem",
-                  height: "15rem",
-                  borderRadius: "10px 10px 10px 10px ",
-                  ml: 3,
-
-                  position: "relative",
-                }}
-              >
-                {/* <Box
-            sx={{
-              position: "absolute",
-              bottom: 0,
-
-              backgroundColor: "yellow",
-              display: "flex",
-              width: "100%",
-            }}
-          >
-            <EditIcon
+        <Grid container spacing={0} paddingLeft={6} paddingRight={6}>
+          <Grid item xs={4} tablet={5} laptops={3}>
+            <Box
               sx={{
                 backgroundColor: "gray",
-                alignContent: "center",
-                alignItems: "center",
-                alignSelf: "center",
-              }}
-            />
-          </Box> */}
+                width: "15rem",
+                height: "15rem",
+                borderRadius: "10px 10px 10px 10px ",
 
-                <Stack
+                position: "relative",
+              }}
+            >
+              <Stack
+                sx={{
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <img
+                  style={{
+                    width: "100%",
+                    height: "15rem",
+
+                    borderRadius: "10px 10px 10px 10px",
+                    objectFit: "fit",
+                  }}
+                  src={`http://localhost:5000/${imageUrl}`}
+                />
+
+                <EditIcon
                   sx={{
-                    alignItems: "center",
+                    position: "absolute",
+                    bottom: 0,
+                    alignSelf: "center",
+                    width: "100%",
+                    backgroundColor: `${ColorConfigs.lightorange}`,
+                    borderRadius: "0 0 10px 10px",
+                    cursor: "pointer",
+                  }}
+                  onClick={handleClick}
+                />
+                <input
+                  style={{ display: "none" }}
+                  ref={inputRef}
+                  type="file"
+                  onChange={async (e) => {
+                    formData.append("image", e.target.files[0]);
+                    await axios
+                      .post("http://localhost:5000/api/profile", formData, {
+                        headers: {
+                          authtoken: localStorage.getItem("token"),
+                        },
+                      })
+                      .then((response) => {
+                        console.log(response);
+                      })
+                      .catch((err) => {
+                        console.error(err.message);
+                      });
+                  }}
+                />
+              </Stack>
+            </Box>
+          </Grid>
+          <Grid item xs={8} tablet={7} laptops={8} position="relative">
+            <Box
+              component={Paper}
+              width="100%"
+              padding={4}
+              sx={
+                {
+                  // backgroundColor: `#fb8e4f`,
+                }
+              }
+              borderRadius={5}
+              elevation={5}
+            >
+              <Stack>
+                <Typography>Name </Typography>{" "}
+                <TextField
+                  fullWidth
+                  variant="outlined"
+                  id="Name"
+                  sx={{
+                    width: 700,
+
+                    "& .MuiInputBase-root": {
+                      height: 50,
+                    },
+                  }}
+                  inputProps={{ readOnly: notEditable }}
+                />
+              </Stack>
+              <Stack>
+                <Typography>User ID </Typography>{" "}
+                <Box
+                  sx={{
+                    width: 500,
+                    maxWidth: "100%",
                   }}
                 >
-                  <img
-                    style={{
-                      width: "100%",
-                      height: "15rem",
-
-                      borderRadius: "10px 10px 10px 10px",
-                      objectFit: "fit",
-                    }}
-                    src={`http://localhost:5000/${imageUrl}`}
-                  />
-
-                  <EditIcon
+                  <Box
                     sx={{
-                      position: "absolute",
-                      bottom: 0,
-                      alignSelf: "center",
-                      width: "100%",
-                      backgroundColor: `${ColorConfigs.lightorange}`,
-                      borderRadius: "0 0 10px 10px",
-                      cursor: "pointer",
+                      width: 500,
+                      maxWidth: "100%",
                     }}
-                    onClick={handleClick}
-                  />
-                  <input
-                    style={{ display: "none" }}
-                    ref={inputRef}
-                    type="file"
-                    //   onChange={handleFileChange}
-                    onChange={async (e) => {
-                      // setImage(e.target.files[0]);
-                      formData.append("image", e.target.files[0]);
-                      await axios
-                        .post("http://localhost:5000/api/profile", formData, {
-                          headers: {
-                            authtoken: localStorage.getItem("token"),
-                          },
-                        })
-                        .then((response) => {
-                          console.log(response);
-                        })
-                        .catch((err) => {
-                          console.error(err.message);
-                        });
-                    }}
-                  />
-                </Stack>
-              </Box>
-            </Grid>
-            <Grid item xs={8} tablet={7} laptops={8}>
-              {/* <Item>xs=4</Item> */}
-              <Box
-                component={Paper}
-                width="100%"
-                sx={{ ml: { tablet: -5, laptops: -7 } }}
+                  >
+                    <Typography
+                      sx={{
+                        fontSize: 25,
+                      }}
+                    >
+                      123456789
+                    </Typography>
+                  </Box>
+                </Box>
+              </Stack>
+              <Stack>
+                <Typography>Contact Number </Typography>{" "}
+                <TextField
+                  fullWidth
+                  id="contactnumber"
+                  sx={{
+                    width: 700,
+
+                    "& .MuiInputBase-root": {
+                      height: 50,
+                    },
+                  }}
+                  inputProps={{ readOnly: notEditable }}
+                />
+              </Stack>
+              <Stack>
+                <Typography>CNIC </Typography>{" "}
+                <Typography
+                  sx={{
+                    fontSize: 25,
+                  }}
+                >
+                  123456789
+                </Typography>
+              </Stack>
+              <Stack>
+                <Typography>Location </Typography>{" "}
+                <TextField
+                  sx={{
+                    width: 700,
+
+                    "& .MuiInputBase-root": {
+                      height: 50,
+                    },
+                  }}
+                  inputProps={{ readOnly: notEditable }}
+                />
+              </Stack>
+              <Fab
+                title="Edit"
+                variant="extended"
+                color="primary"
+                aria-label="edit"
+                sx={{ position: "absolute", right: 0, top: 25 }}
+                onClick={() => {
+                  if (notEditable) {
+                    setNotEditable(false);
+                  } else {
+                    setNotEditable(true);
+                  }
+                }}
               >
-                Hello
-              </Box>
-            </Grid>
+                <EditIcon sx={{ mr: 1 }} />
+                Edit
+              </Fab>
+
+              {!notEditable && (
+                <Fab
+                  title="Edit"
+                  variant="extended"
+                  color="primary"
+                  aria-label="edit"
+                  sx={{ position: "absolute", right: 0, top: 25 }}
+                  onClick={() => {
+                    setNotEditable(true);
+                  }}
+                >
+                  <SaveIcon sx={{ mr: 1 }} />
+                  Save
+                </Fab>
+              )}
+            </Box>
           </Grid>
-          <Typography> Hello</Typography>
-        </Box>
-      </Stack>
+          <Grid item laptops={3}></Grid>
+          <Grid
+            item
+            xs={8}
+            tablet={7}
+            laptops={8}
+            position="relative"
+            marginTop={3}
+          >
+            <Box
+              component={Paper}
+              width="100%"
+              padding={4}
+              sx={
+                {
+                  // backgroundColor: `#fb8e4f`,
+                }
+              }
+              borderRadius={5}
+              elevation={5}
+            >
+              <UserRole />
+            </Box>
+          </Grid>
+        </Grid>
+      </Box>
     </>
   );
 };

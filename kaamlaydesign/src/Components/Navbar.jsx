@@ -11,7 +11,7 @@ import { Button } from "@mui/material";
 import DrawerComponent from "./DrawerComponent";
 
 import "../App.css";
-import "./Navbar.css";
+
 import "@fontsource/roboto/700.css";
 
 import { NavLink, useNavigate } from "react-router-dom";
@@ -220,7 +220,7 @@ const Navbar = () => {
                   >
                     Contact Us
                   </CustomizedLink>
-                  <Box>
+                  {/* <Box>
                     <Button
                       variant="contained"
                       style={{ margin: "0px auto", display: "block" }}
@@ -245,7 +245,7 @@ const Navbar = () => {
                     >
                       Logout
                     </Button>
-                  </Box>
+                  </Box> */}
                   <Box sx={{ flexGrow: 0 }}>
                     <Tooltip title="Open settings">
                       <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -425,14 +425,12 @@ const Navbar = () => {
                         fontSize: "15px",
                         fontWeight: "1px",
                         color: "black",
-
                         textAlign: "center",
                         textDecoration: "none",
                         width: "150px",
                         postition: "absolute",
                         right: "1px",
                         backgroundColor: "#fa541c",
-
                         "&:hover": {
                           backgroundColor: "black",
                           color: "white",

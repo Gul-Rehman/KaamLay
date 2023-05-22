@@ -34,6 +34,7 @@ import {
   BookedServices,
   ClientProfile,
   ServiceProviderProfile,
+  AdminDashboard,
 } from "./Containers";
 
 import LoginContext from "./Contexts/LoginContext";
@@ -170,6 +171,7 @@ function App() {
           <Route exact path="/profile" element={<Profile />} />
           <Route exact path="/login" element={<Login />} />
           <Route exact path="/signup" element={<SignUp />} />
+          <Route exact path="/admindashboard" element={<AdminDashboard />} />
         </Routes>
         <Footer />
       </BrowserRouter>

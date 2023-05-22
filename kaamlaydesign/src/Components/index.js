@@ -18,3 +18,4 @@ export { default as CarpenterServices } from "./ServiceCategories/CarpenterServi
 export { default as CarWashServices } from "./ServiceCategories/CarWashServices";
 export { default as SofaCleaningServices } from "./ServiceCategories/SofaCleaningServices";
 export { default as BookService } from "./Client/BookService";
+export { default as TotalUsers } from "./Admin/TotalUsers";

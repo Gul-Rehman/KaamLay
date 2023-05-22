@@ -49,7 +49,7 @@ const About = () => {
             backgroundColor: "#fabb8b",
           }}
         >
-          <Typography>{a.username}</Typography>
+          {/* <Typography>{a.username}</Typography> */}
           {/* <Button
             onClick={() => {
               a.setUserName("Just UserName");

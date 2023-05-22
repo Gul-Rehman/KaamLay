@@ -7,6 +7,7 @@ import Switch from "@mui/material/Switch";
 import { Stack } from "@mui/material";
 import ColorConfigs from "../../Configs/ColorConfigs";
 import { Button } from "@mui/material";
+import UserRole from "../../Components/UserRole";
 
 const Dashboard = () => {
   // const [auth,setauth]=useState('');
@@ -137,6 +138,7 @@ const Dashboard = () => {
         <Button variant="contained">Hello World</Button>
         <Button variant="contained">Hello World</Button>
       </Box>
+      <UserRole />
     </>
   );
 };
