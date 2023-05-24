@@ -28,6 +28,7 @@ const UserRole = () => {
           localStorage.setItem("userrole", "serviceprovider");
           //   window.location.reload(true);
           //   navigate("/serviceproviderdashboard");
+          navigate("/clientprofile");
         })
         .catch((err) => {
           console.error(err);
@@ -47,6 +48,7 @@ const UserRole = () => {
         .then((response) => {
           console.log(response);
           localStorage.setItem("userrole", "client");
+          navigate("/clientprofile");
           //   navigate("/clientdashboard");
           //   window.location.reload(true);
         })
@@ -64,21 +66,29 @@ const UserRole = () => {
           }
         }
       >
-        <Stack
-          direction="row"
-          sx={{
-            alignItems: "center",
-          }}
-        >
-          <Typography>Switch Role</Typography>
-          <Switch
-            checked={checked}
-            onChange={handleChange}
-            inputProps={{ "aria-label": "controlled" }}
-          />
-          <Typography>
-            Currently : {localStorage.getItem("userrole")}
-          </Typography>
+        <Stack direction="row" justifyContent="space-evenly">
+          <Stack
+            direction="row"
+            sx={{
+              alignItems: "center",
+            }}
+          >
+            <Typography>Switch Role</Typography>
+            <Switch
+              checked={checked}
+              onChange={handleChange}
+              inputProps={{ "aria-label": "controlled" }}
+            />
+          </Stack>
+          <Stack direction="row" alignItems="center">
+            <Typography>Currently :</Typography>
+            {localStorage.getItem("userrole") == "client" && (
+              <Typography> Client</Typography>
+            )}
+            {localStorage.getItem("userrole") == "serviceprovider" && (
+              <Typography> Service Provider</Typography>
+            )}
+          </Stack>
         </Stack>
       </Box>
     </>

@@ -157,7 +157,7 @@ const Profile = () => {
                     width: 700,
 
                     "& .MuiInputBase-root": {
-                      height: 50,
+                      height: 40,
                     },
                   }}
                   inputProps={{ readOnly: notEditable }}
@@ -196,7 +196,7 @@ const Profile = () => {
                     width: 700,
 
                     "& .MuiInputBase-root": {
-                      height: 50,
+                      height: 40,
                     },
                   }}
                   inputProps={{ readOnly: notEditable }}
@@ -219,7 +219,7 @@ const Profile = () => {
                     width: 700,
 
                     "& .MuiInputBase-root": {
-                      height: 50,
+                      height: 40,
                     },
                   }}
                   inputProps={{ readOnly: notEditable }}

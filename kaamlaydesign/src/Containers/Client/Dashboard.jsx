@@ -1,5 +1,5 @@
 import React, { useState, useEffect, createContext } from "react";
-import { Typography, Box } from "@mui/material";
+import { Typography, Box, Grid, Paper } from "@mui/material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -8,6 +8,9 @@ import { Stack } from "@mui/material";
 import ColorConfigs from "../../Configs/ColorConfigs";
 import { Button } from "@mui/material";
 import UserRole from "../../Components/UserRole";
+import ServicePending from "../../Assets/ServicesStatusImages/servicepending.svg";
+import ServiceCompleted from "../../Assets/ServicesStatusImages/servicecompleted.svg";
+import GeoLocation from "../../Components/GeoLocation";
 
 const Dashboard = () => {
   // const [auth,setauth]=useState('');
@@ -86,7 +89,6 @@ const Dashboard = () => {
         },
       })
       .then((response) => {
-        // console.log(response.data.name);
         setName(response.data.name);
       })
       .catch((err) => {
@@ -118,6 +120,78 @@ const Dashboard = () => {
           </Typography>
         </Stack>
       </Box>
+      <Grid container spacing={3} padding={4}>
+        <Grid item laptops={6} position="relative">
+          <Box
+            component={Paper}
+            width="100%"
+            height={400}
+            sx={{
+              position: "relative",
+              backgroundColor: "#fba56c",
+            }}
+            borderRadius={5}
+            elevation={5}
+          >
+            <Box padding={3}>
+              <Stack display="inline-block" width={350}>
+                <Typography fontSize={35}> Pending Services</Typography>
+                <Typography fontSize={15} fontWeight="500">
+                  {" "}
+                  Don't keep your clients waiting any longer. Complete the
+                  pending services and earn more money
+                </Typography>
+              </Stack>
+
+              <Box
+                component="img"
+                sx={{
+                  height: 200,
+                  width: 300,
+
+                  float: "right",
+                }}
+                alt="Pending Services Icon"
+                src={ServicePending}
+              />
+            </Box>
+          </Box>
+        </Grid>
+        <Grid item laptops={6} position="relative">
+          <Box
+            component={Paper}
+            width="100%"
+            height={400}
+            sx={{
+              position: "relative",
+              backgroundColor: "#fba56c",
+            }}
+            borderRadius={5}
+            elevation={5}
+          >
+            <Box padding={3}>
+              <Stack display="inline-block" width={350}>
+                <Typography fontSize={35}> Completed Services </Typography>
+                <Typography fontSize={15} fontWeight="500">
+                  You have completed the services, Great Work
+                </Typography>
+              </Stack>
+              <Box
+                component="img"
+                sx={{
+                  height: 200,
+                  width: 300,
+
+                  float: "right",
+                }}
+                alt="Pending Services Icon"
+                src={ServiceCompleted}
+              />
+            </Box>
+          </Box>
+        </Grid>
+      </Grid>
+      <Stack></Stack>
       <Box
         sx={{
           width: "100%",
@@ -137,6 +211,7 @@ const Dashboard = () => {
         </Typography>
         <Button variant="contained">Hello World</Button>
         <Button variant="contained">Hello World</Button>
+        <GeoLocation />
       </Box>
       <UserRole />
     </>
