@@ -7,10 +7,12 @@ import Switch from "@mui/material/Switch";
 import { Stack } from "@mui/material";
 import ColorConfigs from "../../Configs/ColorConfigs";
 import { Button } from "@mui/material";
-import UserRole from "../../Components/UserRole";
+
 import ServicePending from "../../Assets/ServicesStatusImages/servicepending.svg";
 import ServiceCompleted from "../../Assets/ServicesStatusImages/servicecompleted.svg";
 import GeoLocation from "../../Components/GeoLocation";
+import Map from "../../Components/MyMap";
+import MyMap from "../../Components/MyMap";
 
 const Dashboard = () => {
   // const [auth,setauth]=useState('');
@@ -211,9 +213,13 @@ const Dashboard = () => {
         </Typography>
         <Button variant="contained">Hello World</Button>
         <Button variant="contained">Hello World</Button>
-        <GeoLocation />
       </Box>
-      <UserRole />
+      <GeoLocation />
+      {/* <UserRole /> */}
+      {/* <h1>my map</h1> */}
+      {/* <Box width="100%" height={500}>
+        <MyMap />
+      </Box> */}
     </>
   );
 };
