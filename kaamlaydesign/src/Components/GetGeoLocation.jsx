@@ -6,13 +6,13 @@ const GetGeoLocation = ({ latitude, longitude }) => {
   useEffect(() => {
     const initMap = () => {
       const map = new window.google.maps.Map(document.getElementById("map"), {
-        zoom: 8,
+        zoom: 20,
         center: { lat: latitude, lng: longitude },
       });
       const geocoder = new window.google.maps.Geocoder();
       const infowindow = new window.google.maps.InfoWindow();
 
-      const marker = new window.google.maps.Marker({
+      let marker = new window.google.maps.Marker({
         position: { lat: latitude, lng: longitude },
         map: map,
         draggable: true, // Make the marker draggable
@@ -29,11 +29,11 @@ const GetGeoLocation = ({ latitude, longitude }) => {
       });
 
       document.getElementById("submit").addEventListener("click", () => {
-        geocodeLatLng(geocoder, map, infowindow);
+        geocodeLatLng(geocoder, map, infowindow, marker);
       });
     };
 
-    const geocodeLatLng = (geocoder, map, infowindow) => {
+    const geocodeLatLng = (geocoder, map, infowindow, marker) => {
       const input = document.getElementById("latlng").value;
       const latlngStr = input.split(",", 2);
       const latlng = {
@@ -45,13 +45,9 @@ const GetGeoLocation = ({ latitude, longitude }) => {
         .geocode({ location: latlng })
         .then((response) => {
           if (response.results[0]) {
-            map.setZoom(11);
+            map.setZoom(20);
 
-            const marker = new window.google.maps.Marker({
-              position: latlng,
-              map: map,
-            });
-
+            marker.setPosition(latlng); // Set marker position
             infowindow.setContent(response.results[0].formatted_address);
             infowindow.open(map, marker);
           } else {
@@ -81,7 +77,7 @@ const GetGeoLocation = ({ latitude, longitude }) => {
       </div>
       <div id="map" style={{ height: "100%" }}></div>
       <h1>{latitude2}</h1>
-      <h1 style={{ marginBottom: 10 }}>{longitude2}</h1>
+      <h1>{longitude2}</h1>
     </>
   );
 };

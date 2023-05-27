@@ -6,11 +6,12 @@ import { useJsApiLoader, GoogleMap, Marker } from "@react-google-maps/api";
 import MyMap from "./MyMap";
 import GetGeoLocation from "./GetGeoLocation";
 
-const GeoLocation = () => {
+const GeoLocation = ({ setLatitude2, setLongitude2, setPinLocation }) => {
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
   const [error, setError] = useState(null);
   const google = window.google;
+  const [address, setAddress] = useState("");
 
   const getLocation = () => {
     if (navigator.geolocation) {
@@ -23,6 +24,14 @@ const GeoLocation = () => {
   const handleSuccess = (position) => {
     setLatitude(position.coords.latitude);
     setLongitude(position.coords.longitude);
+    setPinLocation({
+      coordinates: {
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude,
+      },
+      address: address,
+    });
+    setLongitude2(position.coords.longitude);
   };
 
   const handleError = (error) => {
@@ -103,8 +112,12 @@ const GeoLocation = () => {
         <MyMap />
       </Box> */}
       {longitude && (
-        <Box width="100%" height={500}>
-          <GetGeoLocation latitude={latitude} longitude={longitude} />
+        <Box width="100%" height={500} marginBottom={20}>
+          <GetGeoLocation
+            latitude={latitude}
+            longitude={longitude}
+            setAddress={setAddress}
+          />
         </Box>
       )}
     </>

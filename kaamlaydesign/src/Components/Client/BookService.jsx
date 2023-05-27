@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
+import { useTheme } from "@mui/material/styles";
 
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -23,6 +24,15 @@ import Snackbar from "@mui/material/Snackbar";
 import { styled } from "@mui/material/styles";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import GetGeoLocation from "../GetGeoLocation";
+import GeoLocation from "../GeoLocation";
+import ChatGPTMap from "../ChatGPTMap";
 // function Copyright(props) {
 //   return (
 //     <Typography
@@ -144,8 +154,28 @@ export default function BookService() {
     //   navigate("/");
     // }, 2000);
   };
+
+  const [openDialog, setOpenDialog] = useState(false);
+
+  const handleClickOpenDialog = () => {
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
+  const [latitude, setLatitude] = useState("");
+  const [longitude, setLongitude] = useState("");
+  const [pinLocation, setPinLocation] = useState({
+    coordinates: {
+      latitude: "",
+      longitude: "",
+    },
+    address: "",
+  });
+  const API_KEY = "AIzaSyCR4YVEYed8oq1-QWV5hGhV1kbAAwzqb9Y";
   return (
-    <ThemeProvider theme={theme}>
+    <>
       <Container
         component="main"
         maxWidth="xs"
@@ -199,6 +229,43 @@ export default function BookService() {
                 setAddress(event.target.value);
               }}
             />
+            <Button variant="contained" onClick={handleClickOpenDialog}>
+              Add Pin Location
+            </Button>
+
+            <Dialog
+              open={openDialog}
+              onClose={handleCloseDialog}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+              fullWidth
+            >
+              {/* <GeoLocation
+                setLatitude2={setLatitude}
+                setLongitude2={setLongitude}
+                setPinLocation={setPinLocation}
+              /> */}
+              {/* <ChatGPTMap /> */}
+              {/* <DialogTitle id="alert-dialog-title">
+                {"Use Google's location service?"}
+              </DialogTitle>
+              <DialogContent>
+                {/* <DialogContentText id="alert-dialog-description">
+                  Let Google help apps determine location. This means sending
+                  anonymous location data to Google, even when no apps are
+                  running.
+                </DialogContentText> */}
+              {/* </DialogContent> */}
+              <h1>{pinLocation.coordinates.latitude}</h1>
+              <h1>{pinLocation.coordinates.longitude}</h1>
+              <h1>{pinLocation.address}</h1>
+              <DialogActions>
+                <Button onClick={handleCloseDialog}>Disagree</Button>
+                <Button onClick={handleCloseDialog} autoFocus>
+                  Agree
+                </Button>
+              </DialogActions>
+            </Dialog>
 
             <TextField
               margin="normal"
@@ -230,8 +297,15 @@ export default function BookService() {
               Book Service
             </Button>
           </Box>
+          <Box
+            sx={{
+              width: "100%",
+              height: 600,
+            }}
+          >
+            <ChatGPTMap apiKey={API_KEY} />
+          </Box>
         </Box>
-        {/* <Copyright sx={{ mt: 8, mb: 4 }} /> */}
       </Container>
       <Snackbar
         open={open}
@@ -250,6 +324,6 @@ export default function BookService() {
           Service Booked Successfully!
         </Alert>
       </Snackbar>
-    </ThemeProvider>
+    </>
   );
 }
