@@ -1,6 +1,7 @@
+import { Button, Stack } from "@mui/material";
 import React, { useState, useEffect } from "react";
 
-const ChatGPTMap = () => {
+const ChatGPTMap = ({ setPinLocation }) => {
   const [map, setMap] = useState(null);
   const [infoWindow, setInfoWindow] = useState(null);
   const [marker, setMarker] = useState(null);
@@ -50,12 +51,17 @@ const ChatGPTMap = () => {
           infoWindow.open(map);
           map.setCenter(pos);
           setUserLocation(pos);
+          map.setZoom(18);
 
           // Reverse Geocoding to get address
           const geocoder = new window.google.maps.Geocoder();
           geocoder.geocode({ location: pos }, (results, status) => {
             if (status === "OK" && results[0]) {
               setUserAddress(results[0].formatted_address);
+              setPinLocation({
+                coordinates: { latitude: pos.lat, longitude: pos.lng },
+                address: results[0].formatted_address,
+              });
             } else {
               setUserAddress("Address not found");
             }
@@ -86,6 +92,10 @@ const ChatGPTMap = () => {
               geocoder.geocode({ location: newPos }, (results, status) => {
                 if (status === "OK" && results[0]) {
                   setUserAddress(results[0].formatted_address);
+                  setPinLocation({
+                    coordinates: { latitude: pos.lat, longitude: pos.lng },
+                    address: results[0].formatted_address,
+                  });
                 } else {
                   setUserAddress("Address not found");
                 }
@@ -116,23 +126,33 @@ const ChatGPTMap = () => {
 
   return (
     <div>
-      <button onClick={handleLocationButtonClick} disabled={!map}>
-        Get Location
-      </button>
-      {userLocation && (
-        <div>
-          <h3>Coordinates:</h3>
-          <p>Latitude: {userLocation.lat}</p>
-          <p>Longitude: {userLocation.lng}</p>
-        </div>
-      )}
+      <Stack sx={{ alignItems: "center" }}>
+        <Button
+          variant="contained"
+          onClick={handleLocationButtonClick}
+          disabled={!map}
+          sx={{}}
+        >
+          Get Location
+        </Button>
+      </Stack>
+      {/* {userLocation && (
+        // <div>
+        //   <h3>Coordinates:</h3>
+        //   <p>Latitude: {userLocation.lat}</p>
+        //   <p>Longitude: {userLocation.lng}</p>
+        // </div>
+      )} */}
       {userAddress && (
         <div>
           <h3>Address:</h3>
           <p>{userAddress}</p>
         </div>
       )}
-      <div id="map" style={{ height: "400px", marginTop: "20px" }}></div>
+      <div
+        id="map"
+        style={{ width: "100%", height: "400px", marginTop: "" }}
+      ></div>
     </div>
   );
 };

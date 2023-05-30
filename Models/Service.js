@@ -9,6 +9,10 @@ const serviceSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "userstatus",
   },
+  status: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "profile",
+  },
   servicecategory: {
     type: String,
     required: true,

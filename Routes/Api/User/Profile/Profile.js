@@ -25,8 +25,18 @@ router.post("/", auth, upload.single("image"), async (req, res) => {
 
   console.log(req.body, req.file);
   try {
-    const profile = new Profile(serviceDetails);
-    await profile.save();
+    let profile = await Profile.findOne({ user: req.user.id });
+
+    if (profile) {
+      profile = await Profile.findOneAndUpdate(
+        { user: serviceDetails.user },
+        { $set: serviceDetails },
+        { new: true }
+      );
+    } else {
+      profile = new Profile(serviceDetails);
+      await profile.save();
+    }
     return res.status(200).json(profile);
   } catch (err) {
     console.error(err.message);

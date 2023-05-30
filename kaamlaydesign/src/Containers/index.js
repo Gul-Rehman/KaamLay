@@ -7,6 +7,7 @@ export { default as ClientBookedServices } from "./Client/BookedServices";
 export { default as ClientCompletedServices } from "./Client/CompletedService";
 export { default as ServiceProviderDashboard } from "./ServiceProvider/Dashboard";
 export { default as ServiceProviderPostedServices } from "./ServiceProvider/PostedServices";
+export { default as ServiceProviderPendingServices } from "./ServiceProvider/PendingServices";
 export { default as BrowseServices } from "./Client/BrowseServices";
 export { default as BookedServices } from "./Client/BookedServices";
 export { default as CompletedServices } from "./Client/CompletedService";

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Typography } from "@mui/material";
@@ -33,6 +33,7 @@ const PostedServices = () => {
     <Box
       sx={{
         mb: 10,
+        height: "auto",
       }}
     >
       {services.map((item) => {
@@ -45,6 +46,7 @@ const PostedServices = () => {
               padding: 3,
               border: `2px solid ${ColorConfigs.primary}`,
               borderRadius: 4,
+              position: "relative",
             }}
           >
             <Stack>
@@ -125,8 +127,29 @@ const PostedServices = () => {
                 </Typography>
               </Stack>
             </Stack>
-            <img src={`http://localhost:5000/${item.imageUrl}`} />
-            {console.log(`http://localhost:5000/${item.imageUrl}`)}
+            <Stack
+              sx={{
+                float: "right",
+              }}
+            >
+              <Stack></Stack>
+              <Button variant="contained">Delete Service</Button>
+              <Button variant="contained">Edit Service</Button>
+            </Stack>
+            <Box>
+              <img
+                style={{
+                  objectFit: "contain",
+                  width: 300,
+                  height: 200,
+                  border: "1px solid gray",
+                  borderRadius: 5,
+                  marginTop: 4,
+                }}
+                src={`http://localhost:5000/${item.imageUrl}`}
+              />
+              {console.log(`http://localhost:5000/${item.imageUrl}`)}
+            </Box>
           </Box>
         );
       })}

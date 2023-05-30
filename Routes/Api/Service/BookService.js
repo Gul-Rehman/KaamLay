@@ -4,20 +4,28 @@ const User = require("../../../Models/User");
 const UserStatus = require("../../../Models/UserStatus");
 const auth = require("../../../Middlewares/auth");
 const Service = require("../../../Models/Service");
-const BookService = require("../../../Models/BookService");
+const BookService = require("../../../Models/Services/BookService");
 
 const router = express.Router();
 
 router.post("/", auth, async (req, res) => {
-  const { servicecategory, contactnumber, name, address, serviceprovider } =
-    req.body;
+  const {
+    servicecategory,
+    contactnumber,
+    name,
+    address,
+    serviceprovider,
+    pinLocation,
+  } = req.body;
   const bookingDetails = {
     servicecategory,
     name,
     contactnumber,
     address,
     serviceprovider,
+    pinLocation,
   };
+  console.log(bookingDetails);
   bookingDetails.user = req.user.id;
   //   bookingDetails.serviceprovider=req.body
   try {
@@ -56,6 +64,22 @@ router.get("/:user_id", async (req, res) => {
       return res.status(500).json({ msg: "Service Not Found" });
     }
     res.status(400).send("Server Error");
+  }
+});
+
+router.delete("/:service_id", async (req, res) => {
+  try {
+    const serviceId = req.params.service_id;
+    const service = await BookService.findByIdAndDelete(serviceId);
+
+    if (!service) {
+      return res.status(404).json({ msg: "Service Not Found" });
+    }
+
+    return res.json({ msg: "Service Deleted" });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
   }
 });
 

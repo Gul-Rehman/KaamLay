@@ -14,7 +14,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import ColorConfigs from "../../Configs/ColorConfigs";
-import { FormControl } from "@mui/material";
+import { FormControl, Stack } from "@mui/material";
 import { Select } from "@mui/material";
 import { MenuItem } from "@mui/material";
 import { InputLabel } from "@mui/material";
@@ -33,6 +33,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import GetGeoLocation from "../GetGeoLocation";
 import GeoLocation from "../GeoLocation";
 import ChatGPTMap from "../ChatGPTMap";
+
 // function Copyright(props) {
 //   return (
 //     <Typography
@@ -82,6 +83,15 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 });
 
 export default function BookService() {
+  // const handleRefresh = () => {
+  //   window.location.reload(); // Reload the entire web app
+  // };
+  const [refreshKey, setRefreshKey] = useState(0);
+
+  const handleRefresh = () => {
+    setRefreshKey((prevKey) => prevKey + 1);
+  };
+
   const navigate = useNavigate();
   const theme = createTheme();
   const [open, setOpen] = useState(false);
@@ -124,6 +134,13 @@ export default function BookService() {
   const [address, setAddress] = useState("");
   const [contactnumber, setContactNumber] = useState("");
   const [serviceproviderId, setServiceProviderId] = useState("");
+  const [pinLocation, setPinLocation] = useState({
+    coordinates: {
+      latitude: "",
+      longitude: "",
+    },
+    address: "",
+  });
 
   const data = {
     name: name,
@@ -131,6 +148,7 @@ export default function BookService() {
     contactnumber: contactnumber,
     address: address,
     serviceprovider: localStorage.getItem("serviceproviderId"),
+    pinLocation,
   };
   const onsubmit = () => {
     axios
@@ -166,13 +184,7 @@ export default function BookService() {
   };
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
-  const [pinLocation, setPinLocation] = useState({
-    coordinates: {
-      latitude: "",
-      longitude: "",
-    },
-    address: "",
-  });
+
   const API_KEY = "AIzaSyCR4YVEYed8oq1-QWV5hGhV1kbAAwzqb9Y";
   return (
     <>
@@ -191,15 +203,11 @@ export default function BookService() {
             alignItems: "center",
           }}
         >
-          <Typography component="h1" variant="h5">
+          <Typography component="h1" variant="h4">
             Book Service
           </Typography>
-          <Box
-            component="form"
-            // onSubmit={handleSubmit}
-            noValidate
-            sx={{ mt: 1 }}
-          >
+
+          <Box component="form" noValidate sx={{ mt: 1 }}>
             <TextField
               margin="normal"
               fullWidth
@@ -229,13 +237,27 @@ export default function BookService() {
                 setAddress(event.target.value);
               }}
             />
-            <Button variant="contained" onClick={handleClickOpenDialog}>
-              Add Pin Location
-            </Button>
+
+            <Stack direction="row">
+              <Button variant="contained" onClick={handleClickOpenDialog}>
+                Add Pin Location
+              </Button>
+              <TextField
+                placeholder="Pin Location"
+                fullWidth
+                sx={{
+                  ml: 2,
+                }}
+                inputProps={{ readOnly: true }}
+                value={pinLocation.address}
+              />
+              {/* <h4>{pinLocation.coordinates.latitude},</h4>
+              <h4>{pinLocation.coordinates.longitude}</h4> */}
+            </Stack>
 
             <Dialog
               open={openDialog}
-              onClose={handleCloseDialog}
+              // onClose={handleCloseDialog}
               aria-labelledby="alert-dialog-title"
               aria-describedby="alert-dialog-description"
               fullWidth
@@ -245,7 +267,17 @@ export default function BookService() {
                 setLongitude2={setLongitude}
                 setPinLocation={setPinLocation}
               /> */}
+              {/* <Box
+                sx={{
+                  marginTop: 10,
+                }}
+              > */}
+              <Box sx={{ width: "100%" }}>
+                <ChatGPTMap setPinLocation={setPinLocation} />
+              </Box>
               {/* <ChatGPTMap /> */}
+              {/* </Box> */}
+
               {/* <DialogTitle id="alert-dialog-title">
                 {"Use Google's location service?"}
               </DialogTitle>
@@ -256,13 +288,25 @@ export default function BookService() {
                   running.
                 </DialogContentText> */}
               {/* </DialogContent> */}
-              <h1>{pinLocation.coordinates.latitude}</h1>
+              {/* <h1>{pinLocation.coordinates.latitude}</h1>
               <h1>{pinLocation.coordinates.longitude}</h1>
-              <h1>{pinLocation.address}</h1>
+              <h1>{pinLocation.address}</h1> */}
               <DialogActions>
-                <Button onClick={handleCloseDialog}>Disagree</Button>
-                <Button onClick={handleCloseDialog} autoFocus>
-                  Agree
+                <Button
+                  variant="contained"
+                  onClick={() => {
+                    setPinLocation({ address: "" });
+                    handleCloseDialog();
+                  }}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  variant="contained"
+                  onClick={handleCloseDialog}
+                  autoFocus
+                >
+                  Confirm
                 </Button>
               </DialogActions>
             </Dialog>
@@ -297,14 +341,14 @@ export default function BookService() {
               Book Service
             </Button>
           </Box>
-          <Box
+          {/* <Box
             sx={{
               width: "100%",
               height: 600,
             }}
           >
             <ChatGPTMap apiKey={API_KEY} />
-          </Box>
+          </Box> */}
         </Box>
       </Container>
       <Snackbar

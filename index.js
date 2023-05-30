@@ -20,9 +20,14 @@ app.use("/api/", require("./Routes/Api/User/UserStatus"));
 app.use("/api/welcome", require("./Routes/Api/welcome"));
 app.use("/api/userstatus", require("./Routes/Api/User/UserStatus"));
 app.use("/api/service", require("./Routes/Api/Service/PostService"));
+
 app.use("/api/profile", require("./Routes/Api/User/Profile/Profile"));
 app.use(
   "/api/service/bookservice",
+  require("./Routes/Api/Service/BookService")
+);
+app.use(
+  "/api/service/bookservice/cancelservice",
   require("./Routes/Api/Service/BookService")
 );
 

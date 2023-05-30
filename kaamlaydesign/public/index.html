@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.png" />
+    <!-- <link href="./index.css" rel="stylesheet" type="text/css"> -->
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
     <meta
@@ -28,13 +30,50 @@
     -->
 
 <!-- Google Map -->
-<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+<!-- <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script> -->
+<!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCR4YVEYed8oq1-QWV5hGhV1kbAAwzqb9Y&callback=initMap" async defer></script> -->
+<script>
+  function initMap() {
+    const newMap = new window.google.maps.Map(
+      document.getElementById("map"),
+      {
+        center: { lat: -34.397, lng: 150.644 },
+        zoom: 6,
+      }
+    );
+    const newInfoWindow = new window.google.maps.InfoWindow({
+      pixelOffset: new window.google.maps.Size(
+        0,
+        -marker?.getIcon()?.size?.height || 0
+      ),
+    });
+    // setMap(newMap);
+    // setInfoWindow(newInfoWindow);
+    window.myAppData = {
+      newMap: newMap,
+      newInfoWindow:newInfoWindow
+    };
+  }
+</script>
+<script>
+  function myFunction() {
+    console.log("Hello from HTML function!");
+  }
+</script>
     
-    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Cabin+Condensed&display=swap" rel="stylesheet">
+<!-- <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> -->
+<!-- <link href="https://fonts.googleapis.com/css2?family=Arimo:wght@500&family=Roboto:wght@900&display=swap" rel="stylesheet"> -->
     <title>Kaam Lay</title>
     
   </head>
   <body>
+    <script id="myScript">
+      // Call initMap function when the window has finished loading
+      window.onload = function() {
+        initMap();
+      };
+    </script>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
     <!--
@@ -49,10 +88,10 @@
     -->
 
     <!-- Google Map -->
-    <script
+    <!-- <script
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCR4YVEYed8oq1-QWV5hGhV1kbAAwzqb9Y&v=weekly"
     defer
-  ></script>
+  ></script> -->
     
     
   </body>

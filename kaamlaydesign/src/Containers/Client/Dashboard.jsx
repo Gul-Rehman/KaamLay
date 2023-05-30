@@ -14,6 +14,7 @@ import ServiceCompleted from "../../Assets/ServicesStatusImages/servicecompleted
 import GeoLocation from "../../Components/GeoLocation";
 import Map from "../../Components/MyMap";
 import MyMap from "../../Components/MyMap";
+import AnotherChatGPTMap from "../../Components/AnotherChatGPTMap";
 
 const Dashboard = () => {
   // const [auth,setauth]=useState('');
@@ -26,6 +27,7 @@ const Dashboard = () => {
   const [name, setName] = useState("");
   const token = localStorage.getItem("token");
   const [checked, setChecked] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
   useEffect(() => {
     // const userrole = JSON.parse(localStorage.getItem("userrole"));
     if (localStorage.getItem("userrole") == "client") {
@@ -37,6 +39,24 @@ const Dashboard = () => {
       console.log("user role service provider");
       // localStorage.setItem("userrole", "serviceprovider");
     }
+    axios
+      .get(
+        `http://localhost:5000/api/profile/${localStorage.getItem("userId")}`
+      )
+      .then((response) => {
+        // console.log(response.data);
+        response.data.map((item) => {
+          setImageUrl(item.profilepicture);
+          localStorage.setItem("imageUrl", item.profilepicture);
+        });
+
+        console.log("url" + imageUrl);
+
+        // setServices(response.data);
+      })
+      .catch((err) => {
+        console.error(err.message);
+      });
     // console.log("Hello " + localStorage.getItem("userrole"));
   }, []);
 
@@ -101,7 +121,7 @@ const Dashboard = () => {
 
   return (
     <>
-      <Box
+      {/* <Box
         sx={{
           backgroundColor: `${ColorConfigs.lightorange}`,
         }}
@@ -122,8 +142,8 @@ const Dashboard = () => {
             Currently : {localStorage.getItem("userrole")}
           </Typography>
         </Stack>
-      </Box>
-      <Grid container spacing={3} padding={4}>
+      </Box> */}
+      <Grid container spacing={3} padding={4} height="100vh">
         <Grid item laptops={6} position="relative">
           <Box
             component={Paper}
@@ -137,15 +157,22 @@ const Dashboard = () => {
             elevation={5}
           >
             <Box padding={3}>
-              <Stack display="inline-block" width={350}>
-                <Typography fontSize={35}> Pending Services</Typography>
-                <Typography fontSize={15} fontWeight="500">
-                  {" "}
-                  Don't keep your clients waiting any longer. Complete the
-                  pending services and earn more money
+              <Stack
+                display="inline-block"
+                width={350}
+                sx={{ position: "relative" }}
+              >
+                <Typography fontSize={35}> Booked Services </Typography>
+                <Typography fontSize={15}>
+                  Please wait for service provider to reach out to you.
                 </Typography>
               </Stack>
-
+              <Typography
+                fontSize={180}
+                sx={{ position: "absolute", bottom: 0 }}
+              >
+                5
+              </Typography>
               <Box
                 component="img"
                 sx={{
@@ -173,12 +200,20 @@ const Dashboard = () => {
             elevation={5}
           >
             <Box padding={3}>
-              <Stack display="inline-block" width={350}>
+              <Stack
+                display="inline-block"
+                width={350}
+                sx={{ position: "relative" }}
+              >
                 <Typography fontSize={35}> Completed Services </Typography>
-                <Typography fontSize={15} fontWeight="500">
-                  You have completed the services, Great Work
-                </Typography>
+                <Typography fontSize={15}>See Your Services History</Typography>
               </Stack>
+              <Typography
+                fontSize={180}
+                sx={{ position: "absolute", bottom: 0 }}
+              >
+                5
+              </Typography>
               <Box
                 component="img"
                 sx={{
@@ -194,33 +229,8 @@ const Dashboard = () => {
           </Box>
         </Grid>
       </Grid>
-      <Stack></Stack>
-      <Box
-        sx={{
-          width: "100%",
-          height: "100vh",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Typography
-          sx={{
-            fontSize: "50px",
-            fontFamily: "Cabin Condensed",
-          }}
-        >
-          Welcome {name} as {localStorage.getItem("userrole")}
-        </Typography>
-        <Button variant="contained">Hello World</Button>
-        <Button variant="contained">Hello World</Button>
-      </Box>
-      <GeoLocation />
-      {/* <UserRole /> */}
-      {/* <h1>my map</h1> */}
-      {/* <Box width="100%" height={500}>
-        <MyMap />
-      </Box> */}
+
+      {/* <GeoLocation /> */}
     </>
   );
 };

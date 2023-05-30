@@ -129,7 +129,6 @@ const Sections = () => {
         className="container"
         component={Stack}
         direction="row"
-        
         sx={{
           justifyContent: "center",
         }}

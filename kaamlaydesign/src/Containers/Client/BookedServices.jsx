@@ -9,6 +9,7 @@ import ColorConfigs from "../../Configs/ColorConfigs";
 // import { useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
 import { styled } from "@mui/material";
+import { BookedServiceCard } from "../../Components";
 
 const CustomizedButton = styled(Button)({
   backgroundColor: `${ColorConfigs.primary}`,
@@ -80,6 +81,7 @@ const BookedServices = () => {
   // console.log(serviceproviderId);
 
   const [services, setServices] = useState([]);
+  // console.log(services);
   return (
     <Box
       sx={{
@@ -87,194 +89,32 @@ const BookedServices = () => {
       }}
     >
       {services.map((item) => {
+        // const data = {
+        //   serviceTitle: item.serviceprovider.servicetitle,
+        //   serviceDescription: item.serviceprovider.servicedescription,
+        //   serviceCategory: item.serviceprovider.servicecategory,
+        //   serviceproviderContactNumber: item.serviceprovider.contactnumber,
+        //   serviceCharges: item.serviceprovider.price,
+        //   clientName: item.name,
+        //   clientContactNumber: item.contactnumber,
+        //   clientAddress: item.address,
+        //   serviceproviderId: item._id,
+        // };
+
         return (
-          <Box
-            component={Paper}
-            elevation={4}
-            sx={{
-              margin: 5,
-              padding: 3,
-              border: `2px solid ${ColorConfigs.primary}`,
-              borderRadius: 4,
+          <BookedServiceCard
+            details={{
+              serviceTitle: item.serviceprovider.servicetitle,
+              serviceDescription: item.serviceprovider.servicedescription,
+              serviceCategory: item.serviceprovider.servicecategory,
+              serviceproviderContactNumber: item.serviceprovider.contactnumber,
+              serviceCharges: item.serviceprovider.price,
+              clientName: item.name,
+              clientContactNumber: item.contactnumber,
+              clientAddress: item.address,
+              serviceproviderId: item._id,
             }}
-          >
-            <Stack>
-              <Stack direction="row">
-                <Typography
-                  sx={{
-                    fontSize: 40,
-                    color: `${ColorConfigs.primary}`,
-                  }}
-                >
-                  {item.serviceprovider.servicetitle}
-                </Typography>
-              </Stack>
-              <Stack direction="row">
-                <Typography
-                  sx={{
-                    fontSize: 20,
-                    color: "GrayText",
-                  }}
-                >
-                  {item.serviceprovider.servicedescription}
-                </Typography>
-              </Stack>
-              <Stack>
-                <Stack
-                  direction="row"
-                  justifyContent="space-between"
-                  sx={{
-                    padding: "0px 50px",
-                  }}
-                >
-                  <Stack>
-                    <Stack direction="row" sx={{ mt: 3 }}>
-                      <Typography
-                        sx={{
-                          fontSize: 15,
-                          color: "black",
-                        }}
-                      >
-                        Service Category:
-                      </Typography>
-                      {/* <Stack direction></Stack> */}
-
-                      <Typography
-                        sx={{
-                          fontSize: 15,
-                          color: "GrayText",
-                        }}
-                      >
-                        {item.serviceprovider.servicecategory}
-                      </Typography>
-                    </Stack>
-                    <Stack direction="row" sx={{ mt: 1 }}>
-                      <Typography
-                        sx={{
-                          fontSize: 15,
-                          color: "black",
-                        }}
-                      >
-                        Service Provider Contact Number:
-                      </Typography>
-                      <Typography
-                        sx={{
-                          fontSize: 15,
-                          color: "GrayText",
-                        }}
-                      >
-                        {item.serviceprovider.contactnumber}
-                      </Typography>
-                    </Stack>
-
-                    <Stack direction="row" sx={{ mt: 1 }}>
-                      <Typography
-                        sx={{
-                          fontSize: 15,
-                          color: "black",
-                        }}
-                      >
-                        Price:
-                      </Typography>
-                      <Typography
-                        sx={{
-                          fontSize: 15,
-                          color: "GrayText",
-                        }}
-                      >
-                        {item.serviceprovider.price}
-                      </Typography>
-                    </Stack>
-                  </Stack>
-
-                  <Stack sx={{ mt: 3 }}>
-                    <Stack>
-                      <Stack direction="row">
-                        <Typography
-                          sx={{
-                            fontSize: 15,
-                            color: "black",
-                          }}
-                        >
-                          Your Name:
-                        </Typography>
-                        <Typography
-                          sx={{
-                            fontSize: 15,
-                            color: "GrayText",
-                          }}
-                        >
-                          {item.name}
-                        </Typography>
-                      </Stack>
-                      <Stack direction="row">
-                        <Typography
-                          sx={{
-                            fontSize: 15,
-                            color: "black",
-                          }}
-                        >
-                          Your Contact Number:
-                        </Typography>
-                        <Typography
-                          sx={{
-                            fontSize: 15,
-                            color: "GrayText",
-                          }}
-                        >
-                          {item.contactnumber}
-                        </Typography>
-                      </Stack>
-                      <Stack direction="row">
-                        <Typography
-                          sx={{
-                            fontSize: 15,
-                            color: "black",
-                          }}
-                        >
-                          Your Address:
-                        </Typography>
-                        <Typography
-                          sx={{
-                            fontSize: 15,
-                            color: "GrayText",
-                          }}
-                        >
-                          {item.address}
-                        </Typography>
-                      </Stack>
-                    </Stack>
-                  </Stack>
-                </Stack>
-              </Stack>
-            </Stack>
-            <Stack alignItems="center">
-              <Stack direction="row" mt={3}>
-                <CustomizedButton
-                  // key={item.user._id}
-                  onClick={() => {
-                    localStorage.setItem("serviceproviderId", item._id);
-                    localStorage.setItem("servicetype", "plumbing");
-                    // navigate("/clientbookservice");
-                  }}
-                >
-                  {" "}
-                  Edit Service
-                </CustomizedButton>
-                <CustomizedButton
-                  // key={item.user._id}
-                  onClick={() => {
-                    localStorage.setItem("serviceproviderId", item._id);
-                    localStorage.setItem("servicetype", "plumbing");
-                    // navigate("/clientbookservice");
-                  }}
-                >
-                  {" "}
-                  Cancel Service
-                </CustomizedButton>
-              </Stack>
-            </Stack>
-          </Box>
+          />
         );
       })}
     </Box>

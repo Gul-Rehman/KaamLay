@@ -34,6 +34,7 @@ import {
   BookedServices,
   ClientProfile,
   ServiceProviderProfile,
+  ServiceProviderPendingServices,
   AdminDashboard,
 } from "./Containers";
 
@@ -71,8 +72,9 @@ function App() {
       {/* <LoginContext.Provider value={data}> */}
       <BrowserRouter>
         <Navbar />
+
         <Routes>
-          <Route exact path="/" element={<Home />} />
+          <Route index element={<Home />} />
           <Route exact path="/services" element={<Services />} />
           <Route exact path="/about" element={<About />} />
           <Route exact path="/sections" element={<Sections />} />
@@ -113,6 +115,11 @@ function App() {
               exact
               path="/serviceproviderpostservice"
               element={<ServiceProviderPostService />}
+            />
+            <Route
+              exact
+              path="/serviceproviderpendingservices"
+              element={<ServiceProviderPendingServices />}
             />
             <Route exact path="/clientbookservice" element={<BookService />} />
             <Route

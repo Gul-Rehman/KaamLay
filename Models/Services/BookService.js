@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const Service = require("./Service");
+const Service = require("../Service");
 
 const bookserviceSchema = new mongoose.Schema({
   user: {
@@ -29,6 +29,22 @@ const bookserviceSchema = new mongoose.Schema({
   contactnumber: {
     type: String,
     required: true,
+  },
+  pinLocation: {
+    coordinates: {
+      latitude: {
+        type: String,
+        required: true,
+      },
+      longitude: {
+        type: String,
+        required: true,
+      },
+    },
+    address: {
+      type: String,
+      required: true,
+    },
   },
   date: {
     type: Date,

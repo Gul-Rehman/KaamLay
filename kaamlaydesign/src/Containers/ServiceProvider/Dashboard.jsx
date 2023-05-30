@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Typography, Box } from "@mui/material";
+import { Typography, Box, Grid, Paper } from "@mui/material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Switch from "@mui/material/Switch";
 import { Stack } from "@mui/material";
 import { Button } from "@mui/material";
 import ColorConfigs from "../../Configs/ColorConfigs";
+import ServicePending from "../../Assets/ServicesStatusImages/servicepending.svg";
+import ServiceCompleted from "../../Assets/ServicesStatusImages/servicecompleted.svg";
+import SendIcon from "@mui/icons-material/Send";
+import AddIcon from "@mui/icons-material/Add";
 
 const Dashboard = () => {
   // const [auth,setauth]=useState('');
@@ -93,7 +97,7 @@ const Dashboard = () => {
 
   return (
     <>
-      <Box
+      {/* <Box
         sx={{
           backgroundColor: `${ColorConfigs.lightorange}`,
         }}
@@ -114,7 +118,7 @@ const Dashboard = () => {
             Currently : {localStorage.getItem("userrole")}
           </Typography>
         </Stack>
-      </Box>
+      </Box> */}
       <Box
         sx={{
           m: 5,
@@ -127,40 +131,108 @@ const Dashboard = () => {
           }}
         >
           <Button
-            sx={{
-              backgroundColor: `${ColorConfigs.primary}`,
-              "&:hover": {
-                color: "white",
-                backgroundColor: "black",
-              },
-            }}
             variant="contained"
+            color="primary"
             onClick={() => {
               navigate("/serviceproviderpostservice");
             }}
+            startIcon={<AddIcon fontSize="large" />}
+            style={{ borderRadius: 20, fontWeight: "bold", fontSize: "1rem" }}
           >
             Post Service
           </Button>
         </Stack>
       </Box>
-      <Box
-        sx={{
-          width: "100%",
-          height: "100vh",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Typography
-          sx={{
-            fontSize: "50px",
-            fontFamily: "Cabin Condensed",
-          }}
-        >
-          Welcome {name}
-        </Typography>
-      </Box>
+      <Grid container spacing={3} padding={4} height="100vh">
+        <Grid item laptops={6} position="relative">
+          <Box
+            component={Paper}
+            width="100%"
+            height={400}
+            sx={{
+              position: "relative",
+              backgroundColor: "#fba56c",
+            }}
+            borderRadius={5}
+            elevation={5}
+          >
+            <Box padding={3}>
+              <Stack
+                display="inline-block"
+                width={350}
+                sx={{ position: "relative" }}
+              >
+                <Typography fontSize={35}> Pending Services </Typography>
+                <Typography fontSize={15}>
+                  Don't keep your clients waiting any longer. Complete the
+                  pending services and earn more money
+                </Typography>
+              </Stack>
+              <Typography
+                fontSize={180}
+                sx={{ position: "absolute", bottom: 0 }}
+              >
+                2
+              </Typography>
+              <Box
+                component="img"
+                sx={{
+                  height: 200,
+                  width: 300,
+
+                  float: "right",
+                }}
+                alt="Pending Services Icon"
+                src={ServicePending}
+              />
+            </Box>
+          </Box>
+        </Grid>
+
+        <Grid item laptops={6} position="relative">
+          <Box
+            component={Paper}
+            width="100%"
+            height={400}
+            sx={{
+              position: "relative",
+              backgroundColor: "#fba56c",
+            }}
+            borderRadius={5}
+            elevation={5}
+          >
+            <Box padding={3}>
+              <Stack
+                display="inline-block"
+                width={350}
+                sx={{ position: "relative" }}
+              >
+                <Typography fontSize={35}> Completed Services </Typography>
+                <Typography fontSize={15}>
+                  You have completed the services, Great Work
+                </Typography>
+              </Stack>
+              <Typography
+                fontSize={180}
+                sx={{ position: "absolute", bottom: 0 }}
+              >
+                6
+              </Typography>
+              <Box
+                component="img"
+                sx={{
+                  height: 200,
+                  width: 300,
+
+                  float: "right",
+                }}
+                alt="Pending Services Icon"
+                src={ServiceCompleted}
+              />
+            </Box>
+          </Box>
+        </Grid>
+      </Grid>
     </>
   );
 };

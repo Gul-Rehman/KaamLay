@@ -101,7 +101,7 @@ const About = () => {
                   color="white"
                   alignSelf="center"
                   marginBottom={2}
-                  fontFamily="Roboto"
+                  // fontFamily="Roboto"
                   fontSize={26}
                   sx={{
                     backgroundColor: "#fa541c",

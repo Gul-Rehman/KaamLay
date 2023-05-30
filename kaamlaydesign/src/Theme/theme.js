@@ -1,14 +1,43 @@
 import { createTheme } from "@mui/material/styles";
 
 const theme = createTheme({
-  // Theme ki properties yahan define karein
   palette: {
     primary: {
-      main: "#fa541c", // Primary color ka hex code yahan specify karein
+      main: "#fa541c",
     },
     secondary: {
-      main: "#00ff00", // Secondary color ka hex code yahan specify karein
+      main: "#00ff00",
     },
+  },
+
+  typography: {
+    body1: {
+      fontWeight: 500,
+    },
+    h4: {
+      fontWeight: 500,
+    },
+    h5: {
+      fontWeight: 700,
+    },
+    button: {
+      fontWeight: 700,
+    },
+    fontFamily: [
+      "-apple-system",
+      "BlinkMacSystemFont",
+      '"Segoe UI"',
+      "Roboto",
+      '"Helvetica Neue"',
+      "Arial",
+      "sans-serif",
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"',
+    ].join(","),
+  },
+  link: {
+    fontFamily: "Roboto",
   },
   breakpoints: {
     values: {
@@ -22,7 +51,6 @@ const theme = createTheme({
       laptopl: 1440,
     },
   },
-  // Aur baki theme ki properties bhi add kar sakte hain
 });
 
 export default theme;

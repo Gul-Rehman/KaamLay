@@ -10,10 +10,6 @@ import { Stack } from "@mui/system";
 import { Button } from "@mui/material";
 import DrawerComponent from "./DrawerComponent";
 
-import "../App.css";
-
-import "@fontsource/roboto/700.css";
-
 import { NavLink, useNavigate } from "react-router-dom";
 import Fade from "@mui/material/Fade";
 import { Menu } from "@mui/material";
@@ -32,6 +28,7 @@ import ColorConfigs from "../Configs/ColorConfigs";
 
 const CustomizedLink = styled(Link)({
   color: "black",
+  // fontFamily:"monospace",
   borderRadius: "20px",
   fontSize: "17px",
   textDecoration: "none",
@@ -185,7 +182,7 @@ const Navbar = () => {
                     component={NavLink}
                     to="/clientdashboard"
                   >
-                    Dashboard
+                    <Typography>Dashboard</Typography>
                   </CustomizedLink>
                   <CustomizedLink
                     component={NavLink}
@@ -398,6 +395,14 @@ const Navbar = () => {
                     Posted Services{" "}
                   </CustomizedLink>
 
+                  <CustomizedLink
+                    component={NavLink}
+                    to="/serviceproviderpendingservices"
+                    className="scale-up-center"
+                  >
+                    {" "}
+                    Pending Services{" "}
+                  </CustomizedLink>
                   <CustomizedLink
                     sx={{
                       width: "170px",
