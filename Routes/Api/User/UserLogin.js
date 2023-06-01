@@ -4,6 +4,7 @@ const User = require("../../../Models/User");
 const bcrypt = require("bcryptjs");
 const config = require("config");
 const jwt = require("jsonwebtoken");
+const auth = require("../../../Middlewares/auth");
 const jwtSecret = config.get("jwtSecret");
 
 const router = express.Router();
@@ -47,5 +48,33 @@ router.post(
     }
   }
 );
+
+router.get("/", auth, async (req, res) => {
+  const userid = req.user.id;
+
+  try {
+    let user = await User.findOne({ _id: userid });
+    if (!user) {
+      return res.status(400).json({ msg: "Invalid Credentials" });
+    }
+
+    return res.send(user);
+  } catch (err) {
+    console.error(err.message);
+    res.status(400).json({ msg: "Server Error" });
+  }
+});
+
+router.get("/users", async (req, res) => {
+  try {
+    const users = await User.find();
+
+    if (users) {
+      res.json(users);
+    }
+  } catch (err) {
+    res.send(err.message);
+  }
+});
 
 module.exports = router;

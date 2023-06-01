@@ -83,41 +83,42 @@ const BookedServices = () => {
   const [services, setServices] = useState([]);
   // console.log(services);
   return (
-    <Box
-      sx={{
-        mb: 10,
-      }}
-    >
-      {services.map((item) => {
-        // const data = {
-        //   serviceTitle: item.serviceprovider.servicetitle,
-        //   serviceDescription: item.serviceprovider.servicedescription,
-        //   serviceCategory: item.serviceprovider.servicecategory,
-        //   serviceproviderContactNumber: item.serviceprovider.contactnumber,
-        //   serviceCharges: item.serviceprovider.price,
-        //   clientName: item.name,
-        //   clientContactNumber: item.contactnumber,
-        //   clientAddress: item.address,
-        //   serviceproviderId: item._id,
-        // };
+    <>
+      {services.length == 0 ? (
+        <Box>
+          <Typography>There Are No Completed Services To Show</Typography>
+        </Box>
+      ) : (
+        <Box
+          sx={{
+            mb: 10,
+          }}
+        >
+          {services.map((item) => {
+            return (
+              <BookedServiceCard
+                details={{
+                  serviceTitle: item.serviceId.servicetitle,
+                  serviceDescription: item.serviceId.servicedescription,
+                  serviceCategory: item.serviceId.servicecategory,
+                  serviceproviderName: item.serviceId.user.name,
+                  serviceproviderPicture:
+                    item.serviceId.user.profile.profilepicture,
 
-        return (
-          <BookedServiceCard
-            details={{
-              serviceTitle: item.serviceprovider.servicetitle,
-              serviceDescription: item.serviceprovider.servicedescription,
-              serviceCategory: item.serviceprovider.servicecategory,
-              serviceproviderContactNumber: item.serviceprovider.contactnumber,
-              serviceCharges: item.serviceprovider.price,
-              clientName: item.name,
-              clientContactNumber: item.contactnumber,
-              clientAddress: item.address,
-              serviceproviderId: item._id,
-            }}
-          />
-        );
-      })}
-    </Box>
+                  serviceproviderContactNumber: item.serviceId.contactnumber,
+                  serviceCharges: item.serviceId.price,
+                  clientName: item.name,
+                  clientContactNumber: item.contactnumber,
+                  clientAddress: item.address,
+                  serviceproviderId: item._id,
+                  serviceImage: item.serviceId.imageUrl,
+                }}
+              />
+            );
+          })}
+        </Box>
+      )}
+    </>
   );
 };
 

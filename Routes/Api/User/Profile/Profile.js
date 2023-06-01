@@ -7,7 +7,7 @@ const auth = require("../../../../Middlewares/auth");
 const multer = require("multer");
 const upload = multer({ dest: "profile/" });
 const Profile = require("../../../../Models/Profile");
-
+const User = require("../../../../Models/User");
 const router = express.Router();
 
 router.post("/", auth, upload.single("image"), async (req, res) => {
@@ -32,6 +32,20 @@ router.post("/", auth, upload.single("image"), async (req, res) => {
         { user: serviceDetails.user },
         { $set: serviceDetails },
         { new: true }
+      );
+      User.findOneAndUpdate(
+        { _id: serviceDetails.user },
+        { $set: { "profile.profilepicture": profile.profilepicture } }, // Assign the profile picture value to the user's profilePicture field
+        { upsert: true },
+        (err, user) => {
+          if (err) {
+            console.error(err);
+            return;
+          }
+
+          return res.json(user);
+          // console.log("User profile picture updated successfully");
+        }
       );
     } else {
       profile = new Profile(serviceDetails);

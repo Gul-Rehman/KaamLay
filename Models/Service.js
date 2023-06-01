@@ -5,7 +5,7 @@ const serviceSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "user",
   },
-  status: {
+  serivceprovider: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "userstatus",
   },

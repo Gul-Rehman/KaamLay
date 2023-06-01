@@ -105,18 +105,36 @@ const Profile = () => {
                   justifyContent: "center",
                 }}
               >
-                <img
-                  style={{
+                <Box
+                  sx={{
                     width: "100%",
                     height: "15rem",
 
                     borderRadius: "10px 10px 10px 10px",
                     objectFit: "fit",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    // textAlign: "center",
                   }}
-                  src={`http://localhost:5000/${localStorage.getItem(
-                    "imageUrl"
-                  )}`}
-                />
+                >
+                  {!localStorage.getItem("imageUrl") ? (
+                    <Typography variant="h4">Upload Image</Typography>
+                  ) : (
+                    <img
+                      style={{
+                        width: "100%",
+                        height: "15rem",
+
+                        borderRadius: "10px 10px 10px 10px",
+                        objectFit: "fit",
+                      }}
+                      src={`http://localhost:5000/${localStorage.getItem(
+                        "imageUrl"
+                      )}`}
+                    />
+                  )}
+                </Box>
 
                 <EditIcon
                   sx={{

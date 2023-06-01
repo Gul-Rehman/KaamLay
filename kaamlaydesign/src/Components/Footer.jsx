@@ -34,18 +34,14 @@ const Footer = () => {
   return (
     <>
       <Box
-        sx={
-          {
-            // marginTop: "-40px",
-          }
-        }
+        sx={{
+          marginTop: -30,
+        }}
       >
         <Box
-          sx={
-            {
-              // height:"30vh"
-            }
-          }
+          sx={{
+            height: "30vh",
+          }}
         ></Box>
 
         <Box
@@ -59,11 +55,6 @@ const Footer = () => {
             backgroundRepeat: "no-repeat",
             backgroundSize: "cover ",
             backgroundPosition: "center center",
-
-            // mt:"50px",
-            // mb:"50px"
-            // backgroundSize:"!00% 100%",
-            // backgroundAttachment:"fixed"
           }}
         ></Box>
         <Box
@@ -71,7 +62,6 @@ const Footer = () => {
             backgroundColor: "#fabb8b",
             height: { laptops: "50vh", tablet: "60vh", xs: "250vh" },
             width: "100%",
-            // bottom:0
           }}
         >
           <Stack
@@ -99,7 +89,6 @@ const Footer = () => {
                   alt="KaamLay Logo"
                   style={{
                     width: "300px",
-                    // width:{laptops:"400px",tablet:"100px"}
                   }}
                 />
               </Stack>
@@ -117,7 +106,6 @@ const Footer = () => {
                   alt="KaamLay Logo"
                   style={{
                     width: "200px",
-                    // width:{laptops:"400px",tablet:"100px"}
                   }}
                 />
               </Stack>
@@ -136,7 +124,6 @@ const Footer = () => {
                   alt="KaamLay Logo"
                   style={{
                     width: "150px",
-                    // width:{laptops:"400px",tablet:"100px"}
                   }}
                 />
               </Stack>
@@ -157,25 +144,9 @@ const Footer = () => {
                   alt="KaamLay Logo"
                   style={{
                     width: "150px",
-                    // width:{laptops:"400px",tablet:"100px"}
                   }}
                 />
               </Stack>
-              {/* <Stack sx={{
-              display:{
-                xs:"none",
-                mobiles:"none",
-                mobilem:"none",
-                mobilel:"flex",
-                tablet:"none",
-                laptops:"none"
-            }
-            }}>
-            <img src={desktoplogo} alt="KaamLay Logo" style={{
-              width:"100px"
-              // width:{laptops:"400px",tablet:"100px"}
-            }}/>
-            </Stack> */}
 
               <Typography> Kaam Lay Is a Service Based Platform</Typography>
             </Stack>
@@ -184,7 +155,6 @@ const Footer = () => {
                 variant="h5"
                 sx={{
                   mb: "30px",
-                  // backgroundColor:""
                 }}
               >
                 Pages
@@ -205,13 +175,7 @@ const Footer = () => {
               </Stack>
             </Stack>
 
-            <Stack
-              sx={
-                {
-                  // justifyContent:"flex-start"
-                }
-              }
-            >
+            <Stack>
               <Typography variant="h5" sx={{ mb: "30px" }}>
                 Service Categories
               </Typography>

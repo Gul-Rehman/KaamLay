@@ -20,6 +20,7 @@ const Dashboard = () => {
   const [name, setName] = useState("");
   const token = localStorage.getItem("token");
   const [checked, setChecked] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
   useEffect(() => {
     // const userrole = JSON.parse(localStorage.getItem("userrole"));
     if (localStorage.getItem("userrole") == "client") {
@@ -31,6 +32,24 @@ const Dashboard = () => {
       console.log("user role service provider");
       // localStorage.setItem("userrole", "serviceprovider");
     }
+    axios
+      .get(
+        `http://localhost:5000/api/profile/${localStorage.getItem("userId")}`
+      )
+      .then((response) => {
+        // console.log(response.data);
+        response.data.map((item) => {
+          setImageUrl(item.profilepicture);
+          localStorage.setItem("imageUrl", item.profilepicture);
+        });
+
+        console.log("url" + imageUrl);
+
+        // setServices(response.data);
+      })
+      .catch((err) => {
+        console.error(err.message);
+      });
     // console.log("Hello " + localStorage.getItem("userrole"));
   }, []);
 
@@ -122,12 +141,15 @@ const Dashboard = () => {
       <Box
         sx={{
           m: 5,
+          position: "relative",
         }}
       >
         <Stack
           direction="row"
           sx={{
-            alignItems: "center",
+            // alignItems: "center",
+            position: "relative",
+            width: "100%",
           }}
         >
           <Button
@@ -137,9 +159,25 @@ const Dashboard = () => {
               navigate("/serviceproviderpostservice");
             }}
             startIcon={<AddIcon fontSize="large" />}
-            style={{ borderRadius: 20, fontWeight: "bold", fontSize: "1rem" }}
+            sx={{ borderRadius: 20, fontWeight: "bold", fontSize: "1rem" }}
           >
             Post Service
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            // onClick={() => {
+            //   navigate("/serviceproviderpostservice");
+            // }}
+            // startIcon={<AddIcon fontSize="large" />}
+            sx={{
+              borderRadius: 20,
+              fontWeight: "bold",
+              fontSize: "1rem",
+              float: "inline-end",
+            }}
+          >
+            View Requested Services
           </Button>
         </Stack>
       </Box>

@@ -40,7 +40,6 @@ import {
 
 import LoginContext from "./Contexts/LoginContext";
 import PlumbingService from "./Components/ServiceCategories/PlumbingServices";
-import CompletedService from "./Containers/Client/CompletedService";
 
 // const theme = createTheme({
 //   breakpoints: {
@@ -167,11 +166,7 @@ function App() {
               path="/clientbookedservices"
               element={<BookedServices />}
             />
-            <Route
-              exact
-              path="/clientcompletedservices"
-              element={<CompletedService />}
-            />
+
             <Route exact path="/acservices" element={<ACServices />} />
           </Route>
 

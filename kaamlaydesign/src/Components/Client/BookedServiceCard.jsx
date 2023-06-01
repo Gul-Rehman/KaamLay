@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box } from "@mui/material";
+import { Avatar, Box, Grid, Rating } from "@mui/material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Typography } from "@mui/material";
@@ -19,9 +19,9 @@ const CustomizedButton = styled(Button)({
   borderRadius: 8,
   color: "white",
   width: "30%",
-  marginLeft: "auto",
-  marginTop: 10,
-  width: 400,
+  // marginLeft: "auto",
+  // marginTop: 10,
+  // width: 400,
   "&:hover": {
     color: "white",
     backgroundColor: "black",
@@ -40,222 +40,290 @@ const ServiceCard = ({ details }) => {
   };
 
   // const navigate = useNavigate();
-  console.log("Hello From Card Compoentn");
+  console.log("Hello From Card Component");
+  const navigate = useNavigate();
+  const [ratingValue, setRatingValue] = useState(4);
   return (
-    <Box
-      component={Paper}
-      elevation={4}
-      sx={{
-        margin: 5,
-        padding: 3,
-        border: `2px solid ${ColorConfigs.primary}`,
-        borderRadius: 4,
-      }}
-    >
-      <Stack>
-        <Stack direction="row">
-          <Typography
-            sx={{
-              fontSize: 40,
-              color: `${ColorConfigs.primary}`,
-            }}
-          >
-            {details.serviceTitle}
-          </Typography>
-        </Stack>
-        <Stack direction="row">
-          <Typography
-            sx={{
-              fontSize: 20,
-              color: "GrayText",
-            }}
-          >
-            {details.serviceDescription}
-          </Typography>
-        </Stack>
-        <Stack>
-          <Stack
-            direction="row"
-            justifyContent="space-between"
-            sx={{
-              padding: "0px 50px",
-            }}
+    <>
+      <Box
+        component={Paper}
+        sx={{
+          flexGrow: 1,
+          margin: 5,
+          padding: 3,
+          border: `2px solid ${ColorConfigs.primary}`,
+          borderRadius: 4,
+        }}
+      >
+        <Grid container spacing={2} position="relative">
+          <Grid
+            item
+            xs={8}
+            sx={
+              {
+                // border: "1px solid",
+                // height: 150,
+                // display: "flex",
+                // alignItems: "stretch",
+              }
+            }
           >
             <Stack>
-              <Stack direction="row" sx={{ mt: 3 }}>
+              <Stack direction="row">
                 <Typography
                   sx={{
-                    fontSize: 15,
-                    color: "black",
+                    fontSize: 40,
+                    color: `${ColorConfigs.primary}`,
                   }}
                 >
-                  Service Category:
-                </Typography>
-                {/* <Stack direction></Stack> */}
-
-                <Typography
-                  sx={{
-                    fontSize: 15,
-                    color: "GrayText",
-                  }}
-                >
-                  {details.serviceCategory}
+                  {details.serviceTitle}
                 </Typography>
               </Stack>
-              <Stack direction="row" sx={{ mt: 1 }}>
+              <Stack direction="row">
                 <Typography
                   sx={{
-                    fontSize: 15,
-                    color: "black",
-                  }}
-                >
-                  Service Provider Contact Number:
-                </Typography>
-                <Typography
-                  sx={{
-                    fontSize: 15,
+                    fontSize: 20,
                     color: "GrayText",
                   }}
                 >
-                  {details.serviceproviderContactNumber}
-                </Typography>
-              </Stack>
-
-              <Stack direction="row" sx={{ mt: 1 }}>
-                <Typography
-                  sx={{
-                    fontSize: 15,
-                    color: "black",
-                  }}
-                >
-                  Price:
-                </Typography>
-                <Typography
-                  sx={{
-                    fontSize: 15,
-                    color: "GrayText",
-                  }}
-                >
-                  {details.serviceCharges}
+                  {details.serviceDescription}
                 </Typography>
               </Stack>
             </Stack>
+          </Grid>
+          <Grid item xs={4} sx={{}}>
+            <Stack
+              sx={{
+                // position: "absolute",
+                // right: 20,
+                // top: 20,
+                alignItems: "center",
+                float: "right",
+              }}
+            >
+              <Avatar
+                alt="Service Provider Picture"
+                src={`http://localhost:5000/${details.serviceproviderPicture}`}
+                sx={{
+                  width: 150,
+                  height: 150,
+                  float: "right",
+                  border: `3px solid ${ColorConfigs.primary}`,
+                }}
+              />
+              <Typography>{details.serviceproviderName}</Typography>
+              <Rating
+                name="read-only"
+                value={ratingValue}
+                readOnly
+                sx={{ mt: 2 }}
+              />
+            </Stack>
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            sx={
+              {
+                // border: "1px solid",
+                // height: 150,
+                // display: "flex",
+                // alignItems: "stretch",
+              }
+            }
+          >
+            <Stack>
+              <Stack
+                direction="row"
+                justifyContent="space-between"
+                sx={
+                  {
+                    // padding: "0px 50px",
+                  }
+                }
+              >
+                <Stack>
+                  <Stack direction="row" sx={{ mt: 3 }}>
+                    <Typography
+                      sx={{
+                        fontSize: 15,
+                        color: "black",
+                      }}
+                    >
+                      Service Category:
+                    </Typography>
+                    {/* <Stack direction></Stack> */}
 
-            <Stack sx={{ mt: 3 }}>
-              <Stack>
-                <Stack direction="row">
-                  <Typography
-                    sx={{
-                      fontSize: 15,
-                      color: "black",
-                    }}
-                  >
-                    Your Name:
-                  </Typography>
-                  <Typography
-                    sx={{
-                      fontSize: 15,
-                      color: "GrayText",
-                    }}
-                  >
-                    {details.clientName}
-                  </Typography>
+                    <Typography
+                      sx={{
+                        fontSize: 15,
+                        color: "GrayText",
+                      }}
+                    >
+                      {details.serviceCategory}
+                    </Typography>
+                  </Stack>
+                  <Stack direction="row" sx={{ mt: 1 }}>
+                    <Typography
+                      sx={{
+                        fontSize: 15,
+                        color: "black",
+                      }}
+                    >
+                      Service Provider Contact Number:
+                    </Typography>
+                    <Typography
+                      sx={{
+                        fontSize: 15,
+                        color: "GrayText",
+                      }}
+                    >
+                      {details.serviceproviderContactNumber}
+                    </Typography>
+                  </Stack>
+
+                  <Stack direction="row" sx={{ mt: 1 }}>
+                    <Typography
+                      sx={{
+                        fontSize: 15,
+                        color: "black",
+                      }}
+                    >
+                      Price:
+                    </Typography>
+                    <Typography
+                      sx={{
+                        fontSize: 15,
+                        color: "GrayText",
+                      }}
+                    >
+                      {details.serviceCharges}
+                    </Typography>
+                  </Stack>
                 </Stack>
-                <Stack direction="row">
-                  <Typography
-                    sx={{
-                      fontSize: 15,
-                      color: "black",
-                    }}
-                  >
-                    Your Contact Number:
-                  </Typography>
-                  <Typography
-                    sx={{
-                      fontSize: 15,
-                      color: "GrayText",
-                    }}
-                  >
-                    {details.clientContactNumber}
-                  </Typography>
-                </Stack>
-                <Stack direction="row">
-                  <Typography
-                    sx={{
-                      fontSize: 15,
-                      color: "black",
-                    }}
-                  >
-                    Your Address:
-                  </Typography>
-                  <Typography
-                    sx={{
-                      fontSize: 15,
-                      color: "GrayText",
-                    }}
-                  >
-                    {details.clientAddress}
-                  </Typography>
+
+                <Stack sx={{ mt: 3 }}>
+                  <Stack>
+                    <Stack direction="row">
+                      <Typography
+                        sx={{
+                          fontSize: 15,
+                          color: "black",
+                        }}
+                      >
+                        Your Name:
+                      </Typography>
+                      <Typography
+                        sx={{
+                          fontSize: 15,
+                          color: "GrayText",
+                        }}
+                      >
+                        {details.clientName}
+                      </Typography>
+                    </Stack>
+                    <Stack direction="row">
+                      <Typography
+                        sx={{
+                          fontSize: 15,
+                          color: "black",
+                        }}
+                      >
+                        Your Contact Number:
+                      </Typography>
+                      <Typography
+                        sx={{
+                          fontSize: 15,
+                          color: "GrayText",
+                        }}
+                      >
+                        {details.clientContactNumber}
+                      </Typography>
+                    </Stack>
+                    <Stack direction="row">
+                      <Typography
+                        sx={{
+                          fontSize: 15,
+                          color: "black",
+                        }}
+                      >
+                        Your Address:
+                      </Typography>
+                      <Typography
+                        sx={{
+                          fontSize: 15,
+                          color: "GrayText",
+                        }}
+                      >
+                        {details.clientAddress}
+                      </Typography>
+                    </Stack>
+                  </Stack>
                 </Stack>
               </Stack>
             </Stack>
-          </Stack>
-        </Stack>
-      </Stack>
-      <Stack alignItems="center">
-        <Stack direction="row" mt={3}>
-          <CustomizedButton
-            // key={item.user._id}
-            onClick={() => {
-              localStorage.setItem(
-                "serviceproviderId",
-                details.serviceproviderId
-              );
-              localStorage.setItem("servicetype", "plumbing");
-              // navigate("/clientbookservice");
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            sx={{
+              // float: "right",
+              // position: "relative",
+              // border: "1px solid",
+              // height: 150,
+              // display: "flex",
+              // alignItems: "stretch",
+              display: "flex",
+              justifyContent: "center",
             }}
           >
-            {" "}
-            Edit Service
-          </CustomizedButton>
-          <CustomizedButton
-            // key={item.user._id}
-            onClick={() => {
-              // localStorage.setItem(
-              //   "serviceproviderId",
-              //   details.serviceproviderId
-              // );
-              // localStorage.setItem("servicetype", "plumbing");
-              // navigate("/clientbookservice");
-              handleClickOpen();
-            }}
-          >
-            {" "}
-            Cancel Service
-          </CustomizedButton>
-        </Stack>
-      </Stack>
-
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">{"Confirmation"}</DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Are You Sure? Want To Canel Service
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>No</Button>
-          <Button onClick={handleClose} autoFocus>
-            Yes
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </Box>
+            <CustomizedButton
+              sx={
+                {
+                  // float: "right",
+                  // position: "absolute",
+                  // bottom: 1,
+                  // right: 1,
+                }
+              }
+              // key={item.user._id}
+              onClick={() => {
+                // localStorage.setItem(
+                //   "serviceproviderId",
+                //   details.serviceproviderId
+                // );
+                // localStorage.setItem("servicetype", "plumbing");
+                // navigate("/clientbookservice");
+              }}
+            >
+              {" "}
+              Edit Service
+            </CustomizedButton>
+            <CustomizedButton
+              sx={{
+                ml: 3,
+                // float: "right",
+                // position: "absolute",
+                // bottom: 1,
+                // right: 1,
+              }}
+              // key={item.user._id}
+              onClick={() => {
+                // localStorage.setItem(
+                //   "serviceproviderId",
+                //   details.serviceproviderId
+                // );
+                // localStorage.setItem("servicetype", "plumbing");
+                // navigate("/clientbookservice");
+              }}
+            >
+              {" "}
+              Cancel Service
+            </CustomizedButton>
+          </Grid>
+        </Grid>
+      </Box>
+    </>
   );
 };
 

@@ -10,7 +10,7 @@ const bookserviceSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "userstatus",
   },
-  serviceprovider: {
+  serviceId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "services",
   },

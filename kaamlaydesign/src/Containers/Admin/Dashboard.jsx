@@ -4,7 +4,7 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import { TotalUsers } from "../../Components";
+import { AllPostedServices, AllUsers, TotalUsers } from "../../Components";
 import axios from "axios";
 
 function TabPanel(props) {
@@ -55,6 +55,7 @@ export default function AdminDashboard() {
         display: "flex",
         height: "100vh",
         pb: 3,
+        width: "100%",
       }}
     >
       <Tabs
@@ -63,37 +64,19 @@ export default function AdminDashboard() {
         value={value}
         onChange={handleChange}
         aria-label="Vertical tabs example"
-        sx={{ borderRight: 1, borderColor: "divider" }}
+        sx={{ borderRight: 1, borderColor: "divider", width: "15%" }}
       >
-        <Tab label="Total Clients" {...a11yProps(0)} />
-        <Tab label="Item Two" {...a11yProps(1)} />
-        <Tab label="Item Three" {...a11yProps(2)} />
-        <Tab label="Item Four" {...a11yProps(3)} />
-        <Tab label="Item Five" {...a11yProps(4)} />
-        <Tab label="Item Six" {...a11yProps(5)} />
-        <Tab label="Item Seven" {...a11yProps(6)} />
+        <Tab label="All Users" />
+        <Tab label="All Posted Services" />
       </Tabs>
-      <TabPanel value={value} index={0}>
-        <TotalUsers />
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-        Item Two
-      </TabPanel>
-      <TabPanel value={value} index={2}>
-        Item Three
-      </TabPanel>
-      <TabPanel value={value} index={3}>
-        Item Four
-      </TabPanel>
-      <TabPanel value={value} index={4}>
-        Item Five
-      </TabPanel>
-      <TabPanel value={value} index={5}>
-        Item Six
-      </TabPanel>
-      <TabPanel value={value} index={6}>
-        Item Seven
-      </TabPanel>
+      <Box sx={{ width: "100%" }}>
+        <TabPanel value={value} index={0}>
+          <AllUsers />
+        </TabPanel>
+        <TabPanel value={value} index={1}>
+          <AllPostedServices />
+        </TabPanel>
+      </Box>
     </Box>
   );
 }

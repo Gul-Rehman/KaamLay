@@ -18,6 +18,7 @@ export { default as CarpenterServices } from "./ServiceCategories/CarpenterServi
 export { default as CarWashServices } from "./ServiceCategories/CarWashServices";
 export { default as SofaCleaningServices } from "./ServiceCategories/SofaCleaningServices";
 export { default as BookService } from "./Client/BookService";
-export { default as TotalUsers } from "./Admin/TotalUsers";
+export { default as AllUsers } from "./Admin/AllUsers";
+export { default as AllPostedServices } from "./Admin/AllPostedServices";
 export { default as ServiceCard } from "./Client/BrowseServiceCard";
 export { default as BookedServiceCard } from "./Client/BookedServiceCard";

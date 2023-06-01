@@ -13,6 +13,7 @@ const ContactUs = () => {
           justifyContent: "center",
           backgroundColor: `${ColorConfigs.primary}`,
           // alignItems: "center",
+          mb: -40,
         }}
       >
         <Box display="block">

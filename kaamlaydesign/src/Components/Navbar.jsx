@@ -453,6 +453,11 @@ const Navbar = () => {
                             width: 50,
                             height: 50,
                             border: `2px solid ${ColorConfigs.primary}`,
+                            objectFit: "fit",
+                            alignSelf: "center",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
                           }}
                           alt="Profile Picture"
                           src={`http://localhost:5000/${localStorage.getItem(

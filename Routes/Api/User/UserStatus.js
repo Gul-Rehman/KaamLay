@@ -61,24 +61,5 @@ router.get("/:user_id", async (req, res) => {
     res.status(400).send("Server Error");
   }
 });
-router.get("/users", async (req, res) => {
-  try {
-    const userstatus = await UserStatus.find();
-    // .populate("user", [
-    //   "name",
-    //   "avatar",
-    // ]);
-    if (!userstatus) {
-      return res.status(500).json({ msg: "Status Not Found" });
-    }
-    return res.json(userstatus);
-  } catch (err) {
-    console.error(err.message);
-    if (err.kind == "ObjectId") {
-      return res.status(500).json({ msg: "Profile Not Found" });
-    }
-    res.status(400).send("Server Error");
-  }
-});
 
 module.exports = router;

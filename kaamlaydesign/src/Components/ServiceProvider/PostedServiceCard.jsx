@@ -1,19 +1,21 @@
-import React, { useState, useEffect } from "react";
-import { Avatar, Box, Grid, Rating } from "@mui/material";
-import axios from "axios";
+import {
+  Avatar,
+  Button,
+  Grid,
+  Paper,
+  Rating,
+  Typography,
+  styled,
+} from "@mui/material";
+import { Box, Stack } from "@mui/system";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Typography } from "@mui/material";
-import { Paper } from "@mui/material";
-import { Stack } from "@mui/system";
 import ColorConfigs from "../../Configs/ColorConfigs";
-import { Button } from "@mui/material";
-import { styled } from "@mui/material";
-
 const CustomizedButton = styled(Button)({
   backgroundColor: `${ColorConfigs.primary}`,
   borderRadius: 8,
   color: "white",
-  width: "auto",
+  width: "30%",
   padding: "10px 16px",
   marginLeft: "auto",
   marginTop: 10,
@@ -23,8 +25,7 @@ const CustomizedButton = styled(Button)({
     backgroundColor: "black",
   },
 });
-
-const ServiceCard = ({ details }) => {
+const PostedServiceCard = ({ details }) => {
   const navigate = useNavigate();
   const [ratingValue, setRatingValue] = useState(4);
   return (
@@ -90,7 +91,7 @@ const ServiceCard = ({ details }) => {
             >
               <Avatar
                 alt="Service Provider Picture"
-                src={`http://localhost:5000/${details.serviceproviderProfile.profilepicture}`}
+                src={`http://localhost:5000/${details.serviceproviderPicture}`}
                 sx={{
                   width: 150,
                   height: 150,
@@ -98,7 +99,7 @@ const ServiceCard = ({ details }) => {
                   border: `3px solid ${ColorConfigs.primary}`,
                 }}
               />
-              <Typography>{details.serviceproviderProfile.name}</Typography>
+              <Typography>{details.serviceproviderName}</Typography>
               <Rating
                 name="read-only"
                 value={ratingValue}
@@ -155,7 +156,7 @@ const ServiceCard = ({ details }) => {
                     color: "GrayText",
                   }}
                 >
-                  {details.contactNumber}
+                  {details.serviceproviderContactNumber}
                 </Typography>
               </Stack>
 
@@ -205,26 +206,53 @@ const ServiceCard = ({ details }) => {
               // alignItems: "stretch",
             }}
           >
-            <CustomizedButton
+            <Stack
               sx={{
-                // float: "right",
                 position: "absolute",
                 bottom: 1,
                 right: 1,
-              }}
-              // key={item.user._id}
-              onClick={() => {
-                localStorage.setItem(
-                  "serviceproviderId",
-                  details.serviceproviderId
-                );
-                localStorage.setItem("servicetype", "plumbing");
-                navigate("/clientbookservice");
+                width: "100%",
               }}
             >
-              {" "}
-              Book Service
-            </CustomizedButton>
+              <CustomizedButton
+                sx={
+                  {
+                    // float: "right",
+                  }
+                }
+                // key={item.user._id}
+                onClick={() => {
+                  // localStorage.setItem(
+                  //   "serviceproviderId",
+                  //   details.serviceproviderId
+                  // );
+                  // localStorage.setItem("servicetype", "plumbing");
+                  // navigate("/clientbookservice");
+                }}
+              >
+                {" "}
+                Edit Service
+              </CustomizedButton>
+              <CustomizedButton
+                sx={
+                  {
+                    // float: "right",
+                  }
+                }
+                // key={item.user._id}
+                onClick={() => {
+                  // localStorage.setItem(
+                  //   "serviceproviderId",
+                  //   details.serviceproviderId
+                  // );
+                  // localStorage.setItem("servicetype", "plumbing");
+                  // navigate("/clientbookservice");
+                }}
+              >
+                {" "}
+                Delete Service
+              </CustomizedButton>
+            </Stack>
           </Grid>
         </Grid>
       </Box>
@@ -232,4 +260,4 @@ const ServiceCard = ({ details }) => {
   );
 };
 
-export default ServiceCard;
+export default PostedServiceCard;

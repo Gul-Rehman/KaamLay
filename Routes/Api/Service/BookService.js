@@ -22,7 +22,7 @@ router.post("/", auth, async (req, res) => {
     name,
     contactnumber,
     address,
-    serviceprovider,
+    serviceId: serviceprovider,
     pinLocation,
   };
   console.log(bookingDetails);
@@ -31,6 +31,7 @@ router.post("/", auth, async (req, res) => {
   try {
     const service = new BookService(bookingDetails);
     await service.save();
+    console.log("After Saving" + service);
     return res.status(200).json(service);
   } catch (err) {
     console.error(err.message);
@@ -47,13 +48,41 @@ router.get("/:user_id", async (req, res) => {
       // .populate("status", "status");
       // .populate("serviceprovider");
       .populate({
-        path: "serviceprovider",
+        path: "serviceId",
         populate: [
           {
             path: "user",
           },
         ],
       });
+    if (!service) {
+      return res.status(500).json({ msg: "Service Not Found" });
+    }
+    return res.json(service);
+  } catch (err) {
+    console.error(err.message);
+    if (err.kind == "ObjectId") {
+      return res.status(500).json({ msg: "Service Not Found" });
+    }
+    res.status(400).send("Server Error");
+  }
+});
+
+router.get("serviceprovider/:user_id", async (req, res) => {
+  try {
+    const service = await BookService.aggregate([
+      {
+        $match: { _id: postId },
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "userId",
+          foreignField: "_id",
+          as: "user",
+        },
+      },
+    ]).toArray();
     if (!service) {
       return res.status(500).json({ msg: "Service Not Found" });
     }
@@ -102,5 +131,24 @@ router.delete("/:service_id", async (req, res) => {
 //     res.status(400).send("Server Error");
 //   }
 // });
+
+router.get("/", async (req, res) => {
+  // const userid = req.user.id;
+  try {
+    // const user = User.findOne({ user: userid });
+    // if (!user) {
+    //   res.json({ msg: "User Not Found" });
+    // }
+    const services = await Service.find().populate({
+      path: "user",
+    });
+
+    if (services) {
+      return res.json(services);
+    }
+  } catch (err) {
+    return res.send(err.message);
+  }
+});
 
 module.exports = router;

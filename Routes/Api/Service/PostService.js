@@ -44,7 +44,7 @@ router.get("/:user_id", async (req, res) => {
   try {
     const service = await Service.find({
       user: req.params.user_id,
-    }).populate("user", ["name", "avatar"]);
+    }).populate("user", ["name", "profile"]);
     if (!service) {
       return res.status(500).json({ msg: "Status Not Found" });
     }
@@ -62,7 +62,7 @@ router.get("/servicecategory/:type", async (req, res) => {
   try {
     const service = await Service.find({
       servicecategory: req.params.type,
-    }).populate("user", ["name", "avatar"]);
+    }).populate("user", ["name", "profile"]);
     if (!service) {
       return res.status(500).json({ msg: "Status Not Found" });
     }
