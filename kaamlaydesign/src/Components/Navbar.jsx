@@ -63,22 +63,22 @@ const Navbar = () => {
   const [serviceprovider, setServiceProvider] = useState(false);
 
   useEffect(() => {
-    axios
-      .get(
-        `http://localhost:5000/api/userstatus/${localStorage.getItem("userId")}`
-      )
-      .then((response) => {
-        setUserRole(response.data.status);
-        if (response.data.status == "client") {
-          setClient(true);
-        }
-        if (response.data.status == "serviceprovider") {
-          setServiceProvider(true);
-        }
-      })
-      .catch((err) => {
-        console.error(err.message);
-      });
+    // axios
+    //   .get(
+    //     `http://localhost:5000/api/userstatus/${localStorage.getItem("userId")}`
+    //   )
+    //   .then((response) => {
+    //     setUserRole(response.data.status);
+    //     if (response.data.status == "client") {
+    //       setClient(true);
+    //     }
+    //     if (response.data.status == "serviceprovider") {
+    //       setServiceProvider(true);
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     console.error(err.message);
+    //   });
   }, []);
 
   const logout = () => {

@@ -21,6 +21,8 @@ import { NavLink } from "react-router-dom";
 import axios from "axios";
 
 function Copyright(props) {
+  {
+  }
   return (
     <Typography
       variant="body2"
@@ -43,6 +45,12 @@ const Login = () => {
 
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
+  const [errors, setErrors] = useState({});
+
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return !emailRegex.test(email);
+  };
 
   // const handleSubmit = async () => {
   //   const result = await fetch("http://localhost:5000/api/user/login", {
@@ -63,42 +71,68 @@ const Login = () => {
   // };
   const [userRole, setUserRole] = useState("");
 
-  const handleSubmit = async () => {
-    navigate("/");
-    await axios
-      .post("http://localhost:5000/api/user/login", {
-        email,
-        password,
-      })
-      .then(async (response) => {
-        console.log(response);
-        localStorage.setItem("token", response.data.token);
-        // a.setUserName(response.data.user.name);
-        console.log(response.data.user._id);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-        localStorage.setItem("userId", response.data.user._id);
-        axios
-          .get(`http://localhost:5000/api/userstatus/${response.data.user._id}`)
-          .then(async (response) => {
-            console.log(response.data.status);
-            setUserRole(response.data.status);
-            // navigate("/");
-            // a.setUserName(response.data.status);
-            if (response.data.status == "client") {
-              localStorage.setItem("userrole", response.data.status);
-              navigate("/clientdashboard");
-            } else {
-              localStorage.setItem("userrole", response.data.status);
-              navigate("/serviceproviderdashboard");
-            }
-          })
-          .catch((err) => {
-            console.error(err.message);
-          });
-      })
-      .catch((err) => {
-        console.error(err.message);
-      });
+    const newErrors = {};
+
+    // if (!name) {
+    //   newErrors.name = "Name is required";
+    // }
+
+    if (!email) {
+      newErrors.email = "Email is required";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      newErrors.email = "Invalid email address";
+    }
+
+    if (!password) {
+      newErrors.password = "Password is required";
+    } else if (password.length < 6) {
+      newErrors.password = "Password must be at least 6 characters long";
+    }
+
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length === 0) {
+      navigate("/");
+      await axios
+        .post("http://localhost:5000/api/user/login", {
+          email,
+          password,
+        })
+        .then(async (response) => {
+          console.log(response);
+          localStorage.setItem("token", response.data.token);
+          // a.setUserName(response.data.user.name);
+          console.log(response.data.user._id);
+
+          localStorage.setItem("userId", response.data.user._id);
+          axios
+            .get(
+              `http://localhost:5000/api/userstatus/${response.data.user._id}`
+            )
+            .then(async (response) => {
+              console.log(response.data.status);
+              setUserRole(response.data.status);
+              // navigate("/");
+              // a.setUserName(response.data.status);
+              if (response.data.status == "client") {
+                localStorage.setItem("userrole", response.data.status);
+                navigate("/clientdashboard");
+              } else {
+                localStorage.setItem("userrole", response.data.status);
+                navigate("/serviceproviderdashboard");
+              }
+            })
+            .catch((err) => {
+              console.error(err.message);
+            });
+        })
+        .catch((err) => {
+          console.error(err.message);
+        });
+    }
 
     // localStorage.setItem("user", JSON.stringify(finalresult.user));
 
@@ -154,7 +188,8 @@ const Login = () => {
               <Typography component="h1" variant="h5">
                 Login
               </Typography>
-              <Box component="form" noValidate sx={{ mt: 1 }}>
+
+              <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
                 <TextField
                   margin="normal"
                   required
@@ -163,6 +198,8 @@ const Login = () => {
                   label="Email Address"
                   name="email"
                   autoComplete="email"
+                  error={!!errors.email}
+                  helperText={errors.email}
                   value={email}
                   onChange={(e) => {
                     setemail(e.target.value);
@@ -176,6 +213,8 @@ const Login = () => {
                   label="Password"
                   type="password"
                   id="password"
+                  error={!!errors.password}
+                  helperText={errors.password}
                   value={password}
                   onChange={(e) => {
                     setpassword(e.target.value);
@@ -201,7 +240,8 @@ const Login = () => {
                         color: "white",
                       },
                     }}
-                    onClick={handleSubmit}
+                    // onClick={handleSubmit}
+                    type="submit"
                   >
                     Login
                   </Button>

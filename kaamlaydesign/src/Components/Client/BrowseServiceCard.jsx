@@ -34,6 +34,7 @@ const ServiceCard = ({ details }) => {
       {/*  */}
       <Box
         component={Paper}
+        elevation={6}
         sx={{
           flexGrow: 1,
           margin: 5,
@@ -90,7 +91,7 @@ const ServiceCard = ({ details }) => {
             >
               <Avatar
                 alt="Service Provider Picture"
-                src={`http://localhost:5000/${details.serviceproviderProfile.profilepicture}`}
+                src={`http://localhost:5000/${details.serviceproviderProfile?.profilepicture}`}
                 sx={{
                   width: 150,
                   height: 150,
@@ -98,7 +99,7 @@ const ServiceCard = ({ details }) => {
                   border: `3px solid ${ColorConfigs.primary}`,
                 }}
               />
-              <Typography>{details.serviceproviderProfile.name}</Typography>
+              <Typography>{details.serviceproviderName}</Typography>
               <Rating
                 name="read-only"
                 value={ratingValue}

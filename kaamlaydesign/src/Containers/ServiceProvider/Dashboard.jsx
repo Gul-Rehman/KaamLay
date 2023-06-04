@@ -10,6 +10,7 @@ import ServicePending from "../../Assets/ServicesStatusImages/servicepending.svg
 import ServiceCompleted from "../../Assets/ServicesStatusImages/servicecompleted.svg";
 import SendIcon from "@mui/icons-material/Send";
 import AddIcon from "@mui/icons-material/Add";
+import ViewAgendaIcon from "@mui/icons-material/ViewAgenda";
 
 const Dashboard = () => {
   // const [auth,setauth]=useState('');
@@ -166,10 +167,10 @@ const Dashboard = () => {
           <Button
             variant="contained"
             color="primary"
-            // onClick={() => {
-            //   navigate("/serviceproviderpostservice");
-            // }}
-            // startIcon={<AddIcon fontSize="large" />}
+            onClick={() => {
+              navigate("/serviceproviderrequestedservices");
+            }}
+            startIcon={<ViewAgendaIcon fontSize="large" />}
             sx={{
               borderRadius: 20,
               fontWeight: "bold",
@@ -181,8 +182,14 @@ const Dashboard = () => {
           </Button>
         </Stack>
       </Box>
-      <Grid container spacing={3} padding={4} height="100vh">
-        <Grid item laptops={6} position="relative">
+
+      <Grid
+        container
+        spacing={{ xs: 1, laptops: 3 }}
+        padding={{ xs: 1, mobilel: 1, laptopl: 3 }}
+        height="100vh"
+      >
+        <Grid item xs={12} tablet={12} laptops={6} position="relative">
           <Box
             component={Paper}
             width="100%"
@@ -201,16 +208,16 @@ const Dashboard = () => {
                 sx={{ position: "relative" }}
               >
                 <Typography fontSize={35}> Pending Services </Typography>
-                <Typography fontSize={15}>
+                <Typography fontSize={{ xs: 13, mobilel: 20 }}>
                   Don't keep your clients waiting any longer. Complete the
                   pending services and earn more money
                 </Typography>
               </Stack>
               <Typography
-                fontSize={180}
+                fontSize={{ xs: 100, mobilel: 180 }}
                 sx={{ position: "absolute", bottom: 0 }}
               >
-                2
+                5
               </Typography>
               <Box
                 component="img"
@@ -226,8 +233,7 @@ const Dashboard = () => {
             </Box>
           </Box>
         </Grid>
-
-        <Grid item laptops={6} position="relative">
+        <Grid item xs={12} tablet={12} laptops={6} position="relative">
           <Box
             component={Paper}
             width="100%"
@@ -246,15 +252,15 @@ const Dashboard = () => {
                 sx={{ position: "relative" }}
               >
                 <Typography fontSize={35}> Completed Services </Typography>
-                <Typography fontSize={15}>
+                <Typography fontSize={{ xs: 13, mobilel: 20 }}>
                   You have completed the services, Great Work
                 </Typography>
               </Stack>
               <Typography
-                fontSize={180}
+                fontSize={{ xs: 100, mobilel: 180 }}
                 sx={{ position: "absolute", bottom: 0 }}
               >
-                6
+                5
               </Typography>
               <Box
                 component="img"

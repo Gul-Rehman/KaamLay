@@ -76,4 +76,20 @@ router.get("/servicecategory/:type", async (req, res) => {
   }
 });
 
+router.delete("/:service_id", async (req, res) => {
+  try {
+    const serviceId = req.params.service_id;
+    const service = await Service.findByIdAndDelete(serviceId);
+
+    if (!service) {
+      return res.status(404).json({ msg: "Service Not Found" });
+    }
+
+    return res.json({ msg: "Service Deleted" });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
 module.exports = router;

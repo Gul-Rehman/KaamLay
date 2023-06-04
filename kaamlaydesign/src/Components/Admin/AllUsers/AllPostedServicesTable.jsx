@@ -9,7 +9,15 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import ColorConfigs from "../../../Configs/ColorConfigs";
 import axios from "axios";
-import { Avatar, Button } from "@mui/material";
+import {
+  Avatar,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@mui/material";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -57,13 +65,23 @@ export default function AllPostedServicesTable() {
         console.error(err);
       });
   }, []);
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
   return (
     <TableContainer component={Paper}>
       <Table>
         <TableHead>
           <TableRow>
-            <StyledTableCell>Name</StyledTableCell>
             <StyledTableCell>Avatar</StyledTableCell>
+            <StyledTableCell>Name</StyledTableCell>
+
             <StyledTableCell align="right">Service Title</StyledTableCell>
             <StyledTableCell align="right">Service Category</StyledTableCell>
             <StyledTableCell align="right">Service Id</StyledTableCell>
@@ -75,15 +93,16 @@ export default function AllPostedServicesTable() {
           {services.map((item) => (
             <StyledTableRow key={item.user.name}>
               <StyledTableCell component="th" scope="row">
-                {item.user.name}
-              </StyledTableCell>
-              <StyledTableCell component="th" scope="row">
                 <Avatar
                   alt="Remy Sharp"
-                  src={`http://localhost:5000/${item.user.profile.profilepicture}`}
+                  src={`http://localhost:5000/${item.user.profile?.profilepicture}`}
                   sx={{ width: 56, height: 56 }}
                 />
               </StyledTableCell>
+              <StyledTableCell component="th" scope="row">
+                {item.user.name}
+              </StyledTableCell>
+
               <StyledTableCell align="right">
                 {item.servicetitle}
               </StyledTableCell>
@@ -93,12 +112,34 @@ export default function AllPostedServicesTable() {
               <StyledTableCell align="right">{item._id}</StyledTableCell>
               <StyledTableCell align="right">{item.user._id}</StyledTableCell>
               <StyledTableCell align="right">
-                <Button variant="contained">Delete</Button>
+                <Button variant="contained" onClick={handleClickOpen}>
+                  Delete
+                </Button>
               </StyledTableCell>
             </StyledTableRow>
           ))}
         </TableBody>
       </Table>
+
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Confirmation"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Are You Sure, You Want To Delete That Service?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={handleClose} autoFocus>
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </TableContainer>
   );
 }

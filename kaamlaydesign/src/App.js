@@ -18,6 +18,7 @@ import {
   HomeAppliancesServices,
   ACServices,
   BookService,
+  RequestService,
 } from "./Components";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import {
@@ -36,6 +37,8 @@ import {
   ServiceProviderProfile,
   ServiceProviderPendingServices,
   AdminDashboard,
+  ServiceProviderRequestedServices,
+  ClientRequestedServices,
 } from "./Containers";
 
 import LoginContext from "./Contexts/LoginContext";
@@ -168,6 +171,17 @@ function App() {
             />
 
             <Route exact path="/acservices" element={<ACServices />} />
+            <Route exact path="/requestservice" element={<RequestService />} />
+            <Route
+              exact
+              path="/serviceproviderrequestedservices"
+              element={<ServiceProviderRequestedServices />}
+            />
+            <Route
+              exact
+              path="/clientrequestedservices"
+              element={<ClientRequestedServices />}
+            />
           </Route>
 
           <Route exact path="/profile" element={<Profile />} />

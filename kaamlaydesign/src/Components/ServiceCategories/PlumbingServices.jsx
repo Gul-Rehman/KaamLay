@@ -276,6 +276,7 @@ const PlumbingService = () => {
               contactNumber: item.contactnumber,
               serviceproviderId: item._id,
               serviceproviderProfile: item.user.profile,
+              serviceproviderName: item.user.name,
               serviceImage: item.imageUrl,
             }}
           />

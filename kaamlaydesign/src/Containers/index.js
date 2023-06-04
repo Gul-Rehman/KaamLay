@@ -14,3 +14,5 @@ export { default as CompletedServices } from "./Client/CompletedServices";
 export { default as ClientProfile } from "./Client/Profile";
 export { default as ServiceProviderProfile } from "./ServiceProvider/Profile";
 export { default as AdminDashboard } from "./Admin/Dashboard";
+export { default as ServiceProviderRequestedServices } from "./ServiceProvider/RequestedServices";
+export { default as ClientRequestedServices } from "./Client/RequestedServices";

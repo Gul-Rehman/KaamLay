@@ -8,6 +8,7 @@ import Switch from "@mui/material/Switch";
 import { Stack } from "@mui/material";
 import ColorConfigs from "../../Configs/ColorConfigs";
 import { Button } from "@mui/material";
+import { ViewAgendaIcon } from "@mui/icons-material";
 
 import ServicePending from "../../Assets/ServicesStatusImages/servicepending.svg";
 import ServiceCompleted from "../../Assets/ServicesStatusImages/servicecompleted.svg";
@@ -143,8 +144,54 @@ const Dashboard = () => {
           </Typography>
         </Stack>
       </Box> */}
-      <Grid container spacing={3} padding={4} height="100vh">
-        <Grid item laptops={6} position="relative">
+
+      <Box
+        sx={{
+          m: 5,
+        }}
+      >
+        <Stack direction="row" sx={{}}>
+          <Button
+            variant="contained"
+            color="primary"
+            sx={{
+              borderRadius: 20,
+              fontWeight: "bold",
+              fontSize: "1rem",
+            }}
+            onClick={() => {
+              navigate("/requestservice");
+            }}
+          >
+            Request Service
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            sx={{
+              borderRadius: 20,
+              fontWeight: "bold",
+              fontSize: "1rem",
+              alignSelf: "flex-end",
+              // position: "absolute",
+              // right: 1,
+            }}
+            onClick={() => {
+              navigate("/clientrequestedservices");
+            }}
+          >
+            View Requested Services
+          </Button>
+        </Stack>
+      </Box>
+
+      <Grid
+        container
+        spacing={{ xs: 1, laptops: 3 }}
+        padding={{ xs: 1, mobilel: 1, laptopl: 3 }}
+        height="100vh"
+      >
+        <Grid item xs={12} tablet={12} laptops={6} position="relative">
           <Box
             component={Paper}
             width="100%"
@@ -163,12 +210,12 @@ const Dashboard = () => {
                 sx={{ position: "relative" }}
               >
                 <Typography fontSize={35}> Booked Services </Typography>
-                <Typography fontSize={15}>
+                <Typography fontSize={{ xs: 13, mobilel: 20 }}>
                   Please wait for service provider to reach out to you.
                 </Typography>
               </Stack>
               <Typography
-                fontSize={180}
+                fontSize={{ xs: 100, mobilel: 180 }}
                 sx={{ position: "absolute", bottom: 0 }}
               >
                 5
@@ -187,7 +234,7 @@ const Dashboard = () => {
             </Box>
           </Box>
         </Grid>
-        <Grid item laptops={6} position="relative">
+        <Grid item xs={12} tablet={12} laptops={6} position="relative">
           <Box
             component={Paper}
             width="100%"
@@ -206,10 +253,12 @@ const Dashboard = () => {
                 sx={{ position: "relative" }}
               >
                 <Typography fontSize={35}> Completed Services </Typography>
-                <Typography fontSize={15}>See Your Services History</Typography>
+                <Typography fontSize={{ xs: 13, mobilel: 20 }}>
+                  See Your Services History
+                </Typography>
               </Stack>
               <Typography
-                fontSize={180}
+                fontSize={{ xs: 100, mobilel: 180 }}
                 sx={{ position: "absolute", bottom: 0 }}
               >
                 5

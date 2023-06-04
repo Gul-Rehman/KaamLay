@@ -1,10 +1,13 @@
 import React from "react";
 import { ServiceCategories } from "../../Components";
+import { Box } from "@mui/system";
 
 const BrowseServices = () => {
   return (
     <>
-      <ServiceCategories />
+      <Box marginTop={3}>
+        <ServiceCategories />
+      </Box>
     </>
   );
 };

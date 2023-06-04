@@ -22,3 +22,4 @@ export { default as AllUsers } from "./Admin/AllUsers";
 export { default as AllPostedServices } from "./Admin/AllPostedServices";
 export { default as ServiceCard } from "./Client/BrowseServiceCard";
 export { default as BookedServiceCard } from "./Client/BookedServiceCard";
+export { default as RequestService } from "./Client/RequestService";
