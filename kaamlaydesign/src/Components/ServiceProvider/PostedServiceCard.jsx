@@ -179,17 +179,35 @@ const PostedServiceCard = ({ details }) => {
                 </Typography>
               </Stack>
               <Box>
-                <img
-                  style={{
-                    objectFit: "contain",
-                    width: 150,
-                    height: 150,
-                    border: "1px solid gray",
-                    borderRadius: 5,
-                    marginTop: 4,
-                  }}
-                  src={`http://localhost:5000/${details.serviceImage}`}
-                />
+                {details.serviceImage && (
+                  <img
+                    style={{
+                      objectFit: "contain",
+                      width: 150,
+                      height: 150,
+                      border: "1px solid gray",
+                      borderRadius: 5,
+                      marginTop: 4,
+                    }}
+                    src={`http://localhost:5000/${details.serviceImage}`}
+                  />
+                )}
+                {details.serviceImages.length > 1 &&
+                  details.serviceImages.map((image) => {
+                    return (
+                      <img
+                        style={{
+                          objectFit: "contain",
+                          width: 150,
+                          height: 150,
+                          border: "1px solid gray",
+                          borderRadius: 5,
+                          marginTop: 4,
+                        }}
+                        src={`http://localhost:5000/${image}`}
+                      />
+                    );
+                  })}
                 {console.log(`http://localhost:5000/${details.serviceImage}`)}
               </Box>
             </Stack>

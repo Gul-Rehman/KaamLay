@@ -126,16 +126,6 @@ const ChatGPTMap = ({ setPinLocation }) => {
 
   return (
     <div>
-      <Stack sx={{ alignItems: "center" }}>
-        <Button
-          variant="contained"
-          onClick={handleLocationButtonClick}
-          disabled={!map}
-          sx={{}}
-        >
-          Get Location
-        </Button>
-      </Stack>
       {/* {userLocation && (
         // <div>
         //   <h3>Coordinates:</h3>
@@ -143,16 +133,27 @@ const ChatGPTMap = ({ setPinLocation }) => {
         //   <p>Longitude: {userLocation.lng}</p>
         // </div>
       )} */}
+
+      <div
+        id="map"
+        style={{ width: "100%", height: "400px", marginTop: "" }}
+      ></div>
       {userAddress && (
         <div>
           <h3>Address:</h3>
           <p>{userAddress}</p>
         </div>
       )}
-      <div
-        id="map"
-        style={{ width: "100%", height: "400px", marginTop: "" }}
-      ></div>
+      <Stack sx={{}}>
+        <Button
+          variant="contained"
+          onClick={handleLocationButtonClick}
+          disabled={!map}
+          sx={{ width: "10%", position: "absolute", bottom: 8 }}
+        >
+          Get Location
+        </Button>
+      </Stack>
     </div>
   );
 };

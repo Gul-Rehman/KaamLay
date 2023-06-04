@@ -77,6 +77,7 @@ export default function PostService() {
   const theme = createTheme();
   const [open, setOpen] = useState(false);
   const [image, setImage] = useState("");
+  const [images, setImages] = useState([]);
   // console.log(image, 12);
 
   const showSuccess = () => {
@@ -125,13 +126,18 @@ export default function PostService() {
   //   price: servicePrice,
   // };
   const onsubmit = () => {
+    console.log("files length" + images.length);
     const formData = new FormData();
+    for (let i = 0; i < images.length; i++) {
+      formData.append("files", images[i]);
+    }
     formData.append("servicetitle", serviceTitle);
     formData.append("servicecategory", serviceType);
     formData.append("servicedescription", serviceDescription);
     formData.append("contactnumber", contactnumber);
     formData.append("price", servicePrice);
-    formData.append("image", image);
+    // formData.append("image", image);
+    // formData.append("files", images);
     axios
       .post("http://localhost:5000/api/service", formData, {
         headers: {
@@ -140,8 +146,9 @@ export default function PostService() {
       })
       .then((response) => {
         showSuccess();
+
         setTimeout(() => {
-          navigate("/serviceproviderdashboard");
+          // navigate("/serviceproviderdashboard");
         }, 2000);
       })
       .catch((err) => {
@@ -153,9 +160,29 @@ export default function PostService() {
     //   navigate("/");
     // }, 2000);
   };
+  const [previewSources, setPreviewSources] = useState([]);
+  const previewFiles = (files) => {
+    const fileArray = Array.from(files);
+    Promise.all(
+      fileArray.map((file) => {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.readAsDataURL(file);
+          reader.onloadend = () => {
+            resolve(reader.result);
+          };
+          reader.onerror = reject;
+        });
+      })
+    )
+      .then((results) => {
+        setPreviewSources(results);
+      })
+      .catch((error) => console.log(error));
+  };
 
   return (
-    <ThemeProvider theme={theme}>
+    <>
       <Container
         component="main"
         maxWidth="xs"
@@ -255,12 +282,39 @@ export default function PostService() {
                 setServicePrice(event.target.value);
               }}
             />
-            <Input
+            <input
               type="file"
+              //   component={"input"}
               onChange={(e) => {
-                setImage(e.target.files[0]);
+                // setImage(e.target.files[0]);
+                // previewFile(e.target.files[0]);
+                setImages(e.target.files);
+                // e.target.files.map((item) => setImages(item));
+                previewFiles(e.target.files);
               }}
+              multiple
             />
+            {previewSources.length > 0 && (
+              <div>
+                {previewSources.map((previewSource, index) => (
+                  <Box
+                    sx={{
+                      display: "inline-block",
+                      border: "1px solid black",
+                      ml: 1,
+                    }}
+                  >
+                    <img
+                      key={index}
+                      src={previewSource}
+                      alt={`Preview ${index + 1}`}
+                      style={{ width: "100px", height: "100px" }}
+                    />
+                  </Box>
+                ))}
+              </div>
+            )}
+
             {/* 
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
@@ -296,6 +350,6 @@ export default function PostService() {
           Service Posted Successfully!
         </Alert>
       </Snackbar>
-    </ThemeProvider>
+    </>
   );
 }

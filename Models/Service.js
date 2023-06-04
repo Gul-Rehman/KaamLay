@@ -33,10 +33,12 @@ const serviceSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  imageUrl: {
-    type: String,
-    required: true,
-  },
+  imageUrls: [
+    {
+      type: String,
+      required: true,
+    },
+  ],
   date: {
     type: Date,
     default: Date.now,

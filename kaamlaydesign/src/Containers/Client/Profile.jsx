@@ -154,6 +154,7 @@ const Profile = () => {
                   type="file"
                   onChange={async (e) => {
                     formData.append("image", e.target.files[0]);
+
                     await axios
                       .post("http://localhost:5000/api/profile", formData, {
                         headers: {

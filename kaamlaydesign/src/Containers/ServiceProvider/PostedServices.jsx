@@ -197,6 +197,7 @@ const PostedServices = () => {
                   serviceproviderContactNumber: item.contactnumber,
                   serviceCharges: item.price,
                   serviceImage: item.imageUrl,
+                  serviceImages: item.imageUrls,
                 }}
               />
             </>

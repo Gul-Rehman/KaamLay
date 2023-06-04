@@ -14,7 +14,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import ColorConfigs from "../../Configs/ColorConfigs";
-import { FormControl, Stack } from "@mui/material";
+import { FormControl, Paper, Stack } from "@mui/material";
 import { Select } from "@mui/material";
 import { MenuItem } from "@mui/material";
 import { InputLabel } from "@mui/material";
@@ -189,18 +189,23 @@ export default function BookService() {
   return (
     <>
       <Container
-        component="main"
-        maxWidth="xs"
+        // component="main"
+        // maxWidth="xs"
         sx={{
           mb: 10,
+          width: "35%",
         }}
       >
         <Box
+          component={Paper}
+          elevation={4}
           sx={{
             marginTop: 8,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
+            padding: 5,
+            borderRadius: 10,
           }}
         >
           <Typography component="h1" variant="h4">

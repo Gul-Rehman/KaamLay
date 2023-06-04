@@ -5,11 +5,31 @@ const UserStatus = require("../../../Models/UserStatus");
 const auth = require("../../../Middlewares/auth");
 const Service = require("../../../Models/Service");
 const multer = require("multer");
-const upload = multer({ dest: "uploads/" });
+
+// const upload = multer({ dest: "uploads/" });
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "uploads/"); // specify the destination folder where files will be saved
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    cb(null, file.fieldname + "-" + uniqueSuffix); // define the file name
+  },
+});
+
+const upload = multer({ storage: storage });
 
 const router = express.Router();
 
-router.post("/", auth, upload.single("image"), async (req, res) => {
+router.post("/multiplefiles", upload.array("files"), (req, res) => {
+  // res.redirect("/");
+
+  const imageurl = req.files.map((file) => file.path);
+
+  res.json(imageurl);
+});
+
+router.post("/", auth, upload.array("files"), async (req, res) => {
   const {
     servicetitle,
     servicedescription,
@@ -17,26 +37,31 @@ router.post("/", auth, upload.single("image"), async (req, res) => {
     contactnumber,
     price,
   } = req.body;
-  const imageUrl = req.file.path;
+  const imageUrls = [];
+  req.files.map((item) => imageUrls.push(item.path));
+  // const imageUrls = req.files.map((file) => file.path);
+  // console.log("Input received  from frontend:" + req.files);
   const serviceDetails = {
     servicetitle,
     servicecategory,
     servicedescription,
     contactnumber,
     price,
-    imageUrl,
+    imageUrls,
   };
 
   serviceDetails.user = req.user.id;
-
-  console.log(req.body, req.file);
+  console.log(serviceDetails);
+  // console.log(req.body, req.file);
   try {
     const service = new Service(serviceDetails);
     await service.save();
+    res.send(serviceDetails);
     return res.status(200).json(service);
+    // return res.status(200).json(serviceDetails);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send("Server Error");
+    return res.status(500).send("Server Error");
   }
 });
 

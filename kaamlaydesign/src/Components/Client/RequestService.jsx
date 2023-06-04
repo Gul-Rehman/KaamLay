@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
-import { useTheme } from "@mui/material/styles";
 
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -14,7 +13,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import ColorConfigs from "../../Configs/ColorConfigs";
-import { FormControl, Stack } from "@mui/material";
+import { Dialog, DialogActions, FormControl, Paper } from "@mui/material";
 import { Select } from "@mui/material";
 import { MenuItem } from "@mui/material";
 import { InputLabel } from "@mui/material";
@@ -24,16 +23,9 @@ import Snackbar from "@mui/material/Snackbar";
 import { styled } from "@mui/material/styles";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
-import GetGeoLocation from "../GetGeoLocation";
-import GeoLocation from "../GeoLocation";
+import { Input } from "@mui/material";
 import ChatGPTMap from "../ChatGPTMap";
-
+import { Stack } from "@mui/system";
 // function Copyright(props) {
 //   return (
 //     <Typography
@@ -52,49 +44,24 @@ import ChatGPTMap from "../ChatGPTMap";
 //   );
 // }
 
-const theme = createTheme({
-  breakpoints: {
-    values: {
-      mobile: 0,
-      mobilemedium: 375,
-      tablet: 640,
-      laptop: 1024,
-      desktop: 1200,
-    },
-  },
-});
-
 const CustomizedBox = styled(Box)({
   //   marginLeft: "20px",
   //   marginRight: "20px",
   marginTop: "10px",
-
-  [theme.breakpoints.up("tablet")]: {
-    width: "100%",
-  },
-
-  [theme.breakpoints.down("tablet")]: {
-    marginBottom: "20px",
-  },
 });
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-const RequestService = () => {
-  // const handleRefresh = () => {
-  //   window.location.reload(); // Reload the entire web app
-  // };
-  const [refreshKey, setRefreshKey] = useState(0);
-
-  const handleRefresh = () => {
-    setRefreshKey((prevKey) => prevKey + 1);
-  };
-
+export default function PostService() {
+  const [previewSource, setPreviewSource] = useState("");
+  const [previewSources, setPreviewSources] = useState([]);
   const navigate = useNavigate();
   const theme = createTheme();
   const [open, setOpen] = useState(false);
+  const [image, setImage] = useState("");
+  // console.log(image, 12);
 
   const showSuccess = () => {
     setOpen(true);
@@ -126,33 +93,32 @@ const RequestService = () => {
     "Home Appliances",
     "AC Services",
     "Carpenter",
+    "Others",
   ];
 
-  //   const [serviceType, setServiceType] = useState("");
-  const [name, setName] = useState("");
-  //   const [serviceDescription, setServiceDescription] = useState("");
-  const [address, setAddress] = useState("");
+  const [serviceType, setServiceType] = useState("");
+  const [serviceTitle, setServiceTitle] = useState("");
+  const [serviceDescription, setServiceDescription] = useState("");
+  const [servicePrice, setServicePrice] = useState("");
   const [contactnumber, setContactNumber] = useState("");
-  const [serviceproviderId, setServiceProviderId] = useState("");
-  const [pinLocation, setPinLocation] = useState({
-    coordinates: {
-      latitude: "",
-      longitude: "",
-    },
-    address: "",
-  });
 
-  const data = {
-    name: name,
-    servicecategory: localStorage.getItem("servicetype"),
-    contactnumber: contactnumber,
-    address: address,
-    serviceprovider: localStorage.getItem("serviceproviderId"),
-    pinLocation,
-  };
+  // const data = {
+  //   servicetitle: serviceTitle,
+  //   servicecategory: serviceType,
+  //   servicedescription: serviceDescription,
+  //   contactnumber: contactnumber,
+  //   price: servicePrice,
+  // };
   const onsubmit = () => {
+    const formData = new FormData();
+    formData.append("servicetitle", serviceTitle);
+    formData.append("servicecategory", serviceType);
+    formData.append("servicedescription", serviceDescription);
+    formData.append("contactnumber", contactnumber);
+    formData.append("price", servicePrice);
+    formData.append("image", image);
     axios
-      .post("http://localhost:5000/api/service/bookservice", data, {
+      .post("http://localhost:5000/api/service", formData, {
         headers: {
           authtoken: localStorage.getItem("token"),
         },
@@ -172,7 +138,37 @@ const RequestService = () => {
     //   navigate("/");
     // }, 2000);
   };
+  //   For Single File
 
+  //   const previewFile = (file) => {
+  //     const reader = new FileReader();
+  //     reader.readAsDataURL(file);
+  //     reader.onloadend = () => {
+  //       setPreviewSource(reader.result);
+  //     };
+  //   };
+
+  // For Multiple Files
+
+  const previewFiles = (files) => {
+    const fileArray = Array.from(files);
+    Promise.all(
+      fileArray.map((file) => {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.readAsDataURL(file);
+          reader.onloadend = () => {
+            resolve(reader.result);
+          };
+          reader.onerror = reject;
+        });
+      })
+    )
+      .then((results) => {
+        setPreviewSources(results);
+      })
+      .catch((error) => console.log(error));
+  };
   const [openDialog, setOpenDialog] = useState(false);
 
   const handleClickOpenDialog = () => {
@@ -182,46 +178,155 @@ const RequestService = () => {
   const handleCloseDialog = () => {
     setOpenDialog(false);
   };
-  const [latitude, setLatitude] = useState("");
-  const [longitude, setLongitude] = useState("");
+  const [address, setAddress] = useState("");
 
-  const API_KEY = "AIzaSyCR4YVEYed8oq1-QWV5hGhV1kbAAwzqb9Y";
+  const [serviceproviderId, setServiceProviderId] = useState("");
+  const [pinLocation, setPinLocation] = useState({
+    coordinates: {
+      latitude: "",
+      longitude: "",
+    },
+    address: "",
+  });
   return (
     <>
       <Container
-        component="main"
-        maxWidth="xs"
+        // component="main"
+        // maxWidth="xs"
         sx={{
           mb: 10,
+          width: { xs: "60%", tablet: "60%", laptops: "40%" },
         }}
       >
         <Box
+          component={Paper}
+          elevation={4}
           sx={{
             marginTop: 8,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
+            padding: 5,
+            borderRadius: 10,
           }}
         >
-          <Typography component="h1" variant="h4">
-            Book Service
+          <Typography component="h1" variant="h5">
+            Request Service
           </Typography>
-
-          <Box component="form" noValidate sx={{ mt: 1 }}>
+          <Box
+            component="form"
+            // onSubmit={handleSubmit}
+            noValidate
+            sx={{ mt: 1 }}
+          >
             <TextField
               margin="normal"
               fullWidth
-              id="name"
-              label=" Name"
-              name="name"
               required
-              autoComplete="name"
+              id="servicetitle"
+              label=" Service Title"
+              name="servicetitle"
+              autoComplete="servicetitle"
               autoFocus
-              value={name}
+              value={serviceTitle}
               onChange={(event) => {
-                setName(event.target.value);
+                setServiceTitle(event.target.value);
               }}
             />
+            <TextField
+              margin="normal"
+              fullWidth
+              required
+              id="contactnumber"
+              label=" Contact Number"
+              name="contactnumber"
+              autoComplete="contactnumber"
+              value={contactnumber}
+              onChange={(event) => {
+                setContactNumber(event.target.value);
+              }}
+            />
+            <TextField
+              margin="normal"
+              multiline
+              rows={4}
+              fullWidth
+              required
+              label=" Service Description"
+              id="servicedescription"
+              placeholder="Describe What You Want"
+              name="servicedescription"
+              autoComplete="servicedescription"
+              value={serviceDescription}
+              onChange={(event) => {
+                setServiceDescription(event.target.value);
+              }}
+            />
+            <Typography color="primary">
+              {" "}
+              Attach Images For Better Understanding
+            </Typography>
+            <input
+              type="file"
+              //   component={"input"}
+              onChange={(e) => {
+                setImage(e.target.files[0]);
+                // previewFile(e.target.files[0]);
+                previewFiles(e.target.files);
+              }}
+              multiple
+            />
+            {previewSources.length > 0 && (
+              <div>
+                {previewSources.map((previewSource, index) => (
+                  <Box
+                    sx={{
+                      display: "inline-block",
+                      border: "1px solid black",
+                      ml: 1,
+                    }}
+                  >
+                    <img
+                      key={index}
+                      src={previewSource}
+                      alt={`Preview ${index + 1}`}
+                      style={{ width: "100px", height: "100px" }}
+                    />
+                  </Box>
+                ))}
+              </div>
+            )}
+            {previewSource && (
+              <img
+                src={previewSource}
+                alt="Preview"
+                style={{ width: "200px" }}
+              />
+            )}
+
+            <CustomizedBox sx={{}}>
+              <FormControl fullWidth>
+                <InputLabel id="demo-simple-select-label" required>
+                  Service Type
+                </InputLabel>
+                <Select
+                  id="servicetype"
+                  value={serviceType}
+                  label="Service Type"
+                  onChange={(event) => {
+                    setServiceType(event.target.value);
+                  }}
+                >
+                  {servicetypesValues.map((item) => {
+                    return (
+                      <MenuItem value={item} key={item}>
+                        {item}
+                      </MenuItem>
+                    );
+                  })}
+                </Select>
+              </FormControl>
+            </CustomizedBox>
             <TextField
               margin="normal"
               multiline
@@ -262,35 +367,10 @@ const RequestService = () => {
               aria-describedby="alert-dialog-description"
               fullWidth
             >
-              {/* <GeoLocation
-                setLatitude2={setLatitude}
-                setLongitude2={setLongitude}
-                setPinLocation={setPinLocation}
-              /> */}
-              {/* <Box
-                sx={{
-                  marginTop: 10,
-                }}
-              > */}
               <Box sx={{ width: "100%" }}>
                 <ChatGPTMap setPinLocation={setPinLocation} />
               </Box>
-              {/* <ChatGPTMap /> */}
-              {/* </Box> */}
 
-              {/* <DialogTitle id="alert-dialog-title">
-                {"Use Google's location service?"}
-              </DialogTitle>
-              <DialogContent>
-                {/* <DialogContentText id="alert-dialog-description">
-                  Let Google help apps determine location. This means sending
-                  anonymous location data to Google, even when no apps are
-                  running.
-                </DialogContentText> */}
-              {/* </DialogContent> */}
-              {/* <h1>{pinLocation.coordinates.latitude}</h1>
-              <h1>{pinLocation.coordinates.longitude}</h1>
-              <h1>{pinLocation.address}</h1> */}
               <DialogActions>
                 <Button
                   variant="contained"
@@ -311,26 +391,6 @@ const RequestService = () => {
               </DialogActions>
             </Dialog>
 
-            <TextField
-              margin="normal"
-              fullWidth
-              required
-              id="contactnumber"
-              label=" Contact Number"
-              name="contactnumber"
-              autoComplete="contactnumber"
-              value={contactnumber}
-              onChange={(event) => {
-                setContactNumber(event.target.value);
-              }}
-            />
-
-            {/* 
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            /> */}
-
             <Button
               //   type="submit"
               fullWidth
@@ -338,17 +398,9 @@ const RequestService = () => {
               sx={{ mt: 3, mb: 2, backgroundColor: `${ColorConfigs.primary}` }}
               onClick={onsubmit}
             >
-              Book Service
+              Request Service
             </Button>
           </Box>
-          {/* <Box
-            sx={{
-              width: "100%",
-              height: 600,
-            }}
-          >
-            <ChatGPTMap apiKey={API_KEY} />
-          </Box> */}
         </Box>
       </Container>
       <Snackbar
@@ -365,11 +417,9 @@ const RequestService = () => {
           severity="success"
           sx={{ width: "100%", fontSize: "16pt" }}
         >
-          Service Booked Successfully!
+          Service Requested Successfully!
         </Alert>
       </Snackbar>
     </>
   );
-};
-
-export default RequestService;
+}
