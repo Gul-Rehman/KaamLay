@@ -19,6 +19,7 @@ import { useNavigate } from "react-router";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { NavLink } from "react-router-dom";
 import axios from "axios";
+import AdminPrivateComponent from "./Admin/AdminPrivateComponent";
 
 function Copyright(props) {
   {
@@ -52,39 +53,27 @@ const Login = () => {
     return !emailRegex.test(email);
   };
 
-  // const handleSubmit = async () => {
-  //   const result = await fetch("http://localhost:5000/api/user/login", {
-  //     method: "post",
-  //     body: JSON.stringify({ email, password }),
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //   });
-  //   const finalresult = await result.json();
-  //   console.log(finalresult);
-  //   // localStorage.setItem("user", JSON.stringify(finalresult.user));
-  //   localStorage.setItem("token", finalresult);
-  //   if (finalresult) {
-  //     console.log(finalresult);
-  //     navigate("/clientdashboard");
-  //   }
-  // };
   const [userRole, setUserRole] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const newErrors = {};
+    // if (email == "admin" && password == "gulgrs3569") {
+    //   <AdminPrivateComponent auth={true} />;
+    // } else {
+    //   <AdminPrivateComponent auth={false} />;
+    // }
 
     // if (!name) {
     //   newErrors.name = "Name is required";
     // }
 
-    if (!email) {
-      newErrors.email = "Email is required";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      newErrors.email = "Invalid email address";
-    }
+    // if (!email) {
+    //   newErrors.email = "Email is required";
+    // } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    //   newErrors.email = "Invalid email address";
+    // }
 
     if (!password) {
       newErrors.password = "Password is required";
@@ -95,13 +84,13 @@ const Login = () => {
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length === 0) {
-      navigate("/");
       await axios
         .post("http://localhost:5000/api/user/login", {
           email,
           password,
         })
         .then(async (response) => {
+          console.log(response);
           console.log(response);
           localStorage.setItem("token", response.data.token);
           // a.setUserName(response.data.user.name);
@@ -117,7 +106,10 @@ const Login = () => {
               setUserRole(response.data.status);
               // navigate("/");
               // a.setUserName(response.data.status);
-              if (response.data.status == "client") {
+              if (response.data.user.name == "admin") {
+                localStorage.setItem("userrole", "admin");
+                navigate("/admindashboard");
+              } else if (response.data.status == "client") {
                 localStorage.setItem("userrole", response.data.status);
                 navigate("/clientdashboard");
               } else {

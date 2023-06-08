@@ -11,12 +11,6 @@ import ColorConfigs from "../../../Configs/ColorConfigs";
 import axios from "axios";
 import { Avatar, Button } from "@mui/material";
 
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
-
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: `${ColorConfigs.primary}`,
@@ -50,74 +44,57 @@ export default function AllUsersTable() {
         console.error(err);
       });
   }, []);
-  const [open, setOpen] = useState(false);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+  // const deleteUser = (userId) => {
+  //   axios
+  //     .delete(`http://localhost:5000/api/user/deleteuser/${userId}`)
+  //     .then((response) => {
+  //       console.log(response);
+  //     })
+  //     .catch((err) => {
+  //       console.error(err);
+  //     });
+  // };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
-
+  const [userId, setUserId] = useState("");
   return (
-    <TableContainer component={Paper}>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <StyledTableCell>Avatar</StyledTableCell>
-            <StyledTableCell>Name</StyledTableCell>
+    <>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <StyledTableCell>Avatar</StyledTableCell>
+              <StyledTableCell>Name</StyledTableCell>
 
-            <StyledTableCell align="right">User Id</StyledTableCell>
-            <StyledTableCell align="right">Actions</StyledTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {users.map((item) => {
-            return (
-              <StyledTableRow key={item.name}>
-                <StyledTableCell component="th" scope="row">
-                  <Avatar
-                    alt="Remy Sharp"
-                    src={`http://localhost:5000/${item.profile?.profilepicture}`}
-                    sx={{ width: 56, height: 56 }}
-                  />
-                </StyledTableCell>
-                <StyledTableCell component="th" scope="row">
-                  {item.name}
-                </StyledTableCell>
+              <StyledTableCell align="right">User Id</StyledTableCell>
+              <StyledTableCell align="right">Actions</StyledTableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {users.map((item) => {
+              return (
+                <StyledTableRow key={item.name}>
+                  <StyledTableCell component="th" scope="row">
+                    <Avatar
+                      alt="Remy Sharp"
+                      src={`http://localhost:5000/${item.profile?.profilepicture}`}
+                      sx={{ width: 56, height: 56 }}
+                    />
+                  </StyledTableCell>
+                  <StyledTableCell component="th" scope="row">
+                    {item.name}
+                  </StyledTableCell>
 
-                <StyledTableCell align="right">{item._id}</StyledTableCell>
-                <StyledTableCell align="right">
-                  <Button variant="contained" onClick={handleClickOpen}>
-                    Delete
-                  </Button>
-                </StyledTableCell>
-              </StyledTableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
-
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">{"Confirmation"}</DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Are You Sure, You Want To Delete That User?
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleClose} autoFocus>
-            Delete
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </TableContainer>
+                  <StyledTableCell align="right">{item._id}</StyledTableCell>
+                  <StyledTableCell align="right">
+                    <Button variant="contained">Delete</Button>
+                  </StyledTableCell>
+                </StyledTableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </>
   );
 }

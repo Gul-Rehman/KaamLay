@@ -54,9 +54,10 @@ router.post("/", auth, upload.array("files"), async (req, res) => {
   console.log(serviceDetails);
   // console.log(req.body, req.file);
   try {
+    
     const service = new Service(serviceDetails);
     await service.save();
-    res.send(serviceDetails);
+
     return res.status(200).json(service);
     // return res.status(200).json(serviceDetails);
   } catch (err) {

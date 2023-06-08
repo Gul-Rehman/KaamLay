@@ -1,6 +1,6 @@
 import { Button } from "@mui/material";
 import { Stack } from "@mui/system";
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
 const GetLocationWithCoordinates = () => {
   const [map, setMap] = useState(null);

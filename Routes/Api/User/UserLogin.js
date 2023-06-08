@@ -6,15 +6,13 @@ const config = require("config");
 const jwt = require("jsonwebtoken");
 const auth = require("../../../Middlewares/auth");
 const jwtSecret = config.get("jwtSecret");
+const Admin = require("../../../Models/admin");
 
 const router = express.Router();
 
 router.post(
   "/",
-  [
-    check("email", "Please Enter A Valid Email Address").isEmail(),
-    check("password", "Password Is Required").exists(),
-  ],
+
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -48,6 +46,45 @@ router.post(
     }
   }
 );
+
+router.post("/adminlogin", async (req, res) => {
+  // const errors = validationResult(req);
+  // if (!errors.isEmpty()) {
+  //   return res.status(400).json({ errors: errors.array() });
+  // }
+  let { username, password } = req.body;
+  try {
+    let user = await Admin.findOne({ username: "admin" });
+    if (!user) {
+      return res
+        .status(400)
+        .json({ msg: "From collection Invalid Credentials" });
+    }
+    const payload = {
+      user: {
+        id: user.id,
+      },
+    };
+    let verifycredentials;
+    if (password == user.password) {
+      verifycredentials = true;
+    }
+
+    if (!verifycredentials) {
+      return res.status(400).json({ msg: "Invalid Credentials" });
+    }
+    jwt.sign(payload, jwtSecret, (err, token) => {
+      if (err) {
+        return res.status(400).json({ msg: "Token Not Generated" });
+      } else {
+        return res.send({ user, token });
+      }
+    });
+  } catch (err) {
+    console.error(err.message);
+    res.status(400).json({ msg: "Server Error" });
+  }
+});
 
 router.get("/", auth, async (req, res) => {
   const userid = req.user.id;

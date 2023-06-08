@@ -1,82 +1,20 @@
-import React, { useEffect, useState } from "react";
-import Avatar from "@mui/material/Avatar";
+import React, { useState } from "react";
+import GetGeoLocationWithCoordinates from "../GetLocationWithCoordinates";
 import Button from "@mui/material/Button";
-import { useTheme } from "@mui/material/styles";
-
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import ColorConfigs from "../../Configs/ColorConfigs";
-import { FormControl, Paper, Stack } from "@mui/material";
-import { Select } from "@mui/material";
-import { MenuItem } from "@mui/material";
-import { InputLabel } from "@mui/material";
+import { Paper, Stack } from "@mui/material";
 import MuiAlert from "@mui/material/Alert";
 import Snackbar from "@mui/material/Snackbar";
-
-import { styled } from "@mui/material/styles";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
-import GetGeoLocation from "../GetGeoLocation";
-import GeoLocation from "../GeoLocation";
+
 import ChatGPTMap from "../ChatGPTMap";
-
-// function Copyright(props) {
-//   return (
-//     <Typography
-//       variant="body2"
-//       color="text.secondary"
-//       align="center"
-//       {...props}
-//     >
-//       {"Copyright © "}
-//       <Link color="inherit" href="https://mui.com/">
-//         Your Website
-//       </Link>{" "}
-//       {new Date().getFullYear()}
-//       {"."}
-//     </Typography>
-//   );
-// }
-
-const theme = createTheme({
-  breakpoints: {
-    values: {
-      mobile: 0,
-      mobilemedium: 375,
-      tablet: 640,
-      laptop: 1024,
-      desktop: 1200,
-    },
-  },
-});
-
-const CustomizedBox = styled(Box)({
-  //   marginLeft: "20px",
-  //   marginRight: "20px",
-  marginTop: "10px",
-
-  [theme.breakpoints.up("tablet")]: {
-    width: "100%",
-  },
-
-  [theme.breakpoints.down("tablet")]: {
-    marginBottom: "20px",
-  },
-});
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -93,7 +31,7 @@ export default function BookService() {
   };
 
   const navigate = useNavigate();
-  const theme = createTheme();
+
   const [open, setOpen] = useState(false);
 
   const showSuccess = () => {
@@ -128,9 +66,8 @@ export default function BookService() {
     "Carpenter",
   ];
 
-  //   const [serviceType, setServiceType] = useState("");
   const [name, setName] = useState("");
-  //   const [serviceDescription, setServiceDescription] = useState("");
+
   const [address, setAddress] = useState("");
   const [contactnumber, setContactNumber] = useState("");
   const [serviceproviderId, setServiceProviderId] = useState("");
@@ -267,16 +204,6 @@ export default function BookService() {
               aria-describedby="alert-dialog-description"
               fullWidth
             >
-              {/* <GeoLocation
-                setLatitude2={setLatitude}
-                setLongitude2={setLongitude}
-                setPinLocation={setPinLocation}
-              /> */}
-              {/* <Box
-                sx={{
-                  marginTop: 10,
-                }}
-              > */}
               <Box sx={{ width: "100%" }}>
                 <ChatGPTMap setPinLocation={setPinLocation} />
               </Box>
@@ -355,6 +282,7 @@ export default function BookService() {
             <ChatGPTMap apiKey={API_KEY} />
           </Box> */}
         </Box>
+        {/* <GetGeoLocationWithCoordinates /> */}
       </Container>
       <Snackbar
         open={open}

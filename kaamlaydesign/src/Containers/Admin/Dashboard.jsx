@@ -4,8 +4,15 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import { AllPostedServices, AllUsers, TotalUsers } from "../../Components";
+import {
+  AllPostedServices,
+  AllRequestedServices,
+  AllUsers,
+  TotalUsers,
+} from "../../Components";
 import axios from "axios";
+import { Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -46,7 +53,7 @@ export default function AdminDashboard() {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
+  const navigate = useNavigate();
   return (
     <Box
       sx={{
@@ -68,13 +75,40 @@ export default function AdminDashboard() {
       >
         <Tab label="All Users" />
         <Tab label="All Posted Services" />
+        <Tab label="All Requested Services" />
+        <Button
+          variant="contained"
+          sx={{
+            alignSelf: "flex-end",
+          }}
+        >
+          {" "}
+          Logout
+        </Button>
       </Tabs>
       <Box sx={{ width: "100%" }}>
+        <Button
+          variant="contained"
+          sx={{
+            position: "absolute",
+            right: 25,
+            top: 25,
+          }}
+          onClick={() => {
+            localStorage.clear();
+            navigate("/");
+          }}
+        >
+          Logout
+        </Button>
         <TabPanel value={value} index={0}>
           <AllUsers />
         </TabPanel>
         <TabPanel value={value} index={1}>
           <AllPostedServices />
+        </TabPanel>
+        <TabPanel value={value} index={2}>
+          <AllRequestedServices />
         </TabPanel>
       </Box>
     </Box>

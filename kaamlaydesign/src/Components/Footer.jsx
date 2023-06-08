@@ -35,7 +35,7 @@ const Footer = () => {
     <>
       <Box
         sx={{
-          marginTop: -30,
+          marginTop: -35,
         }}
       >
         <Box

@@ -22,6 +22,7 @@ const bookserviceSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+
   address: {
     type: String,
     required: true,
@@ -45,6 +46,10 @@ const bookserviceSchema = new mongoose.Schema({
       type: String,
       required: true,
     },
+  },
+  status: {
+    type: String,
+    default: "pending",
   },
   date: {
     type: Date,

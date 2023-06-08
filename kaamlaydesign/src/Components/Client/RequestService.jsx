@@ -1,17 +1,14 @@
 import React, { useState } from "react";
-import Avatar from "@mui/material/Avatar";
+
 import Button from "@mui/material/Button";
 
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
+
 import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+
 import ColorConfigs from "../../Configs/ColorConfigs";
 import { Dialog, DialogActions, FormControl, Paper } from "@mui/material";
 import { Select } from "@mui/material";
@@ -26,27 +23,8 @@ import { useNavigate } from "react-router-dom";
 import { Input } from "@mui/material";
 import ChatGPTMap from "../ChatGPTMap";
 import { Stack } from "@mui/system";
-// function Copyright(props) {
-//   return (
-//     <Typography
-//       variant="body2"
-//       color="text.secondary"
-//       align="center"
-//       {...props}
-//     >
-//       {"Copyright © "}
-//       <Link color="inherit" href="https://mui.com/">
-//         Your Website
-//       </Link>{" "}
-//       {new Date().getFullYear()}
-//       {"."}
-//     </Typography>
-//   );
-// }
 
 const CustomizedBox = styled(Box)({
-  //   marginLeft: "20px",
-  //   marginRight: "20px",
   marginTop: "10px",
 });
 
@@ -58,10 +36,8 @@ export default function PostService() {
   const [previewSource, setPreviewSource] = useState("");
   const [previewSources, setPreviewSources] = useState([]);
   const navigate = useNavigate();
-  const theme = createTheme();
+
   const [open, setOpen] = useState(false);
-  const [image, setImage] = useState("");
-  // console.log(image, 12);
 
   const showSuccess = () => {
     setOpen(true);
@@ -74,15 +50,6 @@ export default function PostService() {
 
     setOpen(false);
   };
-
-  //   const handleSubmit = (event) => {
-  //     event.preventDefault();
-  //     const data = new FormData(event.currentTarget);
-  //     console.log({
-  //       email: data.get("email"),
-  //       password: data.get("password"),
-  //     });
-  //   };
 
   const servicetypesValues = [
     "Plumbing",
@@ -99,26 +66,44 @@ export default function PostService() {
   const [serviceType, setServiceType] = useState("");
   const [serviceTitle, setServiceTitle] = useState("");
   const [serviceDescription, setServiceDescription] = useState("");
-  const [servicePrice, setServicePrice] = useState("");
+
   const [contactnumber, setContactNumber] = useState("");
 
-  // const data = {
-  //   servicetitle: serviceTitle,
-  //   servicecategory: serviceType,
-  //   servicedescription: serviceDescription,
-  //   contactnumber: contactnumber,
-  //   price: servicePrice,
-  // };
+  const [openDialog, setOpenDialog] = useState(false);
+
+  const handleClickOpenDialog = () => {
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    console.log(pinLocation);
+    setOpenDialog(false);
+  };
+  const [address, setAddress] = useState("");
+
+  const [pinLocation, setPinLocation] = useState({
+    coordinates: {
+      latitude: "",
+      longitude: "",
+    },
+    address: "",
+  });
+
+  const [images, setImages] = useState([]);
   const onsubmit = () => {
     const formData = new FormData();
+    for (let i = 0; i < images.length; i++) {
+      formData.append("files", images[i]);
+    }
     formData.append("servicetitle", serviceTitle);
-    formData.append("servicecategory", serviceType);
-    formData.append("servicedescription", serviceDescription);
     formData.append("contactnumber", contactnumber);
-    formData.append("price", servicePrice);
-    formData.append("image", image);
+    formData.append("servicedescription", serviceDescription);
+    formData.append("servicecategory", serviceType);
+    formData.append("address", address);
+    formData.append("pinLocation", JSON.stringify(pinLocation));
+
     axios
-      .post("http://localhost:5000/api/service", formData, {
+      .post("http://localhost:5000/api/service/requestservice", formData, {
         headers: {
           authtoken: localStorage.getItem("token"),
         },
@@ -126,28 +111,13 @@ export default function PostService() {
       .then((response) => {
         showSuccess();
         setTimeout(() => {
-          navigate("/serviceproviderdashboard");
+          navigate("/clientdashboard");
         }, 2000);
       })
       .catch((err) => {
         console.error(err.message);
       });
-    // console.log(data);
-    // showSuccess();
-    // setTimeout(() => {
-    //   navigate("/");
-    // }, 2000);
   };
-  //   For Single File
-
-  //   const previewFile = (file) => {
-  //     const reader = new FileReader();
-  //     reader.readAsDataURL(file);
-  //     reader.onloadend = () => {
-  //       setPreviewSource(reader.result);
-  //     };
-  //   };
-
   // For Multiple Files
 
   const previewFiles = (files) => {
@@ -169,30 +139,10 @@ export default function PostService() {
       })
       .catch((error) => console.log(error));
   };
-  const [openDialog, setOpenDialog] = useState(false);
 
-  const handleClickOpenDialog = () => {
-    setOpenDialog(true);
-  };
-
-  const handleCloseDialog = () => {
-    setOpenDialog(false);
-  };
-  const [address, setAddress] = useState("");
-
-  const [serviceproviderId, setServiceProviderId] = useState("");
-  const [pinLocation, setPinLocation] = useState({
-    coordinates: {
-      latitude: "",
-      longitude: "",
-    },
-    address: "",
-  });
   return (
     <>
       <Container
-        // component="main"
-        // maxWidth="xs"
         sx={{
           mb: 10,
           width: { xs: "60%", tablet: "60%", laptops: "40%" },
@@ -268,10 +218,9 @@ export default function PostService() {
             </Typography>
             <input
               type="file"
-              //   component={"input"}
               onChange={(e) => {
-                setImage(e.target.files[0]);
-                // previewFile(e.target.files[0]);
+                setImages(e.target.files);
+
                 previewFiles(e.target.files);
               }}
               multiple
@@ -356,13 +305,10 @@ export default function PostService() {
                 inputProps={{ readOnly: true }}
                 value={pinLocation.address}
               />
-              {/* <h4>{pinLocation.coordinates.latitude},</h4>
-              <h4>{pinLocation.coordinates.longitude}</h4> */}
             </Stack>
 
             <Dialog
               open={openDialog}
-              // onClose={handleCloseDialog}
               aria-labelledby="alert-dialog-title"
               aria-describedby="alert-dialog-description"
               fullWidth
@@ -395,7 +341,11 @@ export default function PostService() {
               //   type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2, backgroundColor: `${ColorConfigs.primary}` }}
+              sx={{
+                mt: 3,
+                mb: 2,
+                backgroundColor: `${ColorConfigs.primary}`,
+              }}
               onClick={onsubmit}
             >
               Request Service

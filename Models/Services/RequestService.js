@@ -1,15 +1,14 @@
 const mongoose = require("mongoose");
-const Service = require("../Service");
 
 const requestserviceSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "user",
   },
-  //   status: {
-  //     type: mongoose.Schema.Types.ObjectId,
-  //     ref: "userstatus",
-  //   },
+  profile: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "profile",
+  },
   servicetitle: {
     type: String,
     required: true,
@@ -18,11 +17,11 @@ const requestserviceSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  servicedesciption: {
+  servicedescription: {
     type: String,
     required: true,
   },
-  imagesUrl: [
+  imageUrls: [
     {
       type: String,
       required: true,
@@ -59,4 +58,4 @@ const requestserviceSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("bookservices", bookserviceSchema);
+module.exports = mongoose.model("requestedservices", requestserviceSchema);

@@ -148,7 +148,7 @@ export default function PostService() {
         showSuccess();
 
         setTimeout(() => {
-          // navigate("/serviceproviderdashboard");
+          navigate("/serviceproviderdashboard");
         }, 2000);
       })
       .catch((err) => {
@@ -284,12 +284,9 @@ export default function PostService() {
             />
             <input
               type="file"
-              //   component={"input"}
               onChange={(e) => {
-                // setImage(e.target.files[0]);
-                // previewFile(e.target.files[0]);
                 setImages(e.target.files);
-                // e.target.files.map((item) => setImages(item));
+
                 previewFiles(e.target.files);
               }}
               multiple

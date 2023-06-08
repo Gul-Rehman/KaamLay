@@ -5,16 +5,6 @@ import { Button, TextField } from "@mui/material";
 import AllUsersTable from "./AllUsers/AllUsersTable";
 
 const AllUsers = () => {
-  // useEffect(() => {
-  //   // axios
-  //   //   .get("http://localhost:5000/api/allusers/users")
-  //   //   .then((response) => {
-  //   //     console.log(response);
-  //   //   })
-  //   //   .catch((err) => {
-  //   //     console.log(err);
-  //   //   });
-  // });
   return (
     <>
       <Box>

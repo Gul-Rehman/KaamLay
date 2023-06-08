@@ -43,7 +43,7 @@ router.post("/", auth, upload.single("image"), async (req, res) => {
             return;
           }
 
-          return res.json(user);
+          // return res.json(user);
           // console.log("User profile picture updated successfully");
         }
       );
@@ -54,7 +54,7 @@ router.post("/", auth, upload.single("image"), async (req, res) => {
     return res.status(200).json(profile);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send("Server Error");
+    return res.status(500).send("Server Error");
   }
 });
 

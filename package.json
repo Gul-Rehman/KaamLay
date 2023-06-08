@@ -13,6 +13,7 @@
   "author": "Gul Rehman",
   "license": "ISC",
   "dependencies": {
+    "@emailjs/browser": "^3.11.0",
     "axios": "^1.3.4",
     "bcryptjs": "^2.4.3",
     "concurrently": "^7.6.0",
