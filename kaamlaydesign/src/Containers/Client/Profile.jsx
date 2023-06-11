@@ -10,7 +10,7 @@ import Grid from "@mui/material/Grid";
 import UserRole from "../../Components/UserRole";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
-import ChatGPTMap from "../../Components/ChatGPTMap";
+import GetPinLocationMap from "../../Components/GetPinLocationMap";
 const Profile = () => {
   const [imageUrl, setImageUrl] = useState("");
   const [name, setName] = useState("");
@@ -308,35 +308,10 @@ const Profile = () => {
                 aria-describedby="alert-dialog-description"
                 fullWidth
               >
-                {/* <GeoLocation
-                setLatitude2={setLatitude}
-                setLongitude2={setLongitude}
-                setPinLocation={setPinLocation}
-              /> */}
-                {/* <Box
-                sx={{
-                  marginTop: 10,
-                }}
-              > */}
                 <Box sx={{ width: "100%" }}>
-                  <ChatGPTMap setPinLocation={setPinLocation} />
+                  <GetPinLocationMap setPinLocation={setPinLocation} />
                 </Box>
-                {/* <ChatGPTMap /> */}
-                {/* </Box> */}
 
-                {/* <DialogTitle id="alert-dialog-title">
-                {"Use Google's location service?"}
-              </DialogTitle>
-              <DialogContent>
-                {/* <DialogContentText id="alert-dialog-description">
-                  Let Google help apps determine location. This means sending
-                  anonymous location data to Google, even when no apps are
-                  running.
-                </DialogContentText> */}
-                {/* </DialogContent> */}
-                {/* <h1>{pinLocation.coordinates.latitude}</h1>
-              <h1>{pinLocation.coordinates.longitude}</h1>
-              <h1>{pinLocation.address}</h1> */}
                 <DialogActions>
                   <Button
                     variant="contained"
@@ -405,11 +380,6 @@ const Profile = () => {
               component={Paper}
               width="100%"
               padding={4}
-              sx={
-                {
-                  // backgroundColor: `#fb8e4f`,
-                }
-              }
               borderRadius={5}
               elevation={5}
             >

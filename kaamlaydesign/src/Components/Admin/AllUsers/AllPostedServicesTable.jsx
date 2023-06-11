@@ -10,15 +10,7 @@ import Paper from "@mui/material/Paper";
 import ColorConfigs from "../../../Configs/ColorConfigs";
 import axios from "axios";
 import TablePagination from "@mui/material/TablePagination";
-import {
-  Avatar,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-} from "@mui/material";
+import { Avatar, Button } from "@mui/material";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -54,17 +46,9 @@ export default function AllPostedServicesTable() {
         console.error(err);
       });
   }, []);
-  const [open, setOpen] = useState(false);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-  const [page, setPage] = React.useState(1);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -90,59 +74,42 @@ export default function AllPostedServicesTable() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {services.map((item) => (
-              <StyledTableRow key={item.user.name}>
-                <StyledTableCell component="th" scope="row">
-                  <Avatar
-                    alt="Remy Sharp"
-                    src={`http://localhost:5000/${item.user.profile?.profilepicture}`}
-                    sx={{ width: 56, height: 56 }}
-                  />
-                </StyledTableCell>
-                <StyledTableCell component="th" scope="row">
-                  {item.user.name}
-                </StyledTableCell>
+            {services
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((item) => (
+                <StyledTableRow key={item.user.name}>
+                  <StyledTableCell component="th" scope="row">
+                    <Avatar
+                      alt="Remy Sharp"
+                      src={`http://localhost:5000/${item.user.profile?.profilepicture}`}
+                      sx={{ width: 56, height: 56 }}
+                    />
+                  </StyledTableCell>
+                  <StyledTableCell component="th" scope="row">
+                    {item.user.name}
+                  </StyledTableCell>
 
-                <StyledTableCell align="right">
-                  {item.servicetitle}
-                </StyledTableCell>
-                <StyledTableCell align="right">
-                  {item.servicecategory}
-                </StyledTableCell>
-                <StyledTableCell align="right">{item._id}</StyledTableCell>
-                <StyledTableCell align="right">{item.user._id}</StyledTableCell>
-                <StyledTableCell align="right">
-                  <Button variant="contained" onClick={handleClickOpen}>
-                    Delete
-                  </Button>
-                </StyledTableCell>
-              </StyledTableRow>
-            ))}
+                  <StyledTableCell align="right">
+                    {item.servicetitle}
+                  </StyledTableCell>
+                  <StyledTableCell align="right">
+                    {item.servicecategory}
+                  </StyledTableCell>
+                  <StyledTableCell align="right">{item._id}</StyledTableCell>
+                  <StyledTableCell align="right">
+                    {item.user._id}
+                  </StyledTableCell>
+                  <StyledTableCell align="right">
+                    <Button variant="contained">Delete</Button>
+                  </StyledTableCell>
+                </StyledTableRow>
+              ))}
           </TableBody>
         </Table>
-
-        <Dialog
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-        >
-          <DialogTitle id="alert-dialog-title">{"Confirmation"}</DialogTitle>
-          <DialogContent>
-            <DialogContentText id="alert-dialog-description">
-              Are You Sure, You Want To Delete That Service?
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose}>Cancel</Button>
-            <Button onClick={handleClose} autoFocus>
-              Delete
-            </Button>
-          </DialogActions>
-        </Dialog>
       </TableContainer>
       <TablePagination
         component="div"
+        rowsPerPageOptions={[5, 10, 20]}
         count={services.length}
         page={page}
         onPageChange={handleChangePage}

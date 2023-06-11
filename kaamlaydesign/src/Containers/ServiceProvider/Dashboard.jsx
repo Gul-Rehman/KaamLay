@@ -11,6 +11,7 @@ import ServiceCompleted from "../../Assets/ServicesStatusImages/servicecompleted
 import SendIcon from "@mui/icons-material/Send";
 import AddIcon from "@mui/icons-material/Add";
 import ViewAgendaIcon from "@mui/icons-material/ViewAgenda";
+import ReverseGeocodingMap from "../../Components/ReverseGeocodingMap";
 
 const Dashboard = () => {
   // const [auth,setauth]=useState('');
@@ -52,8 +53,45 @@ const Dashboard = () => {
         console.error(err.message);
       });
     // console.log("Hello " + localStorage.getItem("userrole"));
-  }, []);
 
+    axios
+      .get(
+        `http://localhost:5000/api/getservices/getserviceproviderpendingservices/${localStorage.getItem(
+          "userId"
+        )}`
+      )
+      .then((response) => {
+        // console.log(response.data);
+        setPendingServices(response.data);
+
+        console.log(response.data);
+
+        // setServices(response.data);
+      })
+      .catch((err) => {
+        console.error(err.message);
+      });
+
+    axios
+      .get(
+        `http://localhost:5000/api/getservices/getserviceprovidercompletedservices/${localStorage.getItem(
+          "userId"
+        )}`
+      )
+      .then((response) => {
+        // console.log(response.data);
+        setCompletedServices(response.data);
+
+        console.log(response.data);
+
+        // setServices(response.data);
+      })
+      .catch((err) => {
+        console.error(err.message);
+      });
+  }, []);
+  const [pendingServices, setPendingServices] = useState([]);
+  const [completedServices, setCompletedServices] = useState([]);
   const handleChange = (event) => {
     setChecked(event.target.checked);
     if (event.target.checked) {
@@ -117,28 +155,6 @@ const Dashboard = () => {
 
   return (
     <>
-      {/* <Box
-        sx={{
-          backgroundColor: `${ColorConfigs.lightorange}`,
-        }}
-      >
-        <Stack
-          direction="row"
-          sx={{
-            alignItems: "center",
-          }}
-        >
-          <Typography>Switch Role</Typography>
-          <Switch
-            checked={checked}
-            onChange={handleChange}
-            inputProps={{ "aria-label": "controlled" }}
-          />
-          <Typography>
-            Currently : {localStorage.getItem("userrole")}
-          </Typography>
-        </Stack>
-      </Box> */}
       <Box
         sx={{
           m: 5,
@@ -197,9 +213,13 @@ const Dashboard = () => {
             sx={{
               position: "relative",
               backgroundColor: "#fba56c",
+              cursor: "pointer",
             }}
             borderRadius={5}
             elevation={5}
+            onClick={() => {
+              navigate("/serviceproviderpendingservices");
+            }}
           >
             <Box padding={3}>
               <Stack
@@ -217,7 +237,7 @@ const Dashboard = () => {
                 fontSize={{ xs: 100, mobilel: 180 }}
                 sx={{ position: "absolute", bottom: 0 }}
               >
-                5
+                {pendingServices.length}
               </Typography>
               <Box
                 component="img"
@@ -241,9 +261,13 @@ const Dashboard = () => {
             sx={{
               position: "relative",
               backgroundColor: "#fba56c",
+              cursor: "pointer",
             }}
             borderRadius={5}
             elevation={5}
+            onClick={() => {
+              navigate("/serviceprovidercompletedservices");
+            }}
           >
             <Box padding={3}>
               <Stack
@@ -260,7 +284,7 @@ const Dashboard = () => {
                 fontSize={{ xs: 100, mobilel: 180 }}
                 sx={{ position: "absolute", bottom: 0 }}
               >
-                5
+                {completedServices.length}
               </Typography>
               <Box
                 component="img"
@@ -277,6 +301,9 @@ const Dashboard = () => {
           </Box>
         </Grid>
       </Grid>
+      <Box sx={{ width: "100%", height: 400 }}>
+        <ReverseGeocodingMap latitude={40.714224} longitude={-73.961452} />
+      </Box>
     </>
   );
 };

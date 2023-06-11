@@ -8,9 +8,10 @@ export { default as ClientCompletedServices } from "./Client/CompletedServices";
 export { default as ServiceProviderDashboard } from "./ServiceProvider/Dashboard";
 export { default as ServiceProviderPostedServices } from "./ServiceProvider/PostedServices";
 export { default as ServiceProviderPendingServices } from "./ServiceProvider/PendingServices";
+export { default as ServiceProviderCompletedServices } from "./ServiceProvider/CompletedServices";
 export { default as BrowseServices } from "./Client/BrowseServices";
 export { default as BookedServices } from "./Client/BookedServices";
-export { default as CompletedServices } from "./Client/CompletedServices";
+
 export { default as ClientProfile } from "./Client/Profile";
 export { default as ServiceProviderProfile } from "./ServiceProvider/Profile";
 export { default as AdminDashboard } from "./Admin/Dashboard";

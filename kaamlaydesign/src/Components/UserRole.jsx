@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Box, Stack, Typography, Switch } from "@mui/material";
 
@@ -8,6 +8,22 @@ import { useNavigate } from "react-router-dom";
 const UserRole = () => {
   const navigate = useNavigate();
   const [checked, setChecked] = useState("");
+  useEffect(() => {
+    axios
+      .get(
+        `http://localhost:5000/api/userstatus/${localStorage.getItem("userId")}`
+      )
+      .then((response) => {
+        console.log(response);
+        localStorage.setItem("userrole", response.data.status);
+        if (response.data.status == "serviceprovider") {
+          setChecked(true);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, []);
   const handleChange = (event) => {
     setChecked(event.target.checked);
     if (event.target.checked) {

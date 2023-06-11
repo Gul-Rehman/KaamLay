@@ -12,9 +12,6 @@ import {
 } from "@mui/material";
 import { Stack } from "@mui/system";
 
-// import FormControlLabel from '@mui/material/FormControlLabel';
-// import Checkbox from '@mui/material/Checkbox';
-
 import { useNavigate } from "react-router";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { NavLink } from "react-router-dom";
@@ -59,21 +56,21 @@ const Login = () => {
     e.preventDefault();
 
     const newErrors = {};
-    // if (email == "admin" && password == "gulgrs3569") {
-    //   <AdminPrivateComponent auth={true} />;
-    // } else {
-    //   <AdminPrivateComponent auth={false} />;
-    // }
+    if (email == "admin" && password == "gulgrs3569") {
+      <AdminPrivateComponent auth={true} />;
+    } else {
+      <AdminPrivateComponent auth={false} />;
+    }
 
     // if (!name) {
     //   newErrors.name = "Name is required";
     // }
 
-    // if (!email) {
-    //   newErrors.email = "Email is required";
-    // } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    //   newErrors.email = "Invalid email address";
-    // }
+    if (!email) {
+      newErrors.email = "Email is required";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      newErrors.email = "Invalid email address";
+    }
 
     if (!password) {
       newErrors.password = "Password is required";
@@ -93,7 +90,7 @@ const Login = () => {
           console.log(response);
           console.log(response);
           localStorage.setItem("token", response.data.token);
-          // a.setUserName(response.data.user.name);
+
           console.log(response.data.user._id);
 
           localStorage.setItem("userId", response.data.user._id);
@@ -104,8 +101,7 @@ const Login = () => {
             .then(async (response) => {
               console.log(response.data.status);
               setUserRole(response.data.status);
-              // navigate("/");
-              // a.setUserName(response.data.status);
+
               if (response.data.user.name == "admin") {
                 localStorage.setItem("userrole", "admin");
                 navigate("/admindashboard");
@@ -125,13 +121,6 @@ const Login = () => {
           console.error(err.message);
         });
     }
-
-    // localStorage.setItem("user", JSON.stringify(finalresult.user));
-
-    // if (result) {
-    //   console.log(result);
-    //   navigate("/clientdashboard");
-    // }
   };
 
   const theme = createTheme();
@@ -212,10 +201,7 @@ const Login = () => {
                     setpassword(e.target.value);
                   }}
                 />
-                {/* <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
-              /> */}
+
                 <Stack direction="row" sx={{}}>
                   <Button
                     variant="contained"
@@ -232,7 +218,6 @@ const Login = () => {
                         color: "white",
                       },
                     }}
-                    // onClick={handleSubmit}
                     type="submit"
                   >
                     Login
@@ -249,21 +234,7 @@ const Login = () => {
                     Not Have An Account? Signup
                   </Link>
                 </Stack>
-                {/* <Grid container>
-                <Grid item xs>
-                  <Link href="#" variant="body2">
-                    Forgot password?
-                  </Link>
-                </Grid>
-                <Grid item>
-                  <Link href="#" variant="body2">
-                    {"Don't have an account? Sign Up"}
-                  </Link>
-                  {/* <h2>{name}</h2>
-                  <h2>{email}</h2>
-                  <h2>{password}</h2> */}
-                {/* </Grid>
-              </Grid> */}
+
                 <Copyright sx={{ mt: 5 }} />
               </Box>
             </Box>

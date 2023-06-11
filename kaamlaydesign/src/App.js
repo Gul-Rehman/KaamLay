@@ -8,7 +8,6 @@ import {
   PrivateComponent,
   Login,
   Sections,
-  Profile,
   ServiceProviderPostService,
   PlumbingServices,
   ElectricianServices,
@@ -41,9 +40,9 @@ import {
   AdminDashboard,
   ServiceProviderRequestedServices,
   ClientRequestedServices,
+  ServiceProviderCompletedServices,
 } from "./Containers";
 
-import LoginContext from "./Contexts/LoginContext";
 import PlumbingService from "./Components/ServiceCategories/PlumbingServices";
 import AdminLogin from "./Components/AdminLogin";
 import Layout from "./Components/Layout";
@@ -64,19 +63,8 @@ import AdminPrivateComponent from "./Components/Admin/AdminPrivateComponent";
 // });
 
 function App() {
-  const [showProfile, setShowProfile] = useState(true);
-  const [username, setUserName] = useState("Context Username Gul Rehman");
-
-  const data = {
-    username,
-    showProfile,
-    setShowProfile,
-    setUserName,
-  };
-
   return (
     <>
-      {/* <LoginContext.Provider value={data}> */}
       <BrowserRouter>
         <Routes>
           <Route element={<Layout />}>
@@ -126,6 +114,11 @@ function App() {
                 exact
                 path="/serviceproviderpendingservices"
                 element={<ServiceProviderPendingServices />}
+              />
+              <Route
+                exact
+                path="/serviceprovidercompletedservices"
+                element={<ServiceProviderCompletedServices />}
               />
               <Route
                 exact
@@ -194,8 +187,6 @@ function App() {
                 path="/clientrequestedservices"
                 element={<ClientRequestedServices />}
               />
-
-              <Route exact path="/profile" element={<Profile />} />
             </Route>
 
             <Route exact path="/login" element={<Login />} />
@@ -209,9 +200,6 @@ function App() {
           <Route exact path="*" element={<PageNotFound />} />
         </Routes>
       </BrowserRouter>
-
-      {/* </LoginContext.Provider>
-      </ThemeProvider> */}
     </>
   );
 }

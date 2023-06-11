@@ -8,6 +8,7 @@ import { Stack } from "@mui/system";
 import ColorConfigs from "../../Configs/ColorConfigs";
 import { Button } from "@mui/material";
 import { styled } from "@mui/material";
+import BrowseServiceCard from "../Client/BrowseServiceCard";
 
 const CustomizedButton = styled(Button)({
   backgroundColor: `${ColorConfigs.primary}`,
@@ -45,147 +46,48 @@ const HomeAppliancesServices = () => {
 
   const [services, setServices] = useState([]);
   return (
-    <Box
-      sx={{
-        mb: 10,
-      }}
-    >
-      {services.map((item) => {
-        return (
-          <Box
-            component={Paper}
-            elevation={8}
-            sx={{
-              margin: 5,
-              padding: 3,
-              border: `2px solid ${ColorConfigs.primary}`,
-              borderRadius: 4,
-              // boxShadow: 7,
-              // backgroundColor: `${ColorConfigs.lightorange}`,
-              // backgroundColor: "white",
-            }}
-          >
-            <Stack>
-              <Stack direction="row">
-                <Typography
-                  sx={{
-                    fontSize: 40,
-                    color: `${ColorConfigs.primary}`,
-                  }}
-                >
-                  {item.servicetitle}
-                </Typography>
-              </Stack>
-              <Stack direction="row">
-                <Typography
-                  sx={{
-                    fontSize: 20,
-                    color: "GrayText",
-                  }}
-                >
-                  {item.servicedescription}
-                </Typography>
-              </Stack>
-              <Stack direction="row" justifyContent="space-between">
-                <Stack>
-                  <Stack direction="row" sx={{ mt: 3 }}>
-                    <Typography
-                      sx={{
-                        fontSize: 15,
-                        color: "black",
-                      }}
-                    >
-                      Service Category:
-                    </Typography>
+    <>
+      {services.length <= 0 ? (
+        <Box
+          sx={{
+            display: "flex",
 
-                    <Typography
-                      sx={{
-                        fontSize: 15,
-                        color: "GrayText",
-                      }}
-                    >
-                      {item.servicecategory}
-                    </Typography>
-                  </Stack>
-                  <Stack direction="row" sx={{ mt: 1 }}>
-                    <Typography
-                      sx={{
-                        fontSize: 15,
-                        color: "black",
-                      }}
-                    >
-                      Contact Number:
-                    </Typography>
-                    <Typography
-                      sx={{
-                        fontSize: 15,
-                        color: "GrayText",
-                      }}
-                    >
-                      {item.contactnumber}
-                    </Typography>
-                  </Stack>
-
-                  <Stack direction="row" sx={{ mt: 1 }}>
-                    <Typography
-                      sx={{
-                        fontSize: 15,
-                        color: "black",
-                      }}
-                    >
-                      Price:
-                    </Typography>
-                    <Typography
-                      sx={{
-                        fontSize: 15,
-                        color: "GrayText",
-                      }}
-                    >
-                      {item.price}
-                    </Typography>
-                  </Stack>
-                </Stack>
-                <Stack>
-                  <CustomizedButton
-                    // key={item.user._id}
-                    onClick={() => {
-                      localStorage.setItem("serviceproviderId", item._id);
-                      localStorage.setItem("servicetype", "plumbing");
-                      navigate("/clientbookservice");
-                    }}
-                  >
-                    {" "}
-                    Book Service
-                  </CustomizedButton>
-                  <CustomizedButton
-                    // key={item.user._id}
-                    onClick={() => {
-                      localStorage.setItem("serviceproviderId", item._id);
-                      localStorage.setItem("servicetype", "plumbing");
-                      // navigate("/clientbookservice");
-                    }}
-                  >
-                    {" "}
-                    Edit Service
-                  </CustomizedButton>
-                  <CustomizedButton
-                    // key={item.user._id}
-                    onClick={() => {
-                      localStorage.setItem("serviceproviderId", item._id);
-                      localStorage.setItem("servicetype", "plumbing");
-                      // navigate("/clientbookservice");
-                    }}
-                  >
-                    {" "}
-                    Cancel Service
-                  </CustomizedButton>
-                </Stack>
-              </Stack>
-            </Stack>
-          </Box>
-        );
-      })}
-    </Box>
+            height: "90vh",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Typography fontSize={50}>
+            There Are No Posted Services To Show
+          </Typography>
+        </Box>
+      ) : (
+        <Box
+          sx={{
+            mb: 10,
+          }}
+        >
+          {services.map((item) => {
+            return (
+              <BrowseServiceCard
+                details={{
+                  serviceTitle: item.servicetitle,
+                  serviceDescription: item.servicedescription,
+                  serviceCharges: item.price,
+                  serviceType: item.servicecategory,
+                  contactNumber: item.contactnumber,
+                  serviceId: item._id,
+                  serviceproviderId: item.user._id,
+                  serviceproviderProfile: item.user.profile,
+                  serviceproviderName: item.user.name,
+                  serviceImage: item.imageUrls,
+                }}
+              />
+            );
+          })}
+        </Box>
+      )}
+    </>
   );
 };
 

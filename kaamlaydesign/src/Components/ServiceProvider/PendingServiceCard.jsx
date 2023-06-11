@@ -14,6 +14,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import ReverseGeocodingMap from "../ReverseGeocodingMap";
 const CustomizedButton = styled(Button)({
   backgroundColor: `${ColorConfigs.primary}`,
   borderRadius: 8,
@@ -28,7 +29,7 @@ const CustomizedButton = styled(Button)({
   },
 });
 
-const BookedServiceCard = ({ details }) => {
+const PendingServiceCard = ({ details }) => {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -40,9 +41,41 @@ const BookedServiceCard = ({ details }) => {
   };
 
   // const navigate = useNavigate();
-  console.log("Hello From Card Component");
+  console.log("Hello From Pending Service Card Component");
   const navigate = useNavigate();
   const [ratingValue, setRatingValue] = useState(4);
+  const [openDialog, setOpenDialog] = useState(false);
+
+  const handleClickOpenDialog = () => {
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
+
+  const [openCancelConfirmationDialog, setOpenCancelConfirmationDialog] =
+    useState(false);
+
+  const handleClickOpenCancelConfirmationDialog = () => {
+    setOpenCancelConfirmationDialog(true);
+  };
+
+  const closeCancelConfirmationDialog = () => {
+    setOpenCancelConfirmationDialog(false);
+  };
+  const [
+    openCompletionConfirmationDialog,
+    setOpenCompletionConfirmationDialog,
+  ] = useState(false);
+
+  const handleClickOpenCompletionConfirmationDialog = () => {
+    setOpenCompletionConfirmationDialog(true);
+  };
+
+  const closeCompletionConfirmationDialog = () => {
+    setOpenCompletionConfirmationDialog(false);
+  };
   return (
     <>
       <Box
@@ -197,7 +230,7 @@ const BookedServiceCard = ({ details }) => {
                           color: "black",
                         }}
                       >
-                        Service Provider Contact Number:
+                        My Contact Number:
                       </Typography>
                       <Typography
                         sx={{
@@ -238,7 +271,7 @@ const BookedServiceCard = ({ details }) => {
                           color: "black",
                         }}
                       >
-                        Your Name:
+                        Client Name:
                       </Typography>
                       <Typography
                         sx={{
@@ -256,7 +289,7 @@ const BookedServiceCard = ({ details }) => {
                           color: "black",
                         }}
                       >
-                        Your Contact Number:
+                        Client Contact Number:
                       </Typography>
                       <Typography
                         sx={{
@@ -274,7 +307,7 @@ const BookedServiceCard = ({ details }) => {
                           color: "black",
                         }}
                       >
-                        Your Address:
+                        Client Address:
                       </Typography>
                       <Typography
                         sx={{
@@ -285,6 +318,9 @@ const BookedServiceCard = ({ details }) => {
                         {details.clientAddress}
                       </Typography>
                     </Stack>
+                    <Button variant="contained" onClick={handleClickOpenDialog}>
+                      View Client Pin Location
+                    </Button>
                   </Stack>
                 </Stack>
               </Stack>
@@ -304,27 +340,9 @@ const BookedServiceCard = ({ details }) => {
               justifyContent: "center",
             }}
           >
-            <CustomizedButton
-              sx={
-                {
-                  // float: "right",
-                  // position: "absolute",
-                  // bottom: 1,
-                  // right: 1,
-                }
-              }
-              // key={item.user._id}
-              onClick={() => {
-                // localStorage.setItem(
-                //   "serviceproviderId",
-                //   details.serviceproviderId
-                // );
-                // localStorage.setItem("servicetype", "plumbing");
-                // navigate("/clientbookservice");
-              }}
-            >
+            <CustomizedButton onClick={handleClickOpenCancelConfirmationDialog}>
               {" "}
-              Edit Service
+              Cancel Service
             </CustomizedButton>
             <CustomizedButton
               sx={{
@@ -335,23 +353,86 @@ const BookedServiceCard = ({ details }) => {
                 // right: 1,
               }}
               // key={item.user._id}
-              onClick={() => {
-                // localStorage.setItem(
-                //   "serviceproviderId",
-                //   details.serviceproviderId
-                // );
-                // localStorage.setItem("servicetype", "plumbing");
-                // navigate("/clientbookservice");
-              }}
+              onClick={handleClickOpenCompletionConfirmationDialog}
             >
-              {" "}
-              Cancel Service
+              Service Completed
             </CustomizedButton>
           </Grid>
         </Grid>
       </Box>
+      <Dialog
+        open={openDialog}
+        // onClose={handleCloseDialog}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+        fullWidth
+      >
+        <Box sx={{ width: "100%", height: 400 }}>
+          <ReverseGeocodingMap
+            latitude={details.clientPinLocation.coordinates.latitude}
+            longitude={details.clientPinLocation.coordinates.longitude}
+          />
+        </Box>
+
+        <DialogActions>
+          <Button variant="contained" onClick={handleCloseDialog}>
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog
+        open={openCancelConfirmationDialog}
+        // onClose={handleCloseDialog}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+        // fullWidth
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Cancel Confirmation"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Are You Sure? You Want To Canel Pending Service?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button variant="contained" onClick={closeCancelConfirmationDialog}>
+            Cancel
+          </Button>
+          <Button variant="contained" onClick={closeCancelConfirmationDialog}>
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog
+        open={openCompletionConfirmationDialog}
+        // onClose={handleCloseDialog}
+
+        // fullWidth
+      >
+        <DialogTitle>{"Service Completion Confirmation"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            By Confirming This You Are Assuring That This Service Is Completed
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            variant="contained"
+            onClick={closeCompletionConfirmationDialog}
+          >
+            Cancel
+          </Button>
+          <Button
+            variant="contained"
+            onClick={closeCompletionConfirmationDialog}
+          >
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 };
 
-export default BookedServiceCard;
+export default PendingServiceCard;

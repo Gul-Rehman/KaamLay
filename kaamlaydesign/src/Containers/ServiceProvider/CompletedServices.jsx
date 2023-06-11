@@ -1,21 +1,27 @@
-import { Typography } from "@mui/material";
+import { CircularProgress, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { ClientCompletedServiceCard } from "../../Components";
+import {
+  CompletedServiceCard,
+  PendingServiceCard,
+  ServiceProviderCompletedServiceCard,
+} from "../../Components";
 
 const CompletedServices = () => {
+  const [serviceCount, setServiceCount] = useState(0);
   useEffect(() => {
+    // setShowCircularProgress(true);
     axios
       .get(
-        `http://localhost:5000/api/getservices/getclientcompletedservices/${localStorage.getItem(
+        `http://localhost:5000/api/getservices/getserviceprovidercompletedservices/${localStorage.getItem(
           "userId"
         )}`
       )
       .then((response) => {
         // console.log(response.data);
         setCompletedServices(response.data);
-        // setShowCircularProgress(false);
+        setShowCircularProgress(false);
         console.log(response.data);
 
         // setServices(response.data);
@@ -24,28 +30,44 @@ const CompletedServices = () => {
         console.error(err.message);
       });
   }, []);
-
   const [completedServices, setCompletedServices] = useState([]);
+  const [showCircularProgress, setShowCircularProgress] = useState(true);
+
   return (
     <>
-      {completedServices.length <= 0 ? (
+      {showCircularProgress && (
         <Box
           sx={{
-            height: "100vh",
             display: "flex",
-            justifyContent: "center",
             alignItems: "center",
+            justifyContent: "center",
           }}
         >
-          <Typography variant="h3">
-            There Are No Completed Services To Show
-          </Typography>
+          <CircularProgress />
         </Box>
+      )}
+      {completedServices.length <= 0 ? (
+        <>
+          <Box
+            sx={{
+              height: "100vh",
+              width: "100%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Typography variant="h3">
+              {" "}
+              There Are No Completed Services
+            </Typography>
+          </Box>
+        </>
       ) : (
         completedServices?.map((item) => {
           return (
             <>
-              <ClientCompletedServiceCard
+              <ServiceProviderCompletedServiceCard
                 details={{
                   serviceTitle: item.serviceId ? (
                     item.serviceId.servicetitle

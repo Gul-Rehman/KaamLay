@@ -3,13 +3,16 @@ import { Box } from "@mui/material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Typography } from "@mui/material";
-import { Paper } from "@mui/material";
-import { Stack } from "@mui/system";
+
 import ColorConfigs from "../../Configs/ColorConfigs";
-// import { useNavigate } from "react-router-dom";
+
 import { Button } from "@mui/material";
 import { styled } from "@mui/material";
-import { BookedServiceCard } from "../../Components";
+import {
+  BookedServiceCard,
+  ClientBookedServiceCard,
+  ClientCBookedServiceCard,
+} from "../../Components";
 
 const CustomizedButton = styled(Button)({
   backgroundColor: `${ColorConfigs.primary}`,
@@ -27,52 +30,19 @@ const CustomizedButton = styled(Button)({
 
 const BookedServices = () => {
   const navigate = useNavigate();
-  const [serviceType, setServiceType] = useState("");
-  const [serviceTitle, setServiceTitle] = useState("");
-  const [serviceDescription, setServiceDescription] = useState("");
-  // const [servicePrice, setServicePrice] = useState("");
-  // const [contactnumber, setContactNumber] = useState("");
-  // const [serviceproviderId, setServiceProviderId] = useState("");
-
-  const [serviceprovidername, setServiceProviderName] = useState("");
-  const [serviceproviderphonenumber, setserviceproviderPhoneNumber] =
-    useState("");
-  const [serviceprice, setServicePrice] = useState("");
 
   // client information variables
-  const [clientName, setClientName] = useState("");
-  const [clientcontactnumber, setClientContactNumber] = useState("");
-  const [clientaddress, setClientAddress] = useState("");
 
   useEffect(() => {
     axios
       .get(
-        `http://localhost:5000/api/service/bookservice/${localStorage.getItem(
+        `http://localhost:5000/api/getservices/getclientpendingservices/${localStorage.getItem(
           "userId"
         )}`
       )
       .then((response) => {
         console.log(response.data);
-        // console.log("Service Provider Name" + response.data);
-        let fetcheddata = response.data.map((item) => {
-          // setServiceProviderId(item);
-          // setServiceProviderName
-          // console.log("Service Provider Name" + item);
-
-          // console.log(JSON.stringify(item)); //{"id":"007","name":"James Bond"}
-          // if (item.hasOwnProperty("serviceprovider")) {
-          //   // console.log(item.serviceprovider);
-          //   // setServiceProviderName();
-          //   //007
-          // }
-
-          return item;
-        });
-        // console.log("Fetched Ids " + fetcheddata);
-        // setServiceProviderId(JSON.stringify(ids));
-        // console.log(serviceproviderId);
         setServices(response.data);
-        // console.log(services);
       })
       .catch((err) => {
         console.error(err.message);
@@ -84,9 +54,19 @@ const BookedServices = () => {
   // console.log(services);
   return (
     <>
-      {services.length == 0 ? (
-        <Box>
-          <Typography>There Are No Completed Services To Show</Typography>
+      {services.length <= 0 ? (
+        <Box
+          sx={{
+            display: "flex",
+
+            height: "90vh",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Typography fontSize={50}>
+            There Are No Booked Services To Show
+          </Typography>
         </Box>
       ) : (
         <Box
@@ -94,24 +74,42 @@ const BookedServices = () => {
             mb: 10,
           }}
         >
-          {services.map((item) => {
+          {services?.map((item) => {
             return (
-              <BookedServiceCard
+              <ClientBookedServiceCard
                 details={{
-                  serviceTitle: item.serviceId.servicetitle,
-                  serviceDescription: item.serviceId.servicedescription,
-                  serviceCategory: item.serviceId.servicecategory,
-                  serviceproviderName: item.serviceId.user.name,
-                  serviceproviderPicture:
-                    item.serviceId.user.profile.profilepicture,
-
-                  serviceproviderContactNumber: item.serviceId.contactnumber,
-                  serviceCharges: item.serviceId.price,
+                  serviceTitle: item.serviceId ? (
+                    item.serviceId.servicetitle
+                  ) : (
+                    <Typography
+                      fontFamily={"DenseLetters"}
+                      color={"red"}
+                      fontSize={30}
+                    >
+                      Service Deleted By Service Provider
+                    </Typography>
+                  ),
+                  serviceDescription: item.serviceId
+                    ? item.serviceId.servicedescription
+                    : "",
+                  serviceCategory: item.serviceId
+                    ? item.serviceId.servicecategory
+                    : "",
+                  serviceproviderName: item.serviceId
+                    ? item.serviceId.user.name
+                    : "",
+                  serviceproviderPicture: item.serviceId
+                    ? item.serviceId.user.profile.profilepicture
+                    : "",
+                  serviceproviderContactNumber: item.serviceId
+                    ? item.serviceId.contactnumber
+                    : "",
+                  serviceCharges: item.serviceId ? item.serviceId.price : "",
                   clientName: item.name,
                   clientContactNumber: item.contactnumber,
                   clientAddress: item.address,
                   serviceproviderId: item._id,
-                  serviceImage: item.serviceId.imageUrl,
+                  serviceImages: item.serviceId ? item.serviceId.imageUrls : "",
                 }}
               />
             );

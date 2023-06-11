@@ -12,53 +12,72 @@ import { ViewAgendaIcon } from "@mui/icons-material";
 
 import ServicePending from "../../Assets/ServicesStatusImages/servicepending.svg";
 import ServiceCompleted from "../../Assets/ServicesStatusImages/servicecompleted.svg";
-import GeoLocation from "../../Components/GeoLocation";
-import Map from "../../Components/MyMap";
-import MyMap from "../../Components/MyMap";
-import AnotherChatGPTMap from "../../Components/AnotherChatGPTMap";
 
 const Dashboard = () => {
-  // const [auth,setauth]=useState('');
-  // useEffect(()=>{
-  //   setauth(localStorage.getItem("user"));
-  // })
-
-  // a.setUserName("Logged In");
   const navigate = useNavigate();
   const [name, setName] = useState("");
   const token = localStorage.getItem("token");
   const [checked, setChecked] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   useEffect(() => {
-    // const userrole = JSON.parse(localStorage.getItem("userrole"));
     if (localStorage.getItem("userrole") == "client") {
       setChecked(false);
       console.log("user role client");
-      // localStorage.setItem("userrole", "client");
     } else {
       setChecked(true);
       console.log("user role service provider");
-      // localStorage.setItem("userrole", "serviceprovider");
     }
     axios
       .get(
         `http://localhost:5000/api/profile/${localStorage.getItem("userId")}`
       )
       .then((response) => {
-        // console.log(response.data);
         response.data.map((item) => {
           setImageUrl(item.profilepicture);
           localStorage.setItem("imageUrl", item.profilepicture);
         });
 
         console.log("url" + imageUrl);
+      })
+      .catch((err) => {
+        console.error(err.message);
+      });
+
+    axios
+      .get(
+        `http://localhost:5000/api/getservices/getclientpendingservices/${localStorage.getItem(
+          "userId"
+        )}`
+      )
+      .then((response) => {
+        // console.log(response.data);
+        setPendingServices(response.data);
+
+        console.log(response.data);
 
         // setServices(response.data);
       })
       .catch((err) => {
         console.error(err.message);
       });
-    // console.log("Hello " + localStorage.getItem("userrole"));
+
+    axios
+      .get(
+        `http://localhost:5000/api/getservices/getclientcompletedservices/${localStorage.getItem(
+          "userId"
+        )}`
+      )
+      .then((response) => {
+        // console.log(response.data);
+        setCompletedServices(response.data);
+
+        console.log(response.data);
+
+        // setServices(response.data);
+      })
+      .catch((err) => {
+        console.error(err.message);
+      });
   }, []);
 
   const handleChange = (event) => {
@@ -120,31 +139,11 @@ const Dashboard = () => {
       });
   }, []);
 
+  const [pendingServices, setPendingServices] = useState([]);
+  const [completedServices, setCompletedServices] = useState([]);
+
   return (
     <>
-      {/* <Box
-        sx={{
-          backgroundColor: `${ColorConfigs.lightorange}`,
-        }}
-      >
-        <Stack
-          direction="row"
-          sx={{
-            alignItems: "center",
-          }}
-        >
-          <Typography>Switch Role</Typography>
-          <Switch
-            checked={checked}
-            onChange={handleChange}
-            inputProps={{ "aria-label": "controlled" }}
-          />
-          <Typography>
-            Currently : {localStorage.getItem("userrole")}
-          </Typography>
-        </Stack>
-      </Box> */}
-
       <Box
         sx={{
           m: 5,
@@ -173,8 +172,6 @@ const Dashboard = () => {
               fontWeight: "bold",
               fontSize: "1rem",
               alignSelf: "flex-end",
-              // position: "absolute",
-              // right: 1,
             }}
             onClick={() => {
               navigate("/clientrequestedservices");
@@ -199,9 +196,13 @@ const Dashboard = () => {
             sx={{
               position: "relative",
               backgroundColor: "#fba56c",
+              cursor: "pointer",
             }}
             borderRadius={5}
             elevation={5}
+            onClick={() => {
+              navigate("/clientbookedservices");
+            }}
           >
             <Box padding={3}>
               <Stack
@@ -218,14 +219,13 @@ const Dashboard = () => {
                 fontSize={{ xs: 100, mobilel: 180 }}
                 sx={{ position: "absolute", bottom: 0 }}
               >
-                5
+                {pendingServices.length}
               </Typography>
               <Box
                 component="img"
                 sx={{
                   height: 200,
                   width: 300,
-
                   float: "right",
                 }}
                 alt="Pending Services Icon"
@@ -242,9 +242,13 @@ const Dashboard = () => {
             sx={{
               position: "relative",
               backgroundColor: "#fba56c",
+              cursor: "pointer",
             }}
             borderRadius={5}
             elevation={5}
+            onClick={() => {
+              navigate("/clientcompletedservices");
+            }}
           >
             <Box padding={3}>
               <Stack
@@ -261,7 +265,7 @@ const Dashboard = () => {
                 fontSize={{ xs: 100, mobilel: 180 }}
                 sx={{ position: "absolute", bottom: 0 }}
               >
-                5
+                {completedServices.length}
               </Typography>
               <Box
                 component="img"

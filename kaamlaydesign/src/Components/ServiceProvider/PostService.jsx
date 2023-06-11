@@ -1,17 +1,14 @@
 import React, { useState } from "react";
-import Avatar from "@mui/material/Avatar";
+
 import Button from "@mui/material/Button";
 
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
+
 import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+
 import ColorConfigs from "../../Configs/ColorConfigs";
 import { FormControl } from "@mui/material";
 import { Select } from "@mui/material";
@@ -20,53 +17,8 @@ import { InputLabel } from "@mui/material";
 import MuiAlert from "@mui/material/Alert";
 import Snackbar from "@mui/material/Snackbar";
 
-import { styled } from "@mui/material/styles";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { Input } from "@mui/material";
-// function Copyright(props) {
-//   return (
-//     <Typography
-//       variant="body2"
-//       color="text.secondary"
-//       align="center"
-//       {...props}
-//     >
-//       {"Copyright © "}
-//       <Link color="inherit" href="https://mui.com/">
-//         Your Website
-//       </Link>{" "}
-//       {new Date().getFullYear()}
-//       {"."}
-//     </Typography>
-//   );
-// }
-
-const theme = createTheme({
-  breakpoints: {
-    values: {
-      mobile: 0,
-      mobilemedium: 375,
-      tablet: 640,
-      laptop: 1024,
-      desktop: 1200,
-    },
-  },
-});
-
-const CustomizedBox = styled(Box)({
-  //   marginLeft: "20px",
-  //   marginRight: "20px",
-  marginTop: "10px",
-
-  [theme.breakpoints.up("tablet")]: {
-    width: "100%",
-  },
-
-  [theme.breakpoints.down("tablet")]: {
-    marginBottom: "20px",
-  },
-});
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -74,11 +26,10 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 
 export default function PostService() {
   const navigate = useNavigate();
-  const theme = createTheme();
+
   const [open, setOpen] = useState(false);
-  const [image, setImage] = useState("");
+
   const [images, setImages] = useState([]);
-  // console.log(image, 12);
 
   const showSuccess = () => {
     setOpen(true);
@@ -92,15 +43,6 @@ export default function PostService() {
     setOpen(false);
   };
 
-  //   const handleSubmit = (event) => {
-  //     event.preventDefault();
-  //     const data = new FormData(event.currentTarget);
-  //     console.log({
-  //       email: data.get("email"),
-  //       password: data.get("password"),
-  //     });
-  //   };
-
   const servicetypesValues = [
     "Plumbing",
     "Car Wash",
@@ -110,6 +52,245 @@ export default function PostService() {
     "Home Appliances",
     "AC Services",
     "Carpenter",
+    "Others",
+  ];
+
+  const cities = [
+    "Islamabad",
+    "Ahmed Nager",
+    "Ahmadpur East",
+    "Ali Khan",
+    "Alipur",
+    "Arifwala",
+    "Attock",
+    "Bhera",
+    "Bhalwal",
+    "Bahawalnagar",
+    "Bahawalpur",
+    "Bhakkar",
+    "Burewala",
+    "Chillianwala",
+    "Chakwal",
+    "Chichawatni",
+    "Chiniot",
+    "Chishtian",
+    "Daska",
+    "Darya Khan",
+    "Dera Ghazi",
+    "Dhaular",
+    "Dina",
+    "Dinga",
+    "Dipalpur",
+    "Faisalabad",
+    "Fateh Jhang",
+    "Ghakhar Mandi",
+    "Gojra",
+    "Gujranwala",
+    "Gujrat",
+    "Gujar Khan",
+    "Hafizabad",
+    "Haroonabad",
+    "Hasilpur",
+    "Haveli",
+    "Lakha",
+    "Jalalpur",
+    "Jattan",
+    "Jampur",
+    "Jaranwala",
+    "Jhang",
+    "Jhelum",
+    "Kalabagh",
+    "Karor Lal",
+    "Kasur",
+    "Kamalia",
+    "Kamoke",
+    "Khanewal",
+    "Khanpur",
+    "Kharian",
+    "Khushab",
+    "Kot Adu",
+    "Jauharabad",
+    "Lahore",
+    "Lalamusa",
+    "Layyah",
+    "Liaquat Pur",
+    "Lodhran",
+    "Malakwal",
+    "Mamoori",
+    "Mailsi",
+    "Mandi Bahauddin",
+    "mian Channu",
+    "Mianwali",
+    "Multan",
+    "Murree",
+    "Muridke",
+    "Mianwali Bangla",
+    "Muzaffargarh",
+    "Narowal",
+    "Okara",
+    "Renala Khurd",
+    "Pakpattan",
+    "Pattoki",
+    "Pir Mahal",
+    "Qaimpur",
+    "Qila Didar",
+    "Rabwah",
+    "Raiwind",
+    "Rajanpur",
+    "Rahim Yar",
+    "Rawalpindi",
+    "Sadiqabad",
+    "Safdarabad",
+    "Sahiwal",
+    "Sangla Hill",
+    "Sarai Alamgir",
+    "Sargodha",
+    "Shakargarh",
+    "Sheikhupura",
+    "Sialkot",
+    "Sohawa",
+    "Soianwala",
+    "Siranwali",
+    "Talagang",
+    "Taxila",
+    "Toba Tek",
+    "Vehari",
+    "Wah Cantonment",
+    "Wazirabad",
+    "Badin",
+    "Bhirkan",
+    "Rajo Khanani",
+    "Chak",
+    "Dadu",
+    "Digri",
+    "Diplo",
+    "Dokri",
+    "Ghotki",
+    "Haala",
+    "Hyderabad",
+    "Islamkot",
+    "Jacobabad",
+    "Jamshoro",
+    "Jungshahi",
+    "Kandhkot",
+    "Kandiaro",
+    "Karachi",
+    "Kashmore",
+    "Keti Bandar",
+    "Khairpur",
+    "Kotri",
+    "Larkana",
+    "Matiari",
+    "Mehar",
+    "Mirpur Khas",
+    "Mithani",
+    "Mithi",
+    "Mehrabpur",
+    "Moro",
+    "Nagarparkar",
+    "Naudero",
+    "Naushahro Feroze",
+    "Naushara",
+    "Nawabshah",
+    "Nazimabad",
+    "Qambar",
+    "Qasimabad",
+    "Ranipur",
+    "Ratodero",
+    "Rohri",
+    "Sakrand",
+    "Sanghar",
+    "Shahbandar",
+    "Shahdadkot",
+    "Shahdadpur",
+    "Shahpur Chakar",
+    "Shikarpaur",
+    "Sukkur",
+    "Tangwani",
+    "Tando Adam",
+    "Tando Allahyar",
+    "Tando Muhammad",
+    "Thatta",
+    "Umerkot",
+    "Warah",
+    "Abbottabad",
+    "Adezai",
+    "Alpuri",
+    "Akora Khattak",
+    "Ayubia",
+    "Banda Daud",
+    "Bannu",
+    "Batkhela",
+    "Battagram",
+    "Birote",
+    "Chakdara",
+    "Charsadda",
+    "Chitral",
+    "Daggar",
+    "Dargai",
+    "Darya Khan",
+    "dera Ismail",
+    "Doaba",
+    "Dir",
+    "Drosh",
+    "Hangu",
+    "Haripur",
+    "Karak",
+    "Kohat",
+    "Kulachi",
+    "Lakki Marwat",
+    "Latamber",
+    "Madyan",
+    "Mansehra",
+    "Mardan",
+    "Mastuj",
+    "Mingora",
+    "Nowshera",
+    "Paharpur",
+    "Pabbi",
+    "Peshawar",
+    "Saidu Sharif",
+    "Shorkot",
+    "Shewa Adda",
+    "Swabi",
+    "Swat",
+    "Tangi",
+    "Tank",
+    "Thall",
+    "Timergara",
+    "Tordher",
+    "Awaran",
+    "Barkhan",
+    "Chagai",
+    "Dera Bugti",
+    "Gwadar",
+    "Harnai",
+    "Jafarabad",
+    "Jhal Magsi",
+    "Kacchi",
+    "Kalat",
+    "Kech",
+    "Kharan",
+    "Khuzdar",
+    "Killa Abdullah",
+    "Killa Saifullah",
+    "Kohlu",
+    "Lasbela",
+    "Lehri",
+    "Loralai",
+    "Mastung",
+    "Musakhel",
+    "Nasirabad",
+    "Nushki",
+    "Panjgur",
+    "Pishin valley",
+    "Quetta",
+    "Sherani",
+    "Sibi",
+    "Sohbatpur",
+    "Washuk",
+    "Zhob",
+    "Ziarat",
   ];
 
   const [serviceType, setServiceType] = useState("");
@@ -117,48 +298,71 @@ export default function PostService() {
   const [serviceDescription, setServiceDescription] = useState("");
   const [servicePrice, setServicePrice] = useState("");
   const [contactnumber, setContactNumber] = useState("");
+  const [errors, setErrors] = useState({});
 
-  // const data = {
-  //   servicetitle: serviceTitle,
-  //   servicecategory: serviceType,
-  //   servicedescription: serviceDescription,
-  //   contactnumber: contactnumber,
-  //   price: servicePrice,
-  // };
-  const onsubmit = () => {
+  const handleSubmit = (e) => {
     console.log("files length" + images.length);
-    const formData = new FormData();
-    for (let i = 0; i < images.length; i++) {
-      formData.append("files", images[i]);
-    }
-    formData.append("servicetitle", serviceTitle);
-    formData.append("servicecategory", serviceType);
-    formData.append("servicedescription", serviceDescription);
-    formData.append("contactnumber", contactnumber);
-    formData.append("price", servicePrice);
-    // formData.append("image", image);
-    // formData.append("files", images);
-    axios
-      .post("http://localhost:5000/api/service", formData, {
-        headers: {
-          authtoken: localStorage.getItem("token"),
-        },
-      })
-      .then((response) => {
-        showSuccess();
 
-        setTimeout(() => {
-          navigate("/serviceproviderdashboard");
-        }, 2000);
-      })
-      .catch((err) => {
-        console.error(err.message);
-      });
-    // console.log(data);
-    // showSuccess();
-    // setTimeout(() => {
-    //   navigate("/");
-    // }, 2000);
+    e.preventDefault();
+
+    const newErrors = {};
+
+    if (!serviceTitle) {
+      newErrors.serviceTitle = "Service Title is required";
+    }
+
+    if (!serviceDescription) {
+      newErrors.serviceDescription = "Service Description is required";
+    }
+
+    if (!contactnumber) {
+      newErrors.contactnumber = "Contact Number is required";
+    } else if (
+      !/^((\+92)?(0092)?(92)?(0)?)(3)([0-9]{9})$/.test(contactnumber)
+    ) {
+      newErrors.contactnumber = "Invalid Contact Number";
+    }
+
+    if (!serviceType) {
+      newErrors.serviceType = "Service Type is required";
+    }
+
+    if (!servicePrice) {
+      newErrors.servicePrice = "Service Charges are required";
+    } else if (!/^\d+$/.test(servicePrice)) {
+      newErrors.servicePrice = "Invalid Service Charges";
+    }
+
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length === 0) {
+      const formData = new FormData();
+      for (let i = 0; i < images.length; i++) {
+        formData.append("files", images[i]);
+      }
+      formData.append("servicetitle", serviceTitle);
+      formData.append("servicecategory", serviceType);
+      formData.append("servicedescription", serviceDescription);
+      formData.append("contactnumber", contactnumber);
+      formData.append("price", servicePrice);
+
+      axios
+        .post("http://localhost:5000/api/service", formData, {
+          headers: {
+            authtoken: localStorage.getItem("token"),
+          },
+        })
+        .then((response) => {
+          showSuccess();
+
+          setTimeout(() => {
+            navigate("/serviceproviderdashboard");
+          }, 2000);
+        })
+        .catch((err) => {
+          console.error(err.message);
+        });
+    }
   };
   const [previewSources, setPreviewSources] = useState([]);
   const previewFiles = (files) => {
@@ -204,7 +408,7 @@ export default function PostService() {
           </Typography>
           <Box
             component="form"
-            // onSubmit={handleSubmit}
+            onSubmit={handleSubmit}
             noValidate
             sx={{ mt: 1 }}
           >
@@ -213,9 +417,22 @@ export default function PostService() {
               fullWidth
               id="servicetitle"
               label=" Service Title"
+              error={!!errors.serviceTitle}
+              helperText={errors.serviceTitle}
               name="servicetitle"
               autoComplete="servicetitle"
               autoFocus
+              InputProps={{
+                inputProps: {
+                  maxLength: 45,
+                },
+
+                endAdornment: (
+                  <span>
+                    {serviceTitle.length}/{45}
+                  </span>
+                ),
+              }}
               value={serviceTitle}
               onChange={(event) => {
                 setServiceTitle(event.target.value);
@@ -226,10 +443,23 @@ export default function PostService() {
               multiline
               rows={4}
               fullWidth
+              error={!!errors.serviceDescription}
+              helperText={errors.serviceDescription}
               label=" Service Description"
               id="servicedescription"
               name="servicedescription"
               autoComplete="servicedescription"
+              InputProps={{
+                inputProps: {
+                  maxLength: 170,
+                },
+
+                endAdornment: (
+                  <span>
+                    {serviceDescription.length}/{170}
+                  </span>
+                ),
+              }}
               value={serviceDescription}
               onChange={(event) => {
                 setServiceDescription(event.target.value);
@@ -238,6 +468,8 @@ export default function PostService() {
             <TextField
               margin="normal"
               fullWidth
+              error={!!errors.contactnumber}
+              helperText={errors.contactnumber}
               id="contactnumber"
               label=" Contact Number"
               name="contactnumber"
@@ -247,13 +479,15 @@ export default function PostService() {
                 setContactNumber(event.target.value);
               }}
             />
-            <CustomizedBox sx={{}}>
+            <Box sx={{}}>
               <FormControl fullWidth>
                 <InputLabel id="demo-simple-select-label">
                   Service Type
                 </InputLabel>
                 <Select
                   id="servicetype"
+                  error={!!errors.serviceType}
+                  helperText={errors.serviceType}
                   value={serviceType}
                   label="Service Type"
                   onChange={(event) => {
@@ -269,10 +503,12 @@ export default function PostService() {
                   })}
                 </Select>
               </FormControl>
-            </CustomizedBox>
+            </Box>
             <TextField
               margin="normal"
               fullWidth
+              error={!!errors.servicePrice}
+              helperText={errors.servicePrice}
               id="serviceprice"
               label=" Price"
               name="serviceprice"
@@ -282,11 +518,11 @@ export default function PostService() {
                 setServicePrice(event.target.value);
               }}
             />
+
             <input
               type="file"
               onChange={(e) => {
                 setImages(e.target.files);
-
                 previewFiles(e.target.files);
               }}
               multiple
@@ -312,23 +548,16 @@ export default function PostService() {
               </div>
             )}
 
-            {/* 
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            /> */}
             <Button
-              //   type="submit"
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2, backgroundColor: `${ColorConfigs.primary}` }}
-              onClick={onsubmit}
+              type="submit"
             >
               Post Service
             </Button>
           </Box>
         </Box>
-        {/* <Copyright sx={{ mt: 8, mb: 4 }} /> */}
       </Container>
       <Snackbar
         open={open}

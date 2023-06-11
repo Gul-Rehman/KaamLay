@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Avatar, Box, Grid, Rating } from "@mui/material";
-import axios from "axios";
+
 import { useNavigate } from "react-router-dom";
 import { Typography } from "@mui/material";
 import { Paper } from "@mui/material";
@@ -17,7 +17,7 @@ const CustomizedButton = styled(Button)({
   padding: "10px 16px",
   marginLeft: "auto",
   marginTop: 10,
-  // width: 400,
+
   "&:hover": {
     color: "white",
     backgroundColor: "black",
@@ -44,18 +44,7 @@ const ServiceCard = ({ details }) => {
         }}
       >
         <Grid container spacing={2} position="relative">
-          <Grid
-            item
-            xs={8}
-            sx={
-              {
-                // border: "1px solid",
-                // height: 150,
-                // display: "flex",
-                // alignItems: "stretch",
-              }
-            }
-          >
+          <Grid item xs={8}>
             <Stack>
               <Stack direction="row">
                 <Typography
@@ -107,6 +96,32 @@ const ServiceCard = ({ details }) => {
                 sx={{ mt: 2 }}
               />
             </Stack>
+          </Grid>
+          <Grid item xs={12} sx={{ mb: 2 }}>
+            <Box>
+              {details.serviceImage.length > 0 ? (
+                details.serviceImage.map((item) => {
+                  return (
+                    <img
+                      style={{
+                        objectFit: "contain",
+                        width: 100,
+                        height: 100,
+                        border: "1px solid gray",
+                        borderRadius: 5,
+                        marginTop: 4,
+                      }}
+                      src={`http://localhost:5000/${details.serviceImage}`}
+                    />
+                  );
+                })
+              ) : (
+                <Typography color="primary">
+                  *There are no images to show
+                </Typography>
+              )}
+              {console.log(`http://localhost:5000/${details.serviceImage}`)}
+            </Box>
           </Grid>
           <Grid
             item
@@ -178,20 +193,6 @@ const ServiceCard = ({ details }) => {
                   {details.serviceCharges}
                 </Typography>
               </Stack>
-              <Box>
-                <img
-                  style={{
-                    objectFit: "contain",
-                    width: 150,
-                    height: 150,
-                    border: "1px solid gray",
-                    borderRadius: 5,
-                    marginTop: 4,
-                  }}
-                  src={`http://localhost:5000/${details.serviceImage}`}
-                />
-                {console.log(`http://localhost:5000/${details.serviceImage}`)}
-              </Box>
             </Stack>
           </Grid>
           <Grid
@@ -215,6 +216,7 @@ const ServiceCard = ({ details }) => {
               }}
               // key={item.user._id}
               onClick={() => {
+                localStorage.setItem("serviceId", details.serviceId);
                 localStorage.setItem(
                   "serviceproviderId",
                   details.serviceproviderId

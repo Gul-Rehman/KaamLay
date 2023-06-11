@@ -14,6 +14,11 @@ const bookserviceSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "services",
   },
+  serviceproviderId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "user",
+  },
+
   servicecategory: {
     type: String,
     required: true,

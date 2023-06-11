@@ -54,7 +54,7 @@ router.post("/adminlogin", async (req, res) => {
   // }
   let { username, password } = req.body;
   try {
-    let user = await Admin.findOne({ username: "admin" });
+    let user = await Admin.findOne({ username });
     if (!user) {
       return res
         .status(400)

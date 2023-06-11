@@ -21,7 +21,7 @@ import { styled } from "@mui/material/styles";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Input } from "@mui/material";
-import ChatGPTMap from "../ChatGPTMap";
+import GetPinLocationMap from "../GetPinLocationMap";
 import { Stack } from "@mui/system";
 
 const CustomizedBox = styled(Box)({
@@ -90,33 +90,76 @@ export default function PostService() {
   });
 
   const [images, setImages] = useState([]);
-  const onsubmit = () => {
-    const formData = new FormData();
-    for (let i = 0; i < images.length; i++) {
-      formData.append("files", images[i]);
-    }
-    formData.append("servicetitle", serviceTitle);
-    formData.append("contactnumber", contactnumber);
-    formData.append("servicedescription", serviceDescription);
-    formData.append("servicecategory", serviceType);
-    formData.append("address", address);
-    formData.append("pinLocation", JSON.stringify(pinLocation));
+  const [errors, setErrors] = useState({});
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-    axios
-      .post("http://localhost:5000/api/service/requestservice", formData, {
-        headers: {
-          authtoken: localStorage.getItem("token"),
-        },
-      })
-      .then((response) => {
-        showSuccess();
-        setTimeout(() => {
-          navigate("/clientdashboard");
-        }, 2000);
-      })
-      .catch((err) => {
-        console.error(err.message);
-      });
+    const newErrors = {};
+
+    if (!serviceTitle) {
+      newErrors.serviceTitle = "Service Title is required";
+    }
+
+    if (!serviceDescription) {
+      newErrors.serviceDescription = "Service Description is required";
+    }
+
+    if (!contactnumber) {
+      newErrors.contactnumber = "Contact Number is required";
+    } else if (
+      !/^((\+92)?(0092)?(92)?(0)?)(3)([0-9]{9})$/.test(contactnumber)
+    ) {
+      newErrors.contactnumber = "Invalid Contact Number";
+    }
+
+    if (!serviceType) {
+      newErrors.serviceType = "Service Type is required";
+    }
+
+    if (!address) {
+      newErrors.address = "Address is required";
+    }
+
+    if (!pinLocation.address) {
+      newErrors.pinLocation = "PinLocation is required";
+    }
+
+    // if (!servicePrice) {
+    //   newErrors.servicePrice = "Service Charges are required";
+    // } else if (!/^\d+$/.test(servicePrice)) {
+    //   newErrors.servicePrice = "Invalid Service Charges";
+    // }
+
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length === 0) {
+      const formData = new FormData();
+      for (let i = 0; i < images.length; i++) {
+        formData.append("files", images[i]);
+      }
+      formData.append("servicetitle", serviceTitle);
+      formData.append("contactnumber", contactnumber);
+      formData.append("servicedescription", serviceDescription);
+      formData.append("servicecategory", serviceType);
+      formData.append("address", address);
+      formData.append("pinLocation", JSON.stringify(pinLocation));
+
+      axios
+        .post("http://localhost:5000/api/service/requestservice", formData, {
+          headers: {
+            authtoken: localStorage.getItem("token"),
+          },
+        })
+        .then((response) => {
+          showSuccess();
+          setTimeout(() => {
+            navigate("/clientdashboard");
+          }, 2000);
+        })
+        .catch((err) => {
+          console.error(err.message);
+        });
+    }
   };
   // For Multiple Files
 
@@ -165,7 +208,7 @@ export default function PostService() {
           </Typography>
           <Box
             component="form"
-            // onSubmit={handleSubmit}
+            onSubmit={handleSubmit}
             noValidate
             sx={{ mt: 1 }}
           >
@@ -173,6 +216,19 @@ export default function PostService() {
               margin="normal"
               fullWidth
               required
+              InputProps={{
+                inputProps: {
+                  maxLength: 45,
+                },
+
+                endAdornment: (
+                  <span>
+                    {serviceTitle.length}/{45}
+                  </span>
+                ),
+              }}
+              error={!!errors.serviceTitle}
+              helperText={errors.serviceTitle}
               id="servicetitle"
               label=" Service Title"
               name="servicetitle"
@@ -187,6 +243,8 @@ export default function PostService() {
               margin="normal"
               fullWidth
               required
+              error={!!errors.contactnumber}
+              helperText={errors.contactnumber}
               id="contactnumber"
               label=" Contact Number"
               name="contactnumber"
@@ -202,6 +260,19 @@ export default function PostService() {
               rows={4}
               fullWidth
               required
+              InputProps={{
+                inputProps: {
+                  maxLength: 170,
+                },
+
+                endAdornment: (
+                  <span>
+                    {serviceDescription.length}/{170}
+                  </span>
+                ),
+              }}
+              error={!!errors.serviceDescription}
+              helperText={errors.serviceDescription}
               label=" Service Description"
               id="servicedescription"
               placeholder="Describe What You Want"
@@ -262,6 +333,8 @@ export default function PostService() {
                   id="servicetype"
                   value={serviceType}
                   label="Service Type"
+                  error={!!errors.serviceType}
+                  helperText={errors.serviceType}
                   onChange={(event) => {
                     setServiceType(event.target.value);
                   }}
@@ -282,6 +355,19 @@ export default function PostService() {
               rows={4}
               fullWidth
               required
+              InputProps={{
+                inputProps: {
+                  maxLength: 150,
+                },
+
+                endAdornment: (
+                  <span>
+                    {serviceTitle.length}/{150}
+                  </span>
+                ),
+              }}
+              error={!!errors.address}
+              helperText={errors.address}
               label=" Address"
               id="address"
               name="address"
@@ -299,6 +385,8 @@ export default function PostService() {
               <TextField
                 placeholder="Pin Location"
                 fullWidth
+                error={!!errors.pinLocation}
+                helperText={errors.pinLocation}
                 sx={{
                   ml: 2,
                 }}
@@ -314,7 +402,7 @@ export default function PostService() {
               fullWidth
             >
               <Box sx={{ width: "100%" }}>
-                <ChatGPTMap setPinLocation={setPinLocation} />
+                <GetPinLocationMap setPinLocation={setPinLocation} />
               </Box>
 
               <DialogActions>
@@ -346,7 +434,7 @@ export default function PostService() {
                 mb: 2,
                 backgroundColor: `${ColorConfigs.primary}`,
               }}
-              onClick={onsubmit}
+              type="submit"
             >
               Request Service
             </Button>

@@ -14,7 +14,8 @@ router.post("/", auth, async (req, res) => {
     contactnumber,
     name,
     address,
-    serviceprovider,
+    serviceproviderId,
+    serviceId,
     pinLocation,
   } = req.body;
   const bookingDetails = {
@@ -22,7 +23,8 @@ router.post("/", auth, async (req, res) => {
     name,
     contactnumber,
     address,
-    serviceId: serviceprovider,
+    serviceId,
+    serviceproviderId,
     pinLocation,
   };
   console.log(bookingDetails);
@@ -31,6 +33,7 @@ router.post("/", auth, async (req, res) => {
   try {
     const service = new BookService(bookingDetails);
     await service.save();
+
     console.log("After Saving" + service);
     return res.status(200).json(service);
   } catch (err) {
@@ -68,21 +71,22 @@ router.get("/:user_id", async (req, res) => {
   }
 });
 
-router.get("serviceprovider/:user_id", async (req, res) => {
+router.get("/:user_id", async (req, res) => {
   try {
-    const service = await BookService.aggregate([
-      {
-        $match: { _id: postId },
-      },
-      {
-        $lookup: {
-          from: "users",
-          localField: "userId",
-          foreignField: "_id",
-          as: "user",
-        },
-      },
-    ]).toArray();
+    const service = await BookService.find({
+      user: req.params.user_id,
+    })
+      .populate("user", ["name", "avatar"])
+      // .populate("status", "status");
+      // .populate("serviceprovider");
+      .populate({
+        path: "serviceId",
+        populate: [
+          {
+            path: "user",
+          },
+        ],
+      });
     if (!service) {
       return res.status(500).json({ msg: "Service Not Found" });
     }
@@ -95,6 +99,119 @@ router.get("serviceprovider/:user_id", async (req, res) => {
     res.status(400).send("Server Error");
   }
 });
+
+router.get("/getclientpendingservices/:user_id", async (req, res) => {
+  try {
+    const service = await BookService.find({
+      user: req.params.user_id,
+      status: "pending",
+    })
+      .populate("user", ["name", "avatar"])
+      // .populate("status", "status");
+      // .populate("serviceprovider");
+      .populate({
+        path: "serviceId",
+        populate: [
+          {
+            path: "user",
+          },
+        ],
+      });
+    if (!service) {
+      return res.status(500).json({ msg: "Service Not Found" });
+    }
+    return res.json(service);
+  } catch (err) {
+    console.error(err.message);
+    if (err.kind == "ObjectId") {
+      return res.status(500).json({ msg: "Service Not Found" });
+    }
+    res.status(400).send("Server Error");
+  }
+});
+
+router.get("/getclientcompletedservices/:user_id", async (req, res) => {
+  try {
+    const service = await BookService.find({
+      user: req.params.user_id,
+      status: "completed",
+    })
+      .populate("user", ["name", "avatar"])
+      // .populate("status", "status");
+      // .populate("serviceprovider");
+      .populate({
+        path: "serviceId",
+        populate: [
+          {
+            path: "user",
+          },
+        ],
+      });
+    if (!service) {
+      return res.status(500).json({ msg: "Service Not Found" });
+    }
+    return res.json(service);
+  } catch (err) {
+    console.error(err.message);
+    if (err.kind == "ObjectId") {
+      return res.status(500).json({ msg: "Service Not Found" });
+    }
+    res.status(400).send("Server Error");
+  }
+});
+
+router.get(
+  "/getserviceproviderpendingservices/:serviceproviderId",
+  async (req, res) => {
+    try {
+      const bookedServices = await BookService.find({
+        serviceproviderId: req.params.serviceproviderId,
+        status: "pending",
+      })
+        .populate({
+          path: "serviceId",
+          populate: {
+            path: "user",
+            model: "user",
+          },
+        })
+        .populate("user");
+      if (!bookedServices) {
+        return res.json({ msg: "No Services Found" });
+      }
+      res.json(bookedServices);
+    } catch (error) {
+      console.error("Error retrieving booked services:", error);
+      res.status(500).send("Internal Server Error");
+    }
+  }
+);
+router.get(
+  "/getserviceprovidercompletedservices/:serviceproviderId",
+  async (req, res) => {
+    try {
+      const bookedServices = await BookService.find({
+        serviceproviderId: req.params.serviceproviderId,
+        status: "completed",
+      })
+        .populate({
+          path: "serviceId",
+          populate: {
+            path: "user",
+            model: "user",
+          },
+        })
+        .populate("user");
+      if (!bookedServices) {
+        return res.json({ msg: "No Services Found" });
+      }
+      res.json(bookedServices);
+    } catch (error) {
+      console.error("Error retrieving booked services:", error);
+      res.status(500).send("Internal Server Error");
+    }
+  }
+);
 
 router.delete("/:service_id", async (req, res) => {
   try {

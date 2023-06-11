@@ -17,7 +17,14 @@ import { Paper } from "@mui/material";
 import ColorConfigs from "../Configs/ColorConfigs";
 import AdminPrivateComponent from "./Admin/AdminPrivateComponent";
 import axios from "axios";
+
 import { useNavigate } from "react-router-dom";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 function Copyright(props) {
   return (
@@ -52,13 +59,29 @@ const AdminLogin = () => {
       })
       .then(async (response) => {
         console.log(response);
-
+        setOpenSnackbar(true);
+        setTimeout(() => {
+          navigate(`/admindashboard`);
+        }, 2000);
         localStorage.setItem("admintoken", response.data.token);
-        navigate(`/admindashboard`);
       })
       .catch((err) => {
         console.error(err.message);
       });
+  };
+
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+
+  const handleClick = () => {
+    setOpenSnackbar(true);
+  };
+
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpenSnackbar(false);
   };
   return (
     <>
@@ -146,6 +169,20 @@ const AdminLogin = () => {
           <Copyright sx={{ mt: 8, mb: 4 }} />
         </Container>
       </Box>
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+      >
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity="success"
+          sx={{ width: "100%" }}
+        >
+          This is a success message!
+        </Alert>
+      </Snackbar>
     </>
   );
 };

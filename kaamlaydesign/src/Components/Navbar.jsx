@@ -408,7 +408,7 @@ const Navbar = () => {
                       width: "170px",
                     }}
                     component={NavLink}
-                    to="/completedservices"
+                    to="/serviceprovidercompletedservices"
                     className="scale-up-center"
                   >
                     Completed Services

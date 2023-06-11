@@ -108,6 +108,32 @@ const PostedServiceCard = ({ details }) => {
               />
             </Stack>
           </Grid>
+          <Grid item xs={12} sx={{ mb: 2 }}>
+            <Box>
+              {details.serviceImages.length > 0 ? (
+                details.serviceImages.map((item) => {
+                  return (
+                    <img
+                      style={{
+                        objectFit: "contain",
+                        width: 100,
+                        height: 100,
+                        border: "1px solid gray",
+                        borderRadius: 5,
+                        marginTop: 4,
+                      }}
+                      src={`http://localhost:5000/${item}`}
+                    />
+                  );
+                })
+              ) : (
+                <Typography color="primary">
+                  *There are no images to show
+                </Typography>
+              )}
+              {console.log(`http://localhost:5000/${details.serviceImage}`)}
+            </Box>
+          </Grid>
           <Grid
             item
             xs={6}
@@ -178,7 +204,7 @@ const PostedServiceCard = ({ details }) => {
                   {details.serviceCharges}
                 </Typography>
               </Stack>
-              <Box>
+              {/* <Box>
                 {details.serviceImage && (
                   <img
                     style={{
@@ -209,7 +235,7 @@ const PostedServiceCard = ({ details }) => {
                     );
                   })}
                 {console.log(`http://localhost:5000/${details.serviceImage}`)}
-              </Box>
+              </Box> */}
             </Stack>
           </Grid>
           <Grid

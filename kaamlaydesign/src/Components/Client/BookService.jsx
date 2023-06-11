@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import GetGeoLocationWithCoordinates from "../GetLocationWithCoordinates";
+
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
@@ -14,21 +14,17 @@ import { useNavigate } from "react-router-dom";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 
-import ChatGPTMap from "../ChatGPTMap";
+import GetPinLocationMap from "../GetPinLocationMap";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
 export default function BookService() {
+  const [errors, setErrors] = useState({});
   // const handleRefresh = () => {
   //   window.location.reload(); // Reload the entire web app
   // };
-  const [refreshKey, setRefreshKey] = useState(0);
-
-  const handleRefresh = () => {
-    setRefreshKey((prevKey) => prevKey + 1);
-  };
 
   const navigate = useNavigate();
 
@@ -46,31 +42,11 @@ export default function BookService() {
     setOpen(false);
   };
 
-  //   const handleSubmit = (event) => {
-  //     event.preventDefault();
-  //     const data = new FormData(event.currentTarget);
-  //     console.log({
-  //       email: data.get("email"),
-  //       password: data.get("password"),
-  //     });
-  //   };
-
-  const servicetypesValues = [
-    "Plumbing",
-    "Car Wash",
-    "Painter",
-    "Electrician",
-    "Sofa Cleaning",
-    "Home Appliances",
-    "AC Services",
-    "Carpenter",
-  ];
-
   const [name, setName] = useState("");
 
   const [address, setAddress] = useState("");
   const [contactnumber, setContactNumber] = useState("");
-  const [serviceproviderId, setServiceProviderId] = useState("");
+
   const [pinLocation, setPinLocation] = useState({
     coordinates: {
       latitude: "",
@@ -84,30 +60,68 @@ export default function BookService() {
     servicecategory: localStorage.getItem("servicetype"),
     contactnumber: contactnumber,
     address: address,
-    serviceprovider: localStorage.getItem("serviceproviderId"),
+    serviceId: localStorage.getItem("serviceId"),
+    serviceproviderId: localStorage.getItem("serviceproviderId"),
     pinLocation,
   };
-  const onsubmit = () => {
-    axios
-      .post("http://localhost:5000/api/service/bookservice", data, {
-        headers: {
-          authtoken: localStorage.getItem("token"),
-        },
-      })
-      .then((response) => {
-        showSuccess();
-        setTimeout(() => {
-          navigate("/serviceproviderdashboard");
-        }, 2000);
-      })
-      .catch((err) => {
-        console.error(err.message);
-      });
-    // console.log(data);
-    // showSuccess();
-    // setTimeout(() => {
-    //   navigate("/");
-    // }, 2000);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const newErrors = {};
+
+    if (!name) {
+      newErrors.name = "Name is required";
+    } else if (!/^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/.test(name)) {
+      newErrors.name = "Invalid Name ";
+    }
+
+    if (!address) {
+      newErrors.address = "Address is required";
+    }
+
+    if (!pinLocation.address) {
+      newErrors.pinLocation = "PinLocation is required";
+    }
+
+    if (!contactnumber) {
+      newErrors.contactnumber = "Contact Number is required";
+    } else if (
+      !/^((\+92)?(0092)?(92)?(0)?)(3)([0-9]{9})$/.test(contactnumber)
+    ) {
+      newErrors.contactnumber = "Invalid Contact Number";
+    }
+
+    // if (!email) {
+    //   newErrors.email = "Email is required";
+    // } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    //   newErrors.email = "Invalid email address";
+    // }
+
+    // if (!password) {
+    //   newErrors.password = "Password is required";
+    // } else if (password.length < 6) {
+    //   newErrors.password = "Password must be at least 6 characters long";
+    // }
+
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length === 0) {
+      axios
+        .post("http://localhost:5000/api/service/bookservice", data, {
+          headers: {
+            authtoken: localStorage.getItem("token"),
+          },
+        })
+        .then((response) => {
+          showSuccess();
+          setTimeout(() => {
+            navigate("/serviceproviderdashboard");
+          }, 2000);
+        })
+        .catch((err) => {
+          console.error(err.message);
+        });
+    }
   };
 
   const [openDialog, setOpenDialog] = useState(false);
@@ -119,10 +133,7 @@ export default function BookService() {
   const handleCloseDialog = () => {
     setOpenDialog(false);
   };
-  const [latitude, setLatitude] = useState("");
-  const [longitude, setLongitude] = useState("");
 
-  const API_KEY = "AIzaSyCR4YVEYed8oq1-QWV5hGhV1kbAAwzqb9Y";
   return (
     <>
       <Container
@@ -149,7 +160,12 @@ export default function BookService() {
             Book Service
           </Typography>
 
-          <Box component="form" noValidate sx={{ mt: 1 }}>
+          <Box
+            component="form"
+            onSubmit={handleSubmit}
+            noValidate
+            sx={{ mt: 1 }}
+          >
             <TextField
               margin="normal"
               fullWidth
@@ -157,11 +173,23 @@ export default function BookService() {
               label=" Name"
               name="name"
               required
-              autoComplete="name"
+              error={!!errors.name}
+              helperText={errors.name}
               autoFocus
               value={name}
               onChange={(event) => {
                 setName(event.target.value);
+              }}
+              InputProps={{
+                inputProps: {
+                  maxLength: 30,
+                },
+
+                endAdornment: (
+                  <span>
+                    {name.length}/{30}
+                  </span>
+                ),
               }}
             />
             <TextField
@@ -178,6 +206,17 @@ export default function BookService() {
               onChange={(event) => {
                 setAddress(event.target.value);
               }}
+              InputProps={{
+                inputProps: {
+                  maxLength: 150,
+                },
+
+                endAdornment: (
+                  <span>
+                    {address.length}/{150}
+                  </span>
+                ),
+              }}
             />
 
             <Stack direction="row">
@@ -190,6 +229,8 @@ export default function BookService() {
                 sx={{
                   ml: 2,
                 }}
+                error={!!errors.pinLocation}
+                helperText={errors.pinLocation}
                 inputProps={{ readOnly: true }}
                 value={pinLocation.address}
               />
@@ -205,24 +246,9 @@ export default function BookService() {
               fullWidth
             >
               <Box sx={{ width: "100%" }}>
-                <ChatGPTMap setPinLocation={setPinLocation} />
+                <GetPinLocationMap setPinLocation={setPinLocation} />
               </Box>
-              {/* <ChatGPTMap /> */}
-              {/* </Box> */}
 
-              {/* <DialogTitle id="alert-dialog-title">
-                {"Use Google's location service?"}
-              </DialogTitle>
-              <DialogContent>
-                {/* <DialogContentText id="alert-dialog-description">
-                  Let Google help apps determine location. This means sending
-                  anonymous location data to Google, even when no apps are
-                  running.
-                </DialogContentText> */}
-              {/* </DialogContent> */}
-              {/* <h1>{pinLocation.coordinates.latitude}</h1>
-              <h1>{pinLocation.coordinates.longitude}</h1>
-              <h1>{pinLocation.address}</h1> */}
               <DialogActions>
                 <Button
                   variant="contained"
@@ -247,6 +273,8 @@ export default function BookService() {
               margin="normal"
               fullWidth
               required
+              error={!!errors.contactnumber}
+              helperText={errors.contactnumber}
               id="contactnumber"
               label=" Contact Number"
               name="contactnumber"
@@ -268,21 +296,13 @@ export default function BookService() {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2, backgroundColor: `${ColorConfigs.primary}` }}
-              onClick={onsubmit}
+              type="submit"
+              // onClick={onsubmit}
             >
               Book Service
             </Button>
           </Box>
-          {/* <Box
-            sx={{
-              width: "100%",
-              height: 600,
-            }}
-          >
-            <ChatGPTMap apiKey={API_KEY} />
-          </Box> */}
         </Box>
-        {/* <GetGeoLocationWithCoordinates /> */}
       </Container>
       <Snackbar
         open={open}

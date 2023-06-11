@@ -1,7 +1,7 @@
 import { Button, Stack } from "@mui/material";
 import React, { useState, useEffect } from "react";
 
-const ChatGPTMap = ({ setPinLocation }) => {
+const GetPinLocationMap = ({ setPinLocation }) => {
   const [map, setMap] = useState(null);
   const [infoWindow, setInfoWindow] = useState(null);
   const [marker, setMarker] = useState(null);
@@ -158,4 +158,4 @@ const ChatGPTMap = ({ setPinLocation }) => {
   );
 };
 
-export default ChatGPTMap;
+export default GetPinLocationMap;
