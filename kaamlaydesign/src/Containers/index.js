@@ -11,6 +11,7 @@ export { default as ServiceProviderPendingServices } from "./ServiceProvider/Pen
 export { default as ServiceProviderCompletedServices } from "./ServiceProvider/CompletedServices";
 export { default as BrowseServices } from "./Client/BrowseServices";
 export { default as BookedServices } from "./Client/BookedServices";
+export { default as SeeOffers } from "./Client/SeeOffers";
 
 export { default as ClientProfile } from "./Client/Profile";
 export { default as ServiceProviderProfile } from "./ServiceProvider/Profile";

@@ -29,6 +29,23 @@ const PendingServices = () => {
       });
   }, []);
   const [pendingServices, setPendingServices] = useState([]);
+
+  const completeService = async (bookedServiceId) => {
+    await axios
+      .put(
+        `http://localhost:5000/api/getservices/updateservicestatus/${bookedServiceId}/completed`
+      )
+      .then((response) => {
+        console.log(response);
+        setPendingServices(
+          pendingServices.filter((item) => item._id !== bookedServiceId)
+        );
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
   return (
     <>
       {pendingServices.length <= 0 ? (
@@ -47,7 +64,7 @@ const PendingServices = () => {
         </>
       ) : (
         pendingServices?.map((item) => {
-          return (
+          return item.serviceId ? (
             <>
               <ServiceProviderPendingServiceCard
                 details={{
@@ -85,8 +102,47 @@ const PendingServices = () => {
                   bookedServiceId: item._id,
                   serviceImages: item.serviceId ? item.serviceId.imageUrls : "",
                 }}
+                completeService={completeService}
               />
             </>
+          ) : (
+            // <p>asdsa</p>
+
+            <ServiceProviderPendingServiceCard
+              details={{
+                serviceTitle: item ? (
+                  item.servicetitle
+                ) : (
+                  <Typography
+                    fontFamily={"DenseLetters"}
+                    color={"red"}
+                    fontSize={30}
+                  >
+                    Service Deleted By Service Provider
+                  </Typography>
+                ),
+                serviceDescription: item ? item.servicedescription : "",
+                serviceCategory: item ? item.servicecategory : "",
+                serviceproviderName: item.serviceproviderId
+                  ? item.serviceproviderId.name
+                  : "",
+                serviceproviderPicture: item.serviceproviderId
+                  ? item.serviceproviderId.profile.profilepicture
+                  : "",
+                serviceproviderContactNumber: item
+                  ? item.serviceprovidercontactnumber
+                  : "",
+                serviceCharges: item ? item.offerprice : "",
+                clientName: item.name,
+                clientPinLocation: item.pinLocation,
+                clientContactNumber: item.contactnumber,
+                clientAddress: item.address,
+                serviceproviderId: item.serviceproviderId._id,
+                bookedServiceId: item._id,
+                serviceImages: item ? item.serviceimages : "",
+              }}
+              completeService={completeService}
+            />
           );
         })
       )}

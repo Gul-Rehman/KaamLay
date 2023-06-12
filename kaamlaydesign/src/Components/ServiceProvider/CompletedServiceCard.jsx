@@ -326,38 +326,6 @@ const CompletedServiceCard = ({ details }) => {
               </Stack>
             </Stack>
           </Grid>
-          <Grid
-            item
-            xs={12}
-            sx={{
-              // float: "right",
-              // position: "relative",
-              // border: "1px solid",
-              // height: 150,
-              // display: "flex",
-              // alignItems: "stretch",
-              display: "flex",
-              justifyContent: "center",
-            }}
-          >
-            <CustomizedButton onClick={handleClickOpenCancelConfirmationDialog}>
-              {" "}
-              Cancel Service
-            </CustomizedButton>
-            <CustomizedButton
-              sx={{
-                ml: 3,
-                // float: "right",
-                // position: "absolute",
-                // bottom: 1,
-                // right: 1,
-              }}
-              // key={item.user._id}
-              onClick={handleClickOpenCompletionConfirmationDialog}
-            >
-              Service Completed
-            </CustomizedButton>
-          </Grid>
         </Grid>
       </Box>
       <Dialog

@@ -20,6 +20,7 @@ import {
   BookService,
   RequestService,
   PageNotFound,
+  ServiceProviderSendOffer,
 } from "./Components";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import {
@@ -41,6 +42,7 @@ import {
   ServiceProviderRequestedServices,
   ClientRequestedServices,
   ServiceProviderCompletedServices,
+  SeeOffers,
 } from "./Containers";
 
 import PlumbingService from "./Components/ServiceCategories/PlumbingServices";
@@ -122,9 +124,15 @@ function App() {
               />
               <Route
                 exact
+                path="/serviceprovidersendoffer"
+                element={<ServiceProviderSendOffer />}
+              />
+              <Route
+                exact
                 path="/clientbookservice"
                 element={<BookService />}
               />
+              <Route exact path="/seeoffers" element={<SeeOffers />} />
               <Route
                 exact
                 path="/browsecategories"

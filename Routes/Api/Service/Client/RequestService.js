@@ -75,7 +75,7 @@ router.get("/user/:user_id", async (req, res) => {
 
 router.get("/allservices", async (req, res) => {
   try {
-    const service = await RequestService.find();
+    const service = await RequestService.find().populate("user");
 
     if (!service) {
       return res.status(500).json({ msg: "Services Not Found" });

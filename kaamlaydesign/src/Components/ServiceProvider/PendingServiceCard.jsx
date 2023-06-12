@@ -29,7 +29,7 @@ const CustomizedButton = styled(Button)({
   },
 });
 
-const PendingServiceCard = ({ details }) => {
+const PendingServiceCard = ({ details, completeService }) => {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -75,6 +75,10 @@ const PendingServiceCard = ({ details }) => {
 
   const closeCompletionConfirmationDialog = () => {
     setOpenCompletionConfirmationDialog(false);
+  };
+
+  const handleCompleteService = () => {
+    completeService(details.bookedServiceId);
   };
   return (
     <>
@@ -423,10 +427,7 @@ const PendingServiceCard = ({ details }) => {
           >
             Cancel
           </Button>
-          <Button
-            variant="contained"
-            onClick={closeCompletionConfirmationDialog}
-          >
+          <Button variant="contained" onClick={handleCompleteService}>
             Confirm
           </Button>
         </DialogActions>

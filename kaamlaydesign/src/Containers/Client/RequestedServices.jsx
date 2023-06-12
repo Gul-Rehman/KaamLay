@@ -27,29 +27,6 @@ const CustomizedButton = styled(Button)({
 });
 
 const RequestedServices = () => {
-  const [dummyState, setDummyState] = useState(false);
-
-  const triggerRerender = () => {
-    setDummyState(!dummyState); // Toggle the dummy state
-  };
-  const navigate = useNavigate();
-  const [serviceType, setServiceType] = useState("");
-  const [serviceTitle, setServiceTitle] = useState("");
-  const [serviceDescription, setServiceDescription] = useState("");
-  // const [servicePrice, setServicePrice] = useState("");
-  // const [contactnumber, setContactNumber] = useState("");
-  // const [serviceproviderId, setServiceProviderId] = useState("");
-
-  const [serviceprovidername, setServiceProviderName] = useState("");
-  const [serviceproviderphonenumber, setserviceproviderPhoneNumber] =
-    useState("");
-  const [serviceprice, setServicePrice] = useState("");
-
-  // client information variables
-  const [clientName, setClientName] = useState("");
-  const [clientcontactnumber, setClientContactNumber] = useState("");
-  const [clientaddress, setClientAddress] = useState("");
-
   useEffect(() => {
     axios
       .get(

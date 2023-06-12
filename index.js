@@ -52,6 +52,7 @@ app.use(
   require("./Routes/Api/Service/BookService")
 );
 app.use("/api/queries", require("./Routes/Api/Queries/Queries"));
+app.use("/api/offer", require("./Routes/Api/Service/Offers"));
 
 app.get("/", (req, res) => {
   res.send("Hello From Server");

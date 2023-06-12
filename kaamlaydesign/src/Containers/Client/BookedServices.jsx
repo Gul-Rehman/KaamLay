@@ -75,7 +75,7 @@ const BookedServices = () => {
           }}
         >
           {services?.map((item) => {
-            return (
+            return item?.serviceId ? (
               <ClientBookedServiceCard
                 details={{
                   serviceTitle: item.serviceId ? (
@@ -110,6 +110,41 @@ const BookedServices = () => {
                   clientAddress: item.address,
                   serviceproviderId: item._id,
                   serviceImages: item.serviceId ? item.serviceId.imageUrls : "",
+                }}
+              />
+            ) : (
+              // <p>asdsa</p>
+
+              <ClientBookedServiceCard
+                details={{
+                  serviceTitle: item ? (
+                    item.servicetitle
+                  ) : (
+                    <Typography
+                      fontFamily={"DenseLetters"}
+                      color={"red"}
+                      fontSize={30}
+                    >
+                      Service Deleted By Service Provider
+                    </Typography>
+                  ),
+                  serviceDescription: item ? item.servicedescription : "",
+                  serviceCategory: item ? item.servicecategory : "",
+                  serviceproviderName: item.serviceproviderId
+                    ? item.serviceproviderId.name
+                    : "",
+                  serviceproviderPicture: item.serviceproviderId
+                    ? item.serviceproviderId.profile.profilepicture
+                    : "",
+                  serviceproviderContactNumber: item
+                    ? item.serviceprovidercontactnumber
+                    : "",
+                  serviceCharges: item ? item.offerprice : "",
+                  clientName: item.name,
+                  clientContactNumber: item.contactnumber,
+                  clientAddress: item.address,
+                  serviceproviderId: item.serviceproviderId._id,
+                  serviceImages: item ? item.serviceimages : "",
                 }}
               />
             );

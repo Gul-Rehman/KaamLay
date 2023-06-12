@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Avatar, Box, Grid, useScrollTrigger } from "@mui/material";
+import { Avatar, Box, Grid, Rating } from "@mui/material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Typography } from "@mui/material";
@@ -19,13 +19,16 @@ const CustomizedButton = styled(Button)({
   borderRadius: 8,
   color: "white",
   width: "30%",
+  // marginLeft: "auto",
+  // marginTop: 10,
+  // width: 400,
   "&:hover": {
     color: "white",
     backgroundColor: "black",
   },
 });
 
-const RequestedServiceCard = ({ details, deleteItem }) => {
+const RequestedServiceCard = ({ details }) => {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -37,22 +40,9 @@ const RequestedServiceCard = ({ details, deleteItem }) => {
   };
 
   // const navigate = useNavigate();
-
   console.log("Hello From Card Component");
   const navigate = useNavigate();
-  const handleDelete = () => {
-    deleteItem(details.serviceId);
-  };
 
-  const [openDeleteConfirmation, setOpenDeleteConfirmation] = useState(false);
-
-  const handleClickOpenDeleteConfirmation = () => {
-    setOpenDeleteConfirmation(true);
-  };
-
-  const handleCloseDeleteConfirmation = () => {
-    setOpenDeleteConfirmation(false);
-  };
   return (
     <>
       <Box
@@ -104,6 +94,9 @@ const RequestedServiceCard = ({ details, deleteItem }) => {
           <Grid item xs={4} sx={{}}>
             <Stack
               sx={{
+                // position: "absolute",
+                // right: 20,
+                // top: 20,
                 alignItems: "center",
                 float: "right",
               }}
@@ -147,32 +140,28 @@ const RequestedServiceCard = ({ details, deleteItem }) => {
               {console.log(`http://localhost:5000/${details.serviceImage}`)}
             </Box>
           </Grid>
-          <Grid item xs={12}>
+          <Grid
+            item
+            xs={12}
+            sx={
+              {
+                // border: "1px solid",
+                // height: 150,
+                // display: "flex",
+                // alignItems: "stretch",
+              }
+            }
+          >
             <Stack>
-              <Stack direction="row" justifyContent="space-between">
-                <Stack>
-                  <Stack direction="row" sx={{ mt: 3 }}>
-                    <Typography
-                      sx={{
-                        fontSize: 15,
-                        color: "black",
-                      }}
-                    >
-                      Service Category:
-                    </Typography>
-                    {/* <Stack direction></Stack> */}
-
-                    <Typography
-                      sx={{
-                        fontSize: 15,
-                        color: "GrayText",
-                      }}
-                    >
-                      {details.serviceCategory}
-                    </Typography>
-                  </Stack>
-                </Stack>
-
+              <Stack
+                direction="row"
+                justifyContent="space-between"
+                sx={
+                  {
+                    // padding: "0px 50px",
+                  }
+                }
+              >
                 <Stack sx={{ mt: 3 }}>
                   <Stack>
                     <Stack direction="row">
@@ -182,7 +171,7 @@ const RequestedServiceCard = ({ details, deleteItem }) => {
                           color: "black",
                         }}
                       >
-                        Your Name:
+                        Client Name:
                       </Typography>
                       <Typography
                         sx={{
@@ -200,7 +189,7 @@ const RequestedServiceCard = ({ details, deleteItem }) => {
                           color: "black",
                         }}
                       >
-                        Your Contact Number:
+                        Client Contact Number:
                       </Typography>
                       <Typography
                         sx={{
@@ -218,7 +207,7 @@ const RequestedServiceCard = ({ details, deleteItem }) => {
                           color: "black",
                         }}
                       >
-                        Your Address:
+                        Client Address:
                       </Typography>
                       <Typography
                         sx={{
@@ -227,6 +216,26 @@ const RequestedServiceCard = ({ details, deleteItem }) => {
                         }}
                       >
                         {details.clientAddress}
+                      </Typography>
+                    </Stack>
+                    <Stack direction="row" sx={{ mt: 0 }}>
+                      <Typography
+                        sx={{
+                          fontSize: 15,
+                          color: "black",
+                        }}
+                      >
+                        Service Category:
+                      </Typography>
+                      {/* <Stack direction></Stack> */}
+
+                      <Typography
+                        sx={{
+                          fontSize: 15,
+                          color: "GrayText",
+                        }}
+                      >
+                        {details.serviceCategory}
                       </Typography>
                     </Stack>
                   </Stack>
@@ -238,59 +247,25 @@ const RequestedServiceCard = ({ details, deleteItem }) => {
             item
             xs={12}
             sx={{
-              // float: "right",
-              // position: "relative",
-              // border: "1px solid",
-              // height: 150,
-              // display: "flex",
-              // alignItems: "stretch",
               display: "flex",
               justifyContent: "center",
             }}
           >
             <CustomizedButton
-              sx={{
-                ml: 3,
-              }}
-              onClick={handleClickOpenDeleteConfirmation}
-            >
-              Delete Service
-            </CustomizedButton>
-            <CustomizedButton
-              sx={{
-                ml: 3,
-              }}
               onClick={() => {
-                localStorage.setItem("requestedServiceId", details.serviceId);
-                navigate("/seeoffers");
+                navigate("/serviceprovidersendoffer");
+                localStorage.setItem(
+                  "requestedServiceId",
+                  details.requestedServiceId
+                );
               }}
             >
-              See Offers
+              {" "}
+              Send Offer
             </CustomizedButton>
           </Grid>
         </Grid>
       </Box>
-      <Dialog
-        open={openDeleteConfirmation}
-        onClose={handleCloseDeleteConfirmation}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">
-          {"Delete Confirmation"}
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Are You Sure ? You Want To Delete Requested Service
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseDeleteConfirmation}>Cancel</Button>
-          <Button onClick={handleDelete} autoFocus>
-            Confirm
-          </Button>
-        </DialogActions>
-      </Dialog>
     </>
   );
 };

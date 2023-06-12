@@ -301,9 +301,9 @@ const Dashboard = () => {
           </Box>
         </Grid>
       </Grid>
-      <Box sx={{ width: "100%", height: 400 }}>
+      {/* <Box sx={{ width: "100%", height: 400 }}>
         <ReverseGeocodingMap latitude={40.714224} longitude={-73.961452} />
-      </Box>
+      </Box> */}
     </>
   );
 };
