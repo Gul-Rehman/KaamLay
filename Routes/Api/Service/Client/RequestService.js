@@ -62,7 +62,6 @@ router.get("/user/:user_id", async (req, res) => {
       user: req.params.user_id,
     }).populate("user", ["name", "avatar", "profile"]);
     // .populate("status", "status");
-
     if (!service) {
       return res.status(500).json({ msg: "Service Not Found" });
     }

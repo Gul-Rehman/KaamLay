@@ -180,7 +180,7 @@ const AdminLogin = () => {
           severity="success"
           sx={{ width: "100%" }}
         >
-          This is a success message!
+          Logged In Successfully!
         </Alert>
       </Snackbar>
     </>

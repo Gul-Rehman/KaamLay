@@ -11,15 +11,20 @@ const User = require("../../../../Models/User");
 const router = express.Router();
 
 router.post("/", auth, upload.single("image"), async (req, res) => {
-  const profilepicture = req.file.path;
+  const profilepicture = req.file?.path;
+  const { contactnumber, pinLocation } = req.body;
   const serviceDetails = {
     // servicetitle,
     // servicecategory,
     // servicedescription,
     // contactnumber,
     // price,
+    // pinLocation,
+    // contactnumber,
     profilepicture,
   };
+  // const pinLocation = req.body.pinLocation;
+  // const contactnumber = req.body.contactnumber;
 
   serviceDetails.user = req.user.id;
 
@@ -35,7 +40,13 @@ router.post("/", auth, upload.single("image"), async (req, res) => {
       );
       User.findOneAndUpdate(
         { _id: serviceDetails.user },
-        { $set: { "profile.profilepicture": profile.profilepicture } }, // Assign the profile picture value to the user's profilePicture field
+        {
+          $set: {
+            "profile.profilepicture": profile.profilepicture,
+            contactnumber: profile.contactnumber,
+            pinLocation: profile.pinLocation,
+          },
+        }, // Assign the profile picture value to the user's profilePicture field
         { upsert: true },
         (err, user) => {
           if (err) {
@@ -62,7 +73,7 @@ router.get("/:user_id", async (req, res) => {
   try {
     const profile = await Profile.find({
       user: req.params.user_id,
-    }).populate("user", ["name", "avatar"]);
+    }).populate("user", ["name", "avatar", "verification"]);
     if (!profile) {
       return res.status(500).json({ msg: "Status Not Found" });
     }

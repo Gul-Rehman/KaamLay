@@ -1,9 +1,9 @@
 import React, { useState, useEffect, createContext } from "react";
 import { Typography, Box, Grid, Paper } from "@mui/material";
-
+import AddIcon from "@mui/icons-material/Add";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import Switch from "@mui/material/Switch";
 import { Stack } from "@mui/material";
 import ColorConfigs from "../../Configs/ColorConfigs";
@@ -24,7 +24,7 @@ const Dashboard = () => {
       setChecked(false);
       console.log("user role client");
     } else {
-      setChecked(true);
+      // setChecked(true);
       console.log("user role service provider");
     }
     axios
@@ -161,6 +161,7 @@ const Dashboard = () => {
             onClick={() => {
               navigate("/requestservice");
             }}
+            startIcon={<AddIcon fontSize="large" />}
           >
             Request Service
           </Button>
@@ -172,10 +173,12 @@ const Dashboard = () => {
               fontWeight: "bold",
               fontSize: "1rem",
               alignSelf: "flex-end",
+              ml: 2,
             }}
             onClick={() => {
               navigate("/clientrequestedservices");
             }}
+            startIcon={<VisibilityIcon fontSize="large" />}
           >
             View Requested Services
           </Button>
@@ -187,6 +190,7 @@ const Dashboard = () => {
         spacing={{ xs: 1, laptops: 3 }}
         padding={{ xs: 1, mobilel: 1, laptopl: 3 }}
         height="100vh"
+        marginBottom={7}
       >
         <Grid item xs={12} tablet={12} laptops={6} position="relative">
           <Box

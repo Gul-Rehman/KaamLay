@@ -54,7 +54,6 @@ router.post("/", auth, upload.array("files"), async (req, res) => {
   console.log(serviceDetails);
   // console.log(req.body, req.file);
   try {
-    
     const service = new Service(serviceDetails);
     await service.save();
 
@@ -105,7 +104,7 @@ router.get("/servicecategory/:type", async (req, res) => {
 router.delete("/:service_id", async (req, res) => {
   try {
     const serviceId = req.params.service_id;
-    const service = await Service.findByIdAndDelete(serviceId);
+    const service = await Service.findOneAndDelete({ _id: serviceId });
 
     if (!service) {
       return res.status(404).json({ msg: "Service Not Found" });

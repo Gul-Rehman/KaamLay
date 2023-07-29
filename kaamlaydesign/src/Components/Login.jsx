@@ -89,11 +89,18 @@ const Login = () => {
         .then(async (response) => {
           console.log(response);
           console.log(response);
+          if (response.data.verification) {
+            localStorage.setItem("serviceproviderverification", true);
+          } else {
+            localStorage.setItem("serviceproviderverification", false);
+          }
+
           localStorage.setItem("token", response.data.token);
 
           console.log(response.data.user._id);
 
           localStorage.setItem("userId", response.data.user._id);
+          localStorage.setItem("userrole", "client");
           axios
             .get(
               `http://localhost:5000/api/userstatus/${response.data.user._id}`
@@ -110,7 +117,7 @@ const Login = () => {
                 navigate("/clientdashboard");
               } else {
                 localStorage.setItem("userrole", response.data.status);
-                navigate("/serviceproviderdashboard");
+                navigate("/clientdashboard");
               }
             })
             .catch((err) => {
@@ -173,7 +180,6 @@ const Login = () => {
               <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
                 <TextField
                   margin="normal"
-                  required
                   fullWidth
                   id="email"
                   label="Email Address"
@@ -188,7 +194,6 @@ const Login = () => {
                 />
                 <TextField
                   margin="normal"
-                  required
                   fullWidth
                   name="password"
                   label="Password"

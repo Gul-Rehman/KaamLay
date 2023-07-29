@@ -20,9 +20,7 @@ const CustomizedButton = styled(Button)({
   borderRadius: 8,
   color: "white",
   width: "30%",
-  // marginLeft: "auto",
-  // marginTop: 10,
-  // width: 400,
+
   "&:hover": {
     color: "white",
     backgroundColor: "black",
@@ -40,7 +38,6 @@ const PendingServiceCard = ({ details, completeService }) => {
     setOpen(false);
   };
 
-  // const navigate = useNavigate();
   console.log("Hello From Pending Service Card Component");
   const navigate = useNavigate();
   const [ratingValue, setRatingValue] = useState(4);
@@ -93,18 +90,7 @@ const PendingServiceCard = ({ details, completeService }) => {
         }}
       >
         <Grid container spacing={2} position="relative">
-          <Grid
-            item
-            xs={8}
-            sx={
-              {
-                // border: "1px solid",
-                // height: 150,
-                // display: "flex",
-                // alignItems: "stretch",
-              }
-            }
-          >
+          <Grid item xs={8}>
             <Stack>
               <Stack direction="row">
                 <Typography
@@ -131,9 +117,6 @@ const PendingServiceCard = ({ details, completeService }) => {
           <Grid item xs={4} sx={{}}>
             <Stack
               sx={{
-                // position: "absolute",
-                // right: 20,
-                // top: 20,
                 alignItems: "center",
                 float: "right",
               }}
@@ -149,12 +132,6 @@ const PendingServiceCard = ({ details, completeService }) => {
                 }}
               />
               <Typography>{details.serviceproviderName}</Typography>
-              <Rating
-                name="read-only"
-                value={ratingValue}
-                readOnly
-                sx={{ mt: 2 }}
-              />
             </Stack>
           </Grid>
           <Grid item xs={12} sx={{ mb: 2 }}>
@@ -183,28 +160,9 @@ const PendingServiceCard = ({ details, completeService }) => {
               {console.log(`http://localhost:5000/${details.serviceImage}`)}
             </Box>
           </Grid>
-          <Grid
-            item
-            xs={12}
-            sx={
-              {
-                // border: "1px solid",
-                // height: 150,
-                // display: "flex",
-                // alignItems: "stretch",
-              }
-            }
-          >
+          <Grid item xs={12}>
             <Stack>
-              <Stack
-                direction="row"
-                justifyContent="space-between"
-                sx={
-                  {
-                    // padding: "0px 50px",
-                  }
-                }
-              >
+              <Stack direction="row" justifyContent="space-between">
                 {details.serviceCharges && (
                   <Stack>
                     <Stack direction="row" sx={{ mt: 3 }}>
@@ -216,7 +174,6 @@ const PendingServiceCard = ({ details, completeService }) => {
                       >
                         Service Category:
                       </Typography>
-                      {/* <Stack direction></Stack> */}
 
                       <Typography
                         sx={{

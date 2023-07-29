@@ -9,7 +9,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import ColorConfigs from "../../../Configs/ColorConfigs";
 import axios from "axios";
-import { Avatar, Button } from "@mui/material";
+import { Avatar, Button, TablePagination } from "@mui/material";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -33,30 +33,42 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 export default function AllUsersTable() {
   const [users, setUsers] = useState([]);
+
   useEffect(() => {
     axios
       .get("http://localhost:5000/api/user/getusers/users")
       .then((response) => {
         console.log(response);
         setUsers(response.data);
+        // setServices(services.filter((item) => item._id !== serviceId));
       })
       .catch((err) => {
         console.error(err);
       });
   }, []);
 
-  // const deleteUser = (userId) => {
-  //   axios
-  //     .delete(`http://localhost:5000/api/user/deleteuser/${userId}`)
-  //     .then((response) => {
-  //       console.log(response);
-  //     })
-  //     .catch((err) => {
-  //       console.error(err);
-  //     });
-  // };
+  const deleteUser = (userId) => {
+    axios
+      .delete(`http://localhost:5000/user/deleteuser/${userId}`)
+      .then((response) => {
+        console.log(response);
+        setUsers(users.filter((item) => item._id !== userId));
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
 
-  const [userId, setUserId] = useState("");
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
   return (
     <>
       <TableContainer component={Paper}>
@@ -87,7 +99,12 @@ export default function AllUsersTable() {
 
                   <StyledTableCell align="right">{item._id}</StyledTableCell>
                   <StyledTableCell align="right">
-                    <Button variant="contained">Delete</Button>
+                    <Button
+                      variant="contained"
+                      onClick={() => deleteUser(item._id)}
+                    >
+                      Delete
+                    </Button>
                   </StyledTableCell>
                 </StyledTableRow>
               );
@@ -95,6 +112,15 @@ export default function AllUsersTable() {
           </TableBody>
         </Table>
       </TableContainer>
+      <TablePagination
+        component="div"
+        rowsPerPageOptions={[5, 10, 20]}
+        count={users.length}
+        page={page}
+        onPageChange={handleChangePage}
+        rowsPerPage={rowsPerPage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
     </>
   );
 }

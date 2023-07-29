@@ -4,7 +4,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Typography } from "@mui/material";
 import { Paper } from "@mui/material";
-import { Stack } from "@mui/system";
+import { Stack, display, flexbox } from "@mui/system";
 import ColorConfigs from "../../Configs/ColorConfigs";
 // import { useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
@@ -63,8 +63,17 @@ const RequestedServices = () => {
   return (
     <>
       {services.length == 0 ? (
-        <Box>
-          <Typography>There Are No Completed Services To Show</Typography>
+        <Box
+          sx={{
+            height: "90vh",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Typography fontSize={50}>
+            There Are No Requested Services To Show
+          </Typography>
         </Box>
       ) : (
         <Box

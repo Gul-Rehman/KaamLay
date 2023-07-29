@@ -1,5 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Box, Button, Fab, Paper, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Fab,
+  Paper,
+  Stack,
+  Typography,
+} from "@mui/material";
 
 import ColorConfigs from "../../Configs/ColorConfigs";
 import axios from "axios";
@@ -14,17 +24,39 @@ import GetPinLocationMap from "../../Components/GetPinLocationMap";
 const Profile = () => {
   const [imageUrl, setImageUrl] = useState("");
   const [name, setName] = useState("");
+  const [verification, setVerification] = useState(null);
+  const [showVerificationButton, setShowVerificationButton] = useState(false);
   useEffect(() => {
     axios
       .get(
         `http://localhost:5000/api/profile/${localStorage.getItem("userId")}`
       )
       .then((response) => {
-        console.log(response.data);
+        console.log("Profile Response" + response.data[0].user.verification);
         setName(response.data[0].user.name);
+
+        if (response.data[0].user.verification == false) {
+          setShowVerificationButton(true);
+        }
         // setContactNumber(setName(response.data[0].user.contactNumber);)
+
         setUserId(response.data[0].user._id);
         localStorage.setItem("imageUrl", response.data[0].profilepicture);
+      })
+      .catch((err) => {
+        console.error(err.message);
+      });
+    axios
+      .get(
+        `http://localhost:5000/user/getuser/${localStorage.getItem("userId")}`
+      )
+      .then((response) => {
+        setName(response.data.name);
+
+        setUserId(response.data._id);
+        if (response.data.verification == false) {
+          setShowVerificationButton(true);
+        }
       })
       .catch((err) => {
         console.error(err.message);
@@ -77,6 +109,92 @@ const Profile = () => {
   const handleCloseDialog = () => {
     setOpenDialog(false);
   };
+
+  const [openVerificationDialog, setOpenVerificationDialog] =
+    React.useState(false);
+
+  const handleClickOpenVerificationDialog = () => {
+    setOpenVerificationDialog(true);
+  };
+
+  const handleCloseVerificationDialog = () => {
+    setOpenVerificationDialog(false);
+    setPreviewSources([]);
+  };
+  const [previewSources, setPreviewSources] = useState([]);
+  const previewFiles = (files) => {
+    const fileArray = Array.from(files);
+    Promise.all(
+      fileArray.map((file) => {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.readAsDataURL(file);
+          reader.onloadend = () => {
+            resolve(reader.result);
+          };
+          reader.onerror = reject;
+        });
+      })
+    )
+      .then((results) => {
+        setPreviewSources(results);
+      })
+      .catch((error) => console.log(error));
+  };
+  const [images, setImages] = useState([]);
+  const sendVerificationRequest = () => {
+    const formData = new FormData();
+    for (let i = 0; i < images.length; i++) {
+      formData.append("files", images[i]);
+    }
+    axios
+      .post("http://localhost:5000/api/verificationrequests", formData, {
+        headers: {
+          authtoken: localStorage.getItem("token"),
+        },
+      })
+      .then(() => {
+        handleCloseVerificationDialog();
+        handleClickOpenMessageDialog();
+        setImages([]);
+      });
+  };
+
+  const [openMessageDialog, setOpenMessageDialog] = React.useState(false);
+
+  const handleClickOpenMessageDialog = () => {
+    setOpenMessageDialog(true);
+  };
+
+  const handleCloseMessageDialog = () => {
+    setOpenMessageDialog(false);
+  };
+  const [showEmptyErrorMessage, setShowEmptyErrorMessage] = useState(false);
+
+  // const UpdateProfile = () => {
+  //   const formData = new FormData();
+
+  //   // formData.append("image", localStorage.getItem("imageUrl"));
+
+  //   // formData.append("contactnumber", contactNumber);
+  //   // formData.append("pinLocation", pinLocation);
+  //   axios
+  //     .post(
+  //       "http://localhost:5000/api/profile",
+  //       { contactnumber: contactNumber, pinLocation },
+  //       {
+  //         headers: {
+  //           authtoken: localStorage.getItem("token"),
+  //         },
+  //       }
+  //     )
+  //     .then((response) => {
+  //       console.log(response);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // };
   return (
     <>
       <Box
@@ -245,17 +363,18 @@ const Profile = () => {
                   id="Name"
                   value={name}
                   sx={{
-                    width: 700,
+                    // width: 700,
 
                     "& .MuiInputBase-root": {
                       height: 40,
+                      // width: "auto",
                     },
                   }}
                   inputProps={{ readOnly: notEditable }}
                 />
               </Stack>
 
-              <Stack>
+              {/* <Stack>
                 <Typography>Contact Number </Typography>{" "}
                 <TextField
                   fullWidth
@@ -300,7 +419,7 @@ const Profile = () => {
                     </Button>
                   )}
                 </Stack>
-              </Stack>
+              </Stack> */}
               <Dialog
                 open={openDialog}
                 // onClose={handleCloseDialog}
@@ -332,7 +451,7 @@ const Profile = () => {
                 </DialogActions>
               </Dialog>
 
-              <Fab
+              {/* <Fab
                 title="Edit"
                 variant="extended"
                 color="primary"
@@ -348,9 +467,9 @@ const Profile = () => {
               >
                 <EditIcon sx={{ mr: 1 }} />
                 Edit
-              </Fab>
+              </Fab> */}
 
-              {!notEditable && (
+              {/* {!notEditable && (
                 <Fab
                   title="Edit"
                   variant="extended"
@@ -359,15 +478,29 @@ const Profile = () => {
                   sx={{ position: "absolute", right: 0, top: 25 }}
                   onClick={() => {
                     setNotEditable(true);
+                    UpdateProfile();
                   }}
                 >
                   <SaveIcon sx={{ mr: 1 }} />
                   Save
                 </Fab>
-              )}
+              )} */}
             </Box>
           </Grid>
-          <Grid item laptops={3}></Grid>
+          <Grid item xs={4} tablet={5} laptops={3}>
+            {showVerificationButton && (
+              <Button
+                variant="contained"
+                onClick={handleClickOpenVerificationDialog}
+                sx={{
+                  marginTop: 5,
+                }}
+              >
+                {" "}
+                Get Verified
+              </Button>
+            )}
+          </Grid>
           <Grid
             item
             xs={8}
@@ -388,6 +521,105 @@ const Profile = () => {
           </Grid>
         </Grid>
       </Box>
+      {/* Verification Dialog */}
+      {/* <Button variant="outlined" onClick={handleClickOpenVerificationDialog}>
+        Open alert dialog
+      </Button> */}
+      <Dialog
+        open={openVerificationDialog}
+        onClose={handleCloseVerificationDialog}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Get Verified"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText
+            id="alert-dialog-description"
+            sx={{
+              mb: 4,
+            }}
+          >
+            Upload Your CNIC Front Side and Back Side Images
+          </DialogContentText>
+
+          <input
+            type="file"
+            onChange={(e) => {
+              setImages(e.target.files);
+
+              previewFiles(e.target.files);
+              if (e.target.files.length >= 1) {
+                setShowEmptyErrorMessage(false);
+              }
+            }}
+            multiple
+          />
+          {showEmptyErrorMessage && (
+            <Typography color={"red"}>Please Attach Images</Typography>
+          )}
+          {previewSources.length > 0 && (
+            <div>
+              {previewSources.map((previewSource, index) => (
+                <Box
+                  sx={{
+                    display: "inline-block",
+                    border: "1px solid black",
+                    ml: 1,
+                  }}
+                >
+                  <img
+                    key={index}
+                    src={previewSource}
+                    alt={`Preview ${index + 1}`}
+                    style={{ width: "400px", height: "200px" }}
+                  />
+                </Box>
+              ))}
+            </div>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseVerificationDialog}>Cancel</Button>
+          <Button
+            onClick={() => {
+              if (previewSources.length <= 0) {
+                setShowEmptyErrorMessage(true);
+              } else {
+                setShowEmptyErrorMessage(false);
+                sendVerificationRequest();
+              }
+            }}
+            autoFocus
+          >
+            Get Verified
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* <Button variant="outlined" onClick={handleClickOpenMessageDialog}>
+        Open alert dialog
+      </Button> */}
+      <Dialog
+        open={openMessageDialog}
+        onClose={handleCloseMessageDialog}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Verification Request Sent"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Your Verification Request Has Been Sent , You Will Be Allowed To
+            Work As A Service Provider Once You Will Be Verified
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseMessageDialog} autoFocus>
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 };

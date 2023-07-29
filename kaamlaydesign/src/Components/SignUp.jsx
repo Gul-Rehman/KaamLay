@@ -45,51 +45,80 @@ const SignUp = () => {
   const [email, setemail] = useState("");
   const navigate = useNavigate();
   const [userRole, setUserRole] = useState("");
+  const [errors, setErrors] = useState({});
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  const handleSubmit = async () => {
-    await axios
-      .post("http://localhost:5000/api/user/register", {
-        name,
-        email,
-        password,
-      })
-      .then(async (response) => {
-        console.log(response);
-        localStorage.setItem("token", response.data.token);
-        // a.setUserName(response.data.user.name);
-        console.log(response.data.user._id);
-        // navigate("/");
-        localStorage.setItem("userId", response.data.user._id);
-        axios
-          .post(
-            `http://localhost:5000/api/userstatus`,
-            { status: "client" },
-            {
-              headers: {
-                authtoken: localStorage.getItem("token"),
-              },
-            }
-          )
-          .then(async (response) => {
-            console.log(response.data.status);
-            setUserRole(response.data.status);
-            navigate("/clientdashboard");
-            // a.setUserName(response.data.status);
-          })
-          .catch((err) => {
-            console.error(err.message);
-          });
-      })
-      .catch((err) => {
-        console.error(err.message);
-      });
+    const newErrors = {};
 
-    // localStorage.setItem("user", JSON.stringify(finalresult.user));
-
-    // if (result) {
-    //   console.log(result);
-    //   navigate("/clientdashboard");
+    // if (!name) {
+    //   newErrors.name = "Name is required";
     // }
+
+    if (!email) {
+      newErrors.email = "Email is required";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      newErrors.email = "Invalid email address";
+    }
+    if (!name) {
+      newErrors.name = "Name is required";
+    } else if (!/^[a-zA-Z]+$/.test(name)) {
+      newErrors.name = "Invalid Name";
+    }
+
+    if (!password) {
+      newErrors.password = "Password is required";
+    } else if (password.length < 6) {
+      newErrors.password = "Password must be at least 6 characters long";
+    }
+
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length === 0) {
+      await axios
+        .post("http://localhost:5000/api/user/register", {
+          name,
+          email,
+          password,
+        })
+        .then(async (response) => {
+          console.log(response);
+          localStorage.setItem("token", response.data.token);
+          // a.setUserName(response.data.user.name);
+          console.log(response.data.user._id);
+          // navigate("/");
+          localStorage.setItem("userId", response.data.user._id);
+          axios
+            .post(
+              `http://localhost:5000/api/userstatus`,
+              { status: "client" },
+              {
+                headers: {
+                  authtoken: localStorage.getItem("token"),
+                },
+              }
+            )
+            .then(async (response) => {
+              console.log(response.data.status);
+              setUserRole(response.data.status);
+              navigate("/clientdashboard");
+              // a.setUserName(response.data.status);
+            })
+            .catch((err) => {
+              console.error(err.message);
+            });
+        })
+        .catch((err) => {
+          console.error(err.message);
+        });
+
+      // localStorage.setItem("user", JSON.stringify(finalresult.user));
+
+      // if (result) {
+      //   console.log(result);
+      //   navigate("/clientdashboard");
+      // }
+    }
   };
 
   const theme = createTheme();
@@ -139,7 +168,12 @@ const SignUp = () => {
               <Typography component="h1" variant="h5">
                 Sign up
               </Typography>
-              <Box component="form" noValidate sx={{ mt: 1 }}>
+              <Box
+                component="form"
+                onSubmit={handleSubmit}
+                noValidate
+                sx={{ mt: 1 }}
+              >
                 <TextField
                   margin="normal"
                   required
@@ -148,6 +182,8 @@ const SignUp = () => {
                   label="Full Name"
                   name="name"
                   autoComplete="name"
+                  error={!!errors.name}
+                  helperText={errors.name}
                   autoFocus
                   onChange={(e) => {
                     setname(e.target.value);
@@ -159,6 +195,8 @@ const SignUp = () => {
                   required
                   fullWidth
                   id="email"
+                  error={!!errors.email}
+                  helperText={errors.email}
                   label="Email Address"
                   name="email"
                   autoComplete="email"
@@ -175,6 +213,8 @@ const SignUp = () => {
                   name="password"
                   label="Password"
                   type="password"
+                  error={!!errors.password}
+                  helperText={errors.password}
                   id="password"
                   value={password}
                   onChange={(e) => {

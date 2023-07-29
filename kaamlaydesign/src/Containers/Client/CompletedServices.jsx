@@ -37,7 +37,7 @@ const CompletedServices = () => {
             alignItems: "center",
           }}
         >
-          <Typography variant="h3">
+          <Typography fontSize={50}>
             There Are No Completed Services To Show
           </Typography>
         </Box>
@@ -84,8 +84,6 @@ const CompletedServices = () => {
               />
             </>
           ) : (
-            // <p>asdsa</p>
-
             <ClientCompletedServiceCard
               details={{
                 serviceTitle: item ? (

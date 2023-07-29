@@ -14,6 +14,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  verification: {
+    type: Boolean,
+    default: false,
+  },
   profile: {
     profilepicture: {
       type: String,

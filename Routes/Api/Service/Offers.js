@@ -85,6 +85,15 @@ router.post("/acceptoffer", auth, async (req, res) => {
       _id: requestedserviceid,
     }).populate("user");
 
+    const servicedeleted = await RequestedServices.findOneAndDelete({
+      _id: requestedserviceid,
+    }).populate("user");
+
+    if (!servicedeleted) {
+      return res
+        .status(500)
+        .json({ msg: "There is an error in deleted requested service" });
+    }
     if (!requestedServiceDetails) {
       return res
         .status(500)

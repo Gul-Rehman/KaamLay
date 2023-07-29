@@ -12,10 +12,26 @@ const ObjectId = require("mongodb").ObjectId;
 
 const router = express.Router();
 
-router.delete("/:user_id", async (req, res) => {
+router.get("/getuser/:user_id", async (req, res) => {
   try {
     const userId = req.params.user_id;
-    const user = await User.findOneAndDelete({ _id: ObjectId(userId) });
+    const user = await User.findById({ _id: userId });
+
+    if (!user) {
+      return res.status(404).json({ msg: "User Not Found" });
+    }
+
+    return res.json(user);
+  } catch (err) {
+    console.error(err.message);
+    return res.status(500).send("Server Error");
+  }
+});
+
+router.delete("/deleteuser/:user_id", async (req, res) => {
+  try {
+    const userId = req.params.user_id;
+    const user = await User.findOneAndDelete({ _id: userId });
 
     if (user) {
       await Service.findByIdAndDelete({ user: ObjectId(userId) });

@@ -8,7 +8,8 @@ import { Stack } from "@mui/system";
 import ColorConfigs from "../../Configs/ColorConfigs";
 import { Button } from "@mui/material";
 import { styled } from "@mui/material";
-
+import MuiAlert from "@mui/material/Alert";
+import Snackbar from "@mui/material/Snackbar";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -27,8 +28,24 @@ const CustomizedButton = styled(Button)({
     backgroundColor: "black",
   },
 });
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 const OfferCard = ({ details }) => {
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+
+  const showSuccess = () => {
+    setOpenSnackbar(true);
+  };
+
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpenSnackbar(false);
+  };
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -39,6 +56,20 @@ const OfferCard = ({ details }) => {
     setOpen(false);
   };
 
+  const acceptoffer = async () => {
+    await axios.post(
+      "http://localhost:5000/api/offer/acceptoffer",
+      {
+        requestedserviceid: localStorage.getItem("requestedServiceId"),
+        serviceproviderid: details.serviceproviderId,
+      },
+      {
+        headers: {
+          authtoken: localStorage.getItem("token"),
+        },
+      }
+    );
+  };
   // const navigate = useNavigate();
   console.log("Hello See Offer From Card Component");
   const navigate = useNavigate();
@@ -92,12 +123,12 @@ const OfferCard = ({ details }) => {
                 }}
               />
               <Typography>{details.serviceproviderName}</Typography>
-              <Rating
+              {/* <Rating
                 name="read-only"
                 value={ratingValue}
                 readOnly
                 sx={{ mt: 2 }}
-              />
+              /> */}
             </Stack>
           </Grid>
 
@@ -181,13 +212,29 @@ const OfferCard = ({ details }) => {
               justifyContent: "center",
             }}
           >
-            <CustomizedButton onClick={() => {}}>
-              {" "}
+            <CustomizedButton onClick={acceptoffer}>
               Accept Offer
             </CustomizedButton>
           </Grid>
         </Grid>
       </Box>
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={2000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "right",
+        }}
+      >
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity="success"
+          sx={{ width: "100%", fontSize: "16pt" }}
+        >
+          Offer Accepted
+        </Alert>
+      </Snackbar>
     </>
   );
 };

@@ -21,6 +21,8 @@ import {
   RequestService,
   PageNotFound,
   ServiceProviderSendOffer,
+  ServiceProviderPrivateComponent,
+  ServiceProviderVerificationMessage,
 } from "./Components";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import {
@@ -82,11 +84,7 @@ function App() {
                 element={<ClientDashBoard />}
               />
               <Route exact path="/clientprofile" element={<ClientProfile />} />
-              <Route
-                exact
-                path="/serviceproviderprofile"
-                element={<ServiceProviderProfile />}
-              />
+
               <Route
                 exact
                 path="/clientbookedservices"
@@ -97,36 +95,49 @@ function App() {
                 path="/clientcompletedservices"
                 element={<ClientCompletedServices />}
               />
-              <Route
-                exact
-                path="/serviceproviderdashboard"
-                element={<ServiceProviderDashboard />}
-              />
-              <Route
-                exact
-                path="/serviceproviderpostedservices"
-                element={<ServiceProviderPostedServices />}
-              />
-              <Route
-                exact
-                path="/serviceproviderpostservice"
-                element={<ServiceProviderPostService />}
-              />
-              <Route
-                exact
-                path="/serviceproviderpendingservices"
-                element={<ServiceProviderPendingServices />}
-              />
-              <Route
-                exact
-                path="/serviceprovidercompletedservices"
-                element={<ServiceProviderCompletedServices />}
-              />
-              <Route
-                exact
-                path="/serviceprovidersendoffer"
-                element={<ServiceProviderSendOffer />}
-              />
+              <Route element={<ServiceProviderPrivateComponent />}>
+                <Route
+                  exact
+                  path="/serviceproviderprofile"
+                  element={<ServiceProviderProfile />}
+                />
+                <Route
+                  exact
+                  path="/serviceproviderdashboard"
+                  element={<ServiceProviderDashboard />}
+                />
+                <Route
+                  exact
+                  path="/serviceproviderpostedservices"
+                  element={<ServiceProviderPostedServices />}
+                />
+                <Route
+                  exact
+                  path="/serviceproviderpostservice"
+                  element={<ServiceProviderPostService />}
+                />
+                <Route
+                  exact
+                  path="/serviceproviderpendingservices"
+                  element={<ServiceProviderPendingServices />}
+                />
+                <Route
+                  exact
+                  path="/serviceprovidercompletedservices"
+                  element={<ServiceProviderCompletedServices />}
+                />
+                <Route
+                  exact
+                  path="/serviceprovidersendoffer"
+                  element={<ServiceProviderSendOffer />}
+                />
+
+                <Route
+                  exact
+                  path="/serviceproviderrequestedservices"
+                  element={<ServiceProviderRequestedServices />}
+                />
+              </Route>
               <Route
                 exact
                 path="/clientbookservice"
@@ -185,11 +196,7 @@ function App() {
                 path="/requestservice"
                 element={<RequestService />}
               />
-              <Route
-                exact
-                path="/serviceproviderrequestedservices"
-                element={<ServiceProviderRequestedServices />}
-              />
+
               <Route
                 exact
                 path="/clientrequestedservices"
@@ -199,6 +206,11 @@ function App() {
 
             <Route exact path="/login" element={<Login />} />
             <Route exact path="/signup" element={<SignUp />} />
+            <Route
+              exact
+              path="/serviceproviderverificationmessage"
+              element={<ServiceProviderVerificationMessage />}
+            />
           </Route>
 
           <Route element={<AdminPrivateComponent />}>

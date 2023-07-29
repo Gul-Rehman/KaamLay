@@ -21,6 +21,7 @@ export { default as BookService } from "./Client/BookService";
 export { default as AllUsers } from "./Admin/AllUsers";
 export { default as AllPostedServices } from "./Admin/AllPostedServices";
 export { default as AllRequestedServices } from "./Admin/AllRequestedServices";
+export { default as AllVerificationRequests } from "./Admin/AllVerificationRequests";
 export { default as ServiceCard } from "./Client/BrowseServiceCard";
 export { default as ClientBookedServiceCard } from "./Client/BookedServiceCard";
 export { default as ClientOfferCard } from "./Client/OfferCard";
@@ -29,5 +30,7 @@ export { default as ServiceProviderPendingServiceCard } from "./ServiceProvider/
 export { default as ServiceProviderCompletedServiceCard } from "./ServiceProvider/CompletedServiceCard";
 export { default as ServiceProviderRequestedServiceCard } from "./ServiceProvider/RequestedServiceCard";
 export { default as ServiceProviderSendOffer } from "./ServiceProvider/SendOffer";
+export { default as ServiceProviderPrivateComponent } from "./ServiceProviderPrivateComponent";
+export { default as ServiceProviderVerificationMessage } from "./ServiceProviderVerificationMessage";
 export { default as RequestService } from "./Client/RequestService";
 export { default as PageNotFound } from "./PageNotFound";

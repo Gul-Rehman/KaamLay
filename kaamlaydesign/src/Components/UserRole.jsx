@@ -30,24 +30,41 @@ const UserRole = () => {
       console.log("checked");
 
       axios
-        .post(
-          "http://localhost:5000/api/userstatus",
-          { status: "serviceprovider" },
-          {
-            headers: {
-              authtoken: localStorage.getItem("token"),
-            },
-          }
+        .get(
+          `http://localhost:5000/user/getuser/${localStorage.getItem("userId")}`
         )
         .then((response) => {
-          console.log(response);
-          localStorage.setItem("userrole", "serviceprovider");
-          //   window.location.reload(true);
-          //   navigate("/serviceproviderdashboard");
-          navigate("/clientprofile");
+          console.log(response.data.verification);
+          // setChecked(false);
+          if (response.data.verification == true) {
+            localStorage.setItem("serviceproviderverification", true);
+            axios
+              .post(
+                "http://localhost:5000/api/userstatus",
+                { status: "serviceprovider" },
+                {
+                  headers: {
+                    authtoken: localStorage.getItem("token"),
+                  },
+                }
+              )
+              .then((response) => {
+                console.log(response);
+                localStorage.setItem("userrole", "serviceprovider");
+                //   window.location.reload(true);
+                //   navigate("/serviceproviderdashboard");
+                navigate("/clientprofile");
+                setChecked(true);
+              })
+              .catch((err) => {
+                console.error(err);
+              });
+          } else {
+            navigate("/serviceproviderverificationmessage");
+          }
         })
         .catch((err) => {
-          console.error(err);
+          console.log(err);
         });
     } else {
       console.log("unchecked");

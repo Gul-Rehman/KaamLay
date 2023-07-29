@@ -298,6 +298,8 @@ export default function PostService() {
   const [serviceDescription, setServiceDescription] = useState("");
   const [servicePrice, setServicePrice] = useState("");
   const [contactnumber, setContactNumber] = useState("");
+
+  const [city, setCity] = useState("");
   const [errors, setErrors] = useState({});
 
   const handleSubmit = (e) => {

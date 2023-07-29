@@ -8,11 +8,13 @@ import {
   AllPostedServices,
   AllRequestedServices,
   AllUsers,
+  AllVerificationRequests,
   TotalUsers,
 } from "../../Components";
 import axios from "axios";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import AllQueries from "../../Components/Admin/AllQueries";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -75,16 +77,9 @@ export default function AdminDashboard() {
       >
         <Tab label="All Users" />
         <Tab label="All Posted Services" />
-        <Tab label="All Requested Services" />
-        <Button
-          variant="contained"
-          sx={{
-            alignSelf: "flex-end",
-          }}
-        >
-          {" "}
-          Logout
-        </Button>
+        {/* <Tab label="All Requested Services" /> */}
+        <Tab label="All Verification Requests" />
+        <Tab label="All Queries" />
       </Tabs>
       <Box sx={{ width: "100%" }}>
         <Button
@@ -93,6 +88,7 @@ export default function AdminDashboard() {
             position: "absolute",
             right: 25,
             top: 25,
+            maringBottom: 6,
           }}
           onClick={() => {
             localStorage.clear();
@@ -107,8 +103,14 @@ export default function AdminDashboard() {
         <TabPanel value={value} index={1}>
           <AllPostedServices />
         </TabPanel>
-        <TabPanel value={value} index={2}>
+        {/* <TabPanel value={value} index={2}>
           <AllRequestedServices />
+        </TabPanel> */}
+        <TabPanel value={value} index={2}>
+          <AllVerificationRequests />
+        </TabPanel>
+        <TabPanel value={value} index={3}>
+          <AllQueries />
         </TabPanel>
       </Box>
     </Box>

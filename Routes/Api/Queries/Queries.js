@@ -19,18 +19,32 @@ router.post("/unregistereduser", async (req, res) => {
   }
 });
 
-router.post("/unregistereduser", auth, async (req, res) => {
-  const { contactNumber, message } = req.body;
-  const queryData = { name, contactNumber, email, message };
+router.get("/", async (req, res) => {
+  // const { name, contactNumber, email, message } = req.body;
+  // const queryData = { name, contactNumber, email, message };
   try {
-    const query = new Queries(queryData);
-    query.save();
+    const query = await Queries.find();
+    return res.json(query);
 
-    return res.json({ msg: "Query Submitted" });
+    // return res.json({ msg: "Query Submitted" });
   } catch (err) {
     console.error(err.message);
     return res.status(500).send("Server Error");
   }
 });
+
+// router.post("/unregistereduser", auth, async (req, res) => {
+//   const { contactNumber, message } = req.body;
+//   const queryData = { name, contactNumber, email, message };
+//   try {
+//     const query = new Queries(queryData);
+//     query.save();
+
+//     return res.json({ msg: "Query Submitted" });
+//   } catch (err) {
+//     console.error(err.message);
+//     return res.status(500).send("Server Error");
+//   }
+// });
 
 module.exports = router;

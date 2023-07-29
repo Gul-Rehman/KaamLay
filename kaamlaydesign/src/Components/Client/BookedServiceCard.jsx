@@ -112,12 +112,12 @@ const BookedServiceCard = ({ details }) => {
                 }}
               />
               <Typography>{details.serviceproviderName}</Typography>
-              <Rating
+              {/* <Rating
                 name="read-only"
                 value={ratingValue}
                 readOnly
                 sx={{ mt: 2 }}
-              />
+              /> */}
             </Stack>
           </Grid>
           <Grid item xs={12} sx={{ mb: 2 }}>
@@ -304,7 +304,7 @@ const BookedServiceCard = ({ details }) => {
               justifyContent: "center",
             }}
           >
-            <CustomizedButton
+            {/* <CustomizedButton
               sx={
                 {
                   // float: "right",
@@ -325,7 +325,7 @@ const BookedServiceCard = ({ details }) => {
             >
               {" "}
               Edit Service
-            </CustomizedButton>
+            </CustomizedButton> */}
             <CustomizedButton
               sx={{
                 ml: 3,

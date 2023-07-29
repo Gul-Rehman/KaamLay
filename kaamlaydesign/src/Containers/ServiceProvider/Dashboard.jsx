@@ -192,6 +192,7 @@ const Dashboard = () => {
               fontWeight: "bold",
               fontSize: "1rem",
               float: "inline-end",
+              ml: 2,
             }}
           >
             View Requested Services

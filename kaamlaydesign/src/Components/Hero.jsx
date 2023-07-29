@@ -123,7 +123,11 @@ const Hero = () => {
               <Stack direction="row" sx={{ marginLeft: "-20px", mt: "auto" }}>
                 <CustomizedButton onClick={opensignup}>SignUp</CustomizedButton>
 
-                <CustomizedButton onClick={() => {}}>
+                <CustomizedButton
+                  onClick={() => {
+                    navigate("/services");
+                  }}
+                >
                   Browse More
                 </CustomizedButton>
               </Stack>

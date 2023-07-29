@@ -45,28 +45,28 @@ router.post("/", auth, upload.single("image"), async (req, res) => {
 router.delete("/:id", auth, async (req, res) => {
   try {
     // Find the service to be deleted
-    const service = await Service.findById(req.params.id);
+    const service = await Service.findOneAndDelete({ _id: req.params.id });
     // Check if the service exists
     if (!service) {
       return res.status(404).json({ msg: "Service not found" });
     }
     // Create a new DeletedService instance with the same data as the service being deleted
-    const deletedService = new DeletedService({
-      servicetitle: service.servicetitle,
-      servicecategory: service.servicecategory,
-      servicedescription: service.servicedescription,
-      contactnumber: service.contactnumber,
-      price: service.price,
-      imageUrl: service.imageUrl,
+    // const deletedService = new DeletedService({
+    //   servicetitle: service.servicetitle,
+    //   servicecategory: service.servicecategory,
+    //   servicedescription: service.servicedescription,
+    //   contactnumber: service.contactnumber,
+    //   price: service.price,
+    //   imageUrl: service.imageUrl,
 
-      // Set the deletion timestamp
-    });
+    //   // Set the deletion timestamp
+    // });
 
     // Save the deleted service
-    await deletedService.save();
+    // await deletedService.save();
 
     // Remove the service from the Service collection
-    await service.remove();
+    // await service.remove();
 
     res.json({ msg: "Service deleted successfully" });
   } catch (err) {

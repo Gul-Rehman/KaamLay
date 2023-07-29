@@ -13,7 +13,8 @@ app.use(express.json());
 
 app.use("/uploads", express.static("uploads"));
 app.use("/profile", express.static("profile"));
-app.use("/user/deleteuser", require("./Routes/Api/User/User"));
+app.use("/cnics", express.static("cnics"));
+app.use("/user", require("./Routes/Api/User/User"));
 app.use("/api/file", require("./Routes/Api/Service/PostService"));
 app.use("/api/user/register", require("./Routes/Api/User/UserRegistration"));
 app.use("/api/user/login", require("./Routes/Api/User/UserLogin"));
@@ -53,6 +54,10 @@ app.use(
 );
 app.use("/api/queries", require("./Routes/Api/Queries/Queries"));
 app.use("/api/offer", require("./Routes/Api/Service/Offers"));
+app.use(
+  "/api/verificationrequests",
+  require("./Routes/Api/User/UserVerification")
+);
 
 app.get("/", (req, res) => {
   res.send("Hello From Server");
